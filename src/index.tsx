@@ -1,6 +1,6 @@
-import LoginPage from './auth/Login/LoginPage';
-import SignUp from './auth/SignUp/SignUpPage';
+import LoginPage from './screens/authModule/login/index';
+import SignUpPage from './screens/authModule/signUp/index';
 
 export {
-    LoginPage, SignUp
+    LoginPage, SignUpPage
 };
