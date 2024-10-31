@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import { LoginPage } from '../index';
+import { LoginPage, SignUpPage } from '../index';
 
 const RootNavigation = () => {
     const Stack = createNativeStackNavigator();
@@ -21,6 +21,7 @@ const RootNavigation = () => {
       <Stack.Navigator screenOptions={screenOptions}  initialRouteName='LoginPage'>
         
           <Stack.Screen name="LoginPage" component={LoginPage} />
+          <Stack.Screen name="SignUpPage" component={SignUpPage} />
         
       </Stack.Navigator>
     </NavigationContainer>

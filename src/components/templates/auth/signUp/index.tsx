@@ -1,14 +1,14 @@
 import { StyleSheet, Text, View } from 'react-native'
 import React from 'react'
 
-const SignUpPage = () => {
+const SignUpTemplate = () => {
   return (
     <View>
-      <Text>SignUpPage</Text>
+      <Text>SignUpTemplate</Text>
     </View>
   )
 }
 
-export default SignUpPage
+export default SignUpTemplate
 
 const styles = StyleSheet.create({})
