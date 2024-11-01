@@ -1,6 +1,6 @@
 import React from 'react'
 import { StyleSheet, Text, View } from 'react-native'
-import { SignUpTemplate } from '../../../components/templates/auth'
+import { SignUpTemplate } from '@instagram/components/templates/auth'
 
 const SignUp = () => {
   return (

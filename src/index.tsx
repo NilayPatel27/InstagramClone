@@ -1,5 +1,5 @@
-import LoginPage from './screens/authModule/login/index';
-import SignUpPage from './screens/authModule/signUp/index';
+import LoginPage from '@instagram/screens/authModule/login/index';
+import SignUpPage from '@instagram/screens/authModule/signUp/index';
 
 export {
     LoginPage, SignUpPage

@@ -1,5 +1,5 @@
 import React from "react";
-import { LoginTemplate } from "../../../components/templates/auth";
+import { LoginTemplate } from "@instagram/components/templates/auth";
 
 const Login = () => {
 	return (

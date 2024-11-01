@@ -1,5 +1,5 @@
 import React from 'react';
-import RootNavigation from './src/navigation/rootNavigation';
+import RootNavigation from '@instagram/navigation/rootNavigation';
 
 const App = () => {
   return <RootNavigation />;

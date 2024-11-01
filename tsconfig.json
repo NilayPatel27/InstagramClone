@@ -1,6 +1,10 @@
 {
   "extends": "@react-native/typescript-config/tsconfig.json",
   "compilerOptions": {
-    "jsx": "react-native"
+    "jsx": "react-native",
+    "baseUrl": "./",
+    "paths": {
+      "@instagram/*": ["src/*"]
+    }
   }
 }
