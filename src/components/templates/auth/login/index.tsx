@@ -2,8 +2,9 @@ import React, { useState } from 'react';
 import {
   View, Text, TextInput, TouchableOpacity, StyleSheet,
 } from 'react-native';
-import { useNavigation } from '@react-navigation/native';
 import AntDesign from 'react-native-vector-icons/AntDesign';
+import { CommonActions, useNavigation } from "@react-navigation/native";
+
 
 const LoginTemplate = () => {
   const navigation = useNavigation();
@@ -13,6 +14,11 @@ const LoginTemplate = () => {
 
   const handleLogin = () => {
     console.log('handleLogin', email, password);
+    navigation.dispatch(
+      CommonActions.reset({
+        index: 0,
+        routes: [{ name: "HomeStack" }]
+      }));
   };
 
   const handleSignUp = () => {
