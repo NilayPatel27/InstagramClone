@@ -1,10 +1,12 @@
 import React from 'react';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 
-import { HomePage, ProfilePage, SearchPage } from '@instagram/index.tsx';
+import { HomePage, SearchPage } from '@instagram/index.tsx';
 
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
+
+import ProfileStack from '@instagram/navigation/profileNavigation';
 
 const HomeStack = () => {
 
@@ -25,7 +27,7 @@ const HomeStack = () => {
     const iconConfig: { [key: string]: iconConfigProps } = {
         HomePage: { focusedIcon: 'home-sharp', defaultIcon: 'home-outline', type: Ionicons },
         SearchPage: { focusedIcon: 'search-sharp', defaultIcon: 'search-outline', type: Ionicons },
-        ProfilePage: { focusedIcon: 'user-circle', defaultIcon: 'user-circle-o', type: FontAwesome },
+        ProfileStack: { focusedIcon: 'user-circle', defaultIcon: 'user-circle-o', type: FontAwesome },
     }
 
     const screenOptions = ({ route }: { route: { name: string } }) => {
@@ -49,7 +51,7 @@ const HomeStack = () => {
         <Tab.Navigator screenOptions={screenOptions} >
             <Tab.Screen name="HomePage" component={HomePage} />
             <Tab.Screen name="SearchPage" component={SearchPage} />
-            <Tab.Screen name="ProfilePage" component={ProfilePage} />
+            <Tab.Screen name="ProfileStack" component={ProfileStack} />
         </Tab.Navigator>
     )
 }

@@ -1,11 +1,19 @@
-import { View, Text } from 'react-native'
-import React from 'react'
+import React from 'react';
+import { useNavigation } from '@react-navigation/native';
+
+import { NavigationBar } from '@instagram/components/molecules/index.tsx';
 
 const ProfileTemplate = () => {
+
+    const navigation = useNavigation();
+
+    const onPress = () => {
+        console.log("Setting");
+        navigation.navigate("SettingPage");
+    }
+
     return (
-        <View>
-            <Text>ProfileTemplate</Text>
-        </View>
+        <NavigationBar rightProps={{ onPress, back: false, right: true, onBack: false }} navigation={navigation} />
     )
 }
 
