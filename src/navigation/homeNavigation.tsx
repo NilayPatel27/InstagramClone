@@ -1,7 +1,7 @@
 import React from 'react';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 
-import { HomePage, ProfilePage, SearchPage } from '@instagram/index';
+import { HomePage, ProfilePage, SearchPage } from '@instagram/index.tsx';
 
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
