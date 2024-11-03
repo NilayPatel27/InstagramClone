@@ -13,7 +13,7 @@ const ProfileTemplate = () => {
     }
 
     return (
-        <NavigationBar rightProps={{ onPress, back: false, right: true, onBack: false, text: "" }} navigation={navigation} />
+        <NavigationBar rightProps={{ onPress, back: false, right: true, onBack: false, postButton: true }} navigation={navigation} />
     )
 }
 

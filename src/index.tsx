@@ -5,5 +5,6 @@ import HomePage from '@instagram/screens/homeModule/home/index';
 import ProfilePage from '@instagram/screens/homeModule/profile/index';
 import SearchPage from '@instagram/screens/homeModule/search/index';
 import SettingPage from '@instagram/screens/homeModule/setting/index';
+import FeedUploaderPage from '@instagram/screens/homeModule/FeedUploader/index';
 
-export { LoginPage, SignUpPage, HomePage, ProfilePage, SearchPage, SettingPage };
+export { LoginPage, SignUpPage, HomePage, ProfilePage, SearchPage, SettingPage, FeedUploaderPage };

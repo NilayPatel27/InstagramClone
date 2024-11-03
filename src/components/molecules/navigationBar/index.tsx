@@ -4,7 +4,7 @@ import { SafeAreaView, StyleSheet, Text, View } from 'react-native';
 import { HeaderRight, HeaderLeft } from '@instagram/components/atoms/index.tsx';
 
 interface NavigationBarProps {
-    rightProps: { onBack: any, back: boolean, right: boolean, onPress: any, text: any };
+    rightProps: { onBack: any, back: boolean, right: boolean, onPress: any, text?: any, postButton?: boolean };
     navigation: any;
 }
 
@@ -21,7 +21,7 @@ const NavigationBar = ({ rightProps, navigation }: NavigationBarProps) => {
 
             {
                 rightProps.right &&
-                <HeaderRight onPress={rightProps.onPress} navigation={navigation} />
+                <HeaderRight onPress={rightProps.onPress} navigation={navigation} postButton={rightProps.postButton} />
             }
         </SafeAreaView>
     )

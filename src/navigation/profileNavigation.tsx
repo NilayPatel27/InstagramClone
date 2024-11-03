@@ -1,7 +1,7 @@
 import React from 'react'
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 
-import { ProfilePage, SettingPage } from '@instagram/index.tsx';
+import { ProfilePage, SettingPage, FeedUploaderPage } from '@instagram/index.tsx';
 
 const ProfileStack = () => {
     const screenOptions = {
@@ -23,6 +23,7 @@ const ProfileStack = () => {
 
             <Stack.Screen name="ProfilePage" component={ProfilePage} />
             <Stack.Screen name="SettingPage" component={SettingPage} />
+            <Stack.Screen name="FeedUploader" component={FeedUploaderPage} />
 
         </Stack.Navigator>
     )
