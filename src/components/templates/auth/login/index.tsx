@@ -58,7 +58,7 @@ const LoginTemplate = () => {
       />
 
       {/* Login Button */}
-      <TouchableOpacity style={styles.loginButton} onPress={handleLogin}>
+      <TouchableOpacity style={styles.loginButton} onPress={() => handleLogin()}>
         <Text style={styles.loginText}>Log In</Text>
       </TouchableOpacity>
 

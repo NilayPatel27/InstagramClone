@@ -23,7 +23,7 @@ const SettingTemplate = () => {
         <>
             <NavigationBar rightProps={{ onPress: false, back: true, right: false, onBack, text: 'Settings' }} navigation={navigation} />
             <View style={styles.container}>
-                <TouchableOpacity onPress={onLogoutPress} style={styles.button}>
+                <TouchableOpacity onPress={() => onLogoutPress()} style={styles.button}>
                     <Text style={styles.text}>Logout</Text>
                 </TouchableOpacity>
             </View>

@@ -12,7 +12,7 @@ const HeaderLeft = ({ navigation, onBack }: HeaderLeftProps) => {
             name="keyboard-backspace"
             size={30}
             color={'black'}
-            onPress={onBack}
+            onPress={() => onBack()}
         />
     )
 }
