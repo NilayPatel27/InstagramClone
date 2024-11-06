@@ -10,7 +10,7 @@ const User = require('./models/user.js')
 require('./models/user')
 
 app.use(require('./routes/auth'))
-app.use(express.json());
+app.use(express.json())
 
 mongoose.connect(MONGOURI)
 mongoose.connection.on('connected',()=>{
