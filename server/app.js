@@ -5,7 +5,7 @@ const PORT = 5000
 const {MONGOURI} = require('./keys')
 const bcrypt = require('bcryptjs')
 const jwt = require('jsonwebtoken')
-const User = require('./models/User')
+const User = require('./models/user.js')
 
 require('./models/user')
 
