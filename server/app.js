@@ -2,22 +2,23 @@ const express = require('express')
 const app = express()
 const mongoose = require('mongoose')
 const PORT = 5000
-const {MONGOURI} = require('./keys')
+const { MONGOURI } = require('./keys')
 const bcrypt = require('bcryptjs')
 const jwt = require('jsonwebtoken')
 const User = require('./models/user.js')
 
 require('./models/user')
 
+app.use(express.json())
 app.use(require('./routes/auth'))
 app.use(express.json())
 
 mongoose.connect(MONGOURI)
-mongoose.connection.on('connected',()=>{
+mongoose.connection.on('connected', () => {
     console.log("connected to mongo..")
 })
-    mongoose.connection.on('error',(err)=>{
-    console.log("err connecting",err)
+mongoose.connection.on('error', (err) => {
+    console.log("err connecting", err)
 })
 
 app.post('/api/login', async (req, res) => {
@@ -47,6 +48,6 @@ app.post('/api/login', async (req, res) => {
 });
 
 
-app.listen(PORT,()=>{
-    console.log("sever is running on",PORT)
+app.listen(PORT, () => {
+    console.log("sever is running on", PORT)
 })
