@@ -13,6 +13,7 @@ const ProfileTemplate = () => {
         navigation.navigate("SettingPage");
     }
 
+    const description = "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.";
     return (
         <>
             <NavigationBar rightProps={{ onPress, back: false, right: true, onBack: false, postButton: true }} navigation={navigation} />
@@ -37,6 +38,10 @@ const ProfileTemplate = () => {
                     </View>
                 </View>
             </View>
+            <View style={styles.profileDescription}>
+                <Text style={styles.username}>User Name</Text>
+                <Text style={styles.description}>{description}</Text>
+            </View>
         </>
     )
 }
@@ -47,6 +52,7 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'space-around',
         paddingVertical: 5,
+        backgroundColor: 'white'
     },
     imageContainer: {
         flexDirection: 'row',
@@ -60,11 +66,11 @@ const styles = StyleSheet.create({
         width: 80,
         height: 80,
         borderRadius: 40,
-        marginRight: 16,
     },
     statsContainer: {
         alignItems: 'center',
         marginHorizontal: 12,
+        backgroundColor: 'white',
     },
     stat: {
         fontSize: 16,
@@ -78,7 +84,7 @@ const styles = StyleSheet.create({
     username: {
         fontSize: 18,
         fontWeight: 'bold',
-        marginBottom: 16,
+        color: 'black',
     },
     postContainer: {
         flex: 1,
@@ -88,6 +94,18 @@ const styles = StyleSheet.create({
     postImage: {
         width: '100%',
         height: '100%',
+    },
+    userNameContainre: {
+        backgroundColor: 'white',
+    },
+    profileDescription: {
+        padding: 10,
+        backgroundColor: 'white',
+    },
+    description: {
+        fontSize: 16,
+        color: 'black',
+        textAlign: 'justify'
     },
 });
 
