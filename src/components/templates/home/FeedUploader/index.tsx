@@ -138,10 +138,11 @@ const FeedUploaderTemplate = () => {
         setImages(newData);
         setIndex(!index);
     };
+
     const renderItems = ({ item, index }: any) => {
         return (
             <View style={{ justifyContent: "center", alignItems: "center", backgroundColor: '#FFF', height: 50, width: 40, margin: 10, borderRadius: 5 }}>
-                <Image source={{ uri: ${item?.uri ? item?.uri : item?.path} }} style={{ width: 40, height: 50, borderRadius: 5 }} />
+                <Image source={{ uri: `${item?.uri ? item?.uri : item?.path}` }} style={{ width: 40, height: 50, borderRadius: 5 }} />
                 <View style={{ borderRadius: 50, position: "absolute", right: -8, top: -8 }}>
                     <TouchableOpacity onPress={() => removeImage(index)}>
                         <Image
@@ -156,7 +157,7 @@ const FeedUploaderTemplate = () => {
     const previewImages = ({ item, index }: any) => {
         return (
             <View style={{ aspectRatio: 1, backgroundColor: '#fff', width: windowWidth }} key={index}>
-                <Image source={{ uri: ${item?.uri ? item?.uri : item?.path} }}
+                <Image source={{ uri: `${item?.uri ? item?.uri : item?.path}` }}
                     style={{ width: windowWidth, aspectRatio: 1, marginTop: 5 }}
                     resizeMode="contain"
                 />
@@ -172,7 +173,7 @@ const FeedUploaderTemplate = () => {
         }
 
         await ImageCropPicker.openCropper({
-            path: ${path},
+            path: `${path}`,
             freeStyleCropEnabled: true,
             mediaType: 'photo'
         }).then(image => {

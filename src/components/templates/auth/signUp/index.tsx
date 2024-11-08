@@ -4,12 +4,12 @@ import { StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-nativ
 const SignUpTemplate = () => {
   const [username, setUserName] = useState('');
 
-  const handleTextChange = (text: string) => {
+  const handleUserNameChange = (text: string) => {
     setUserName(text.toLowerCase());
   }
 
   const handleNextPress = () => {
-    console.log('handleNextPress', username);
+    console.log('username', username);
   }
 
   return (
@@ -21,7 +21,7 @@ const SignUpTemplate = () => {
         placeholder="Username"
         placeholderTextColor="#888"
         value={username}
-        onChangeText={handleTextChange}
+        onChangeText={handleUserNameChange}
         keyboardType="name-phone-pad"
       />
       <TouchableOpacity
