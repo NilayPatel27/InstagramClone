@@ -1,7 +1,7 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { useFocusEffect, useNavigation } from '@react-navigation/native';
 import {
-    View, Text, Animated, Alert, Platform, PermissionsAndroid, ScrollView, BackHandler,
+    View, Text, Animated, Alert, ScrollView, BackHandler,
     Image, FlatList, SafeAreaView, useWindowDimensions, TouchableOpacity
 } from 'react-native';
 
@@ -9,6 +9,7 @@ import DocumentPicker from "react-native-document-picker";
 import ImageCropPicker from 'react-native-image-crop-picker';
 
 import { Images } from "@instagram/assets/index.tsx";
+import { useStoragePermission } from '@instagram/customHooks/index.tsx';
 import PostHeader from '@instagram/components/templates/home/FeedUploader/PostHeader/index';
 
 const FeedUploaderTemplate = () => {
@@ -16,7 +17,6 @@ const FeedUploaderTemplate = () => {
     let { width: windowWidth } = useWindowDimensions();
 
     const [images, setImages] = useState<any>([]);
-    const [permission, setPermission] = useState("");
 
     const [index, setIndex] = useState(false);
     const [indexOfPost, setIndexOfPost] = useState(0);
@@ -28,16 +28,7 @@ const FeedUploaderTemplate = () => {
         setIndexOfPost(viewableItems?.viewableItems[0]?.index);
     });
 
-    const requestStoragePermission = async () => {
-        if (Platform.OS === 'android') {
-            await PermissionsAndroid.request(PermissionsAndroid.PERMISSIONS.READ_EXTERNAL_STORAGE).then((res) => {
-                console.log("Permission request result", res);
-                setPermission(res);
-            }).catch((err) => {
-                console.error("Permission request failed", err);
-            });
-        }
-    };
+    const { permission, requestStoragePermission } = useStoragePermission();
 
     const imagePicker = async () => {
         if (permission === 'never_ask_again') {
@@ -150,7 +141,7 @@ const FeedUploaderTemplate = () => {
     const renderItems = ({ item, index }: any) => {
         return (
             <View style={{ justifyContent: "center", alignItems: "center", backgroundColor: '#FFF', height: 50, width: 40, margin: 10, borderRadius: 5 }}>
-                <Image source={{ uri: `${item?.uri ? item?.uri : item?.path}` }} style={{ width: 40, height: 50, borderRadius: 5 }} />
+                <Image source={{ uri: ${item?.uri ? item?.uri : item?.path} }} style={{ width: 40, height: 50, borderRadius: 5 }} />
                 <View style={{ borderRadius: 50, position: "absolute", right: -8, top: -8 }}>
                     <TouchableOpacity onPress={() => removeImage(index)}>
                         <Image
@@ -165,7 +156,7 @@ const FeedUploaderTemplate = () => {
     const previewImages = ({ item, index }: any) => {
         return (
             <View style={{ aspectRatio: 1, backgroundColor: '#fff', width: windowWidth }} key={index}>
-                <Image source={{ uri: `${item?.uri ? item?.uri : item?.path}` }}
+                <Image source={{ uri: ${item?.uri ? item?.uri : item?.path} }}
                     style={{ width: windowWidth, aspectRatio: 1, marginTop: 5 }}
                     resizeMode="contain"
                 />
@@ -181,7 +172,7 @@ const FeedUploaderTemplate = () => {
         }
 
         await ImageCropPicker.openCropper({
-            path: `${path}`,
+            path: ${path},
             freeStyleCropEnabled: true,
             mediaType: 'photo'
         }).then(image => {
