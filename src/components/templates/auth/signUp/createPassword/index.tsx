@@ -15,7 +15,7 @@ const createPassword = () => {
 
     return (
         <View style={styles.container}>
-            <Text style={styles.text1}>Choose a password</Text>
+            <Text style={styles.text1}>Create a password</Text>
             <Text style={styles.text2}>For security, your password must be 6 characters or more.</Text>
             <TextInput
                 style={styles.passwordInput}

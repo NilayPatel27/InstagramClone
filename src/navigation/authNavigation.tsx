@@ -1,5 +1,5 @@
 import React from 'react'
-import { LoginPage, SignUpPage } from '@instagram/index';
+import { LoginPage, SignUpPage, CreatePasswordPage } from '@instagram/index';
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 
 
@@ -21,6 +21,7 @@ const AuthStack = () => {
 
             <Stack.Screen name="LoginPage" component={LoginPage} />
             <Stack.Screen name="SignUpPage" component={SignUpPage} />
+            <Stack.Screen name="CreatePasswordPage" component={CreatePasswordPage} />
 
         </Stack.Navigator>
     )
