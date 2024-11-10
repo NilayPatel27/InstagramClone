@@ -8,6 +8,11 @@ const Reducer = (state: any, action: any) => {
         case TYPE.LOGIN_FAILURE:
             return { ...state, Auth: { ...state.Auth, loginSuccess: false, error: action?.payload } };
 
+        case TYPE.SIGNUP_SUCCESS:
+            return { ...state, Auth: { ...state.Auth, signUpSuccess: true, signUpResponse: action?.payload } };
+        case TYPE.SIGNUP_FAILURE:
+            return { ...state, Auth: { ...state.Auth, signUpSuccess: false, error: action?.payload } };
+
         case TYPE.LOGOUT_SUCCESS:
             return {};
         case TYPE.LOGOUT_FAILURE:

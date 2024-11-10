@@ -20,7 +20,7 @@ export const loginRequest = (dispatch: any) => async (params: any) => {
 export const logOutRequest = (dispatch: any) => async () => {
     try {
         const response = await GET(LOGINURL, {});
-        _DEV_ && console.log("LogOut", response);
+        DEV && console.log("LogOut", response);
         await useAccess("userToken", "");
         dispatch({ type: TYPES.LOGOUT_SUCCESS, payload: {} });
     } catch (error) {
@@ -37,7 +37,7 @@ export const userNameExistRequest = (dispatch: any) => async (params: any) => {
         return response;
     } catch (error) {
         console.log("userNameExist", error);
-        dispatch({ type: TYPES.USERNAMEEXIST_SUCCESS, payload: error });
+        dispatch({ type: TYPES.USERNAMEEXIST_FAILURE, payload: error });
     }
 }
 
@@ -49,6 +49,18 @@ export const userEmailExistRequest = (dispatch: any) => async (params: any) => {
         return response;
     } catch (error) {
         console.log("userEmailExist", error);
-        dispatch({ type: TYPES.USEREMAILEXIST_SUCCESS, payload: error });
+        dispatch({ type: TYPES.USEREMAILEXIST_FAILURE, payload: error });
+    }
+}
+
+export const signUpRequest = (dispatch: any) => async (params: any) => {
+    try {
+        const response = await POST('http://192.168.2.52:5000/signup', params, {});
+        console.log("signUp", response);
+        dispatch({ type: TYPES.SIGNUP_SUCCESS, payload: response });
+        return response;
+    } catch (error) {
+        console.log("signUp", error);
+        dispatch({ type: TYPES.SIGNUP_FAILURE, payload: error });
     }
 }

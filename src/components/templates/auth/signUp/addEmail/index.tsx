@@ -1,4 +1,4 @@
-import { useNavigation } from '@react-navigation/native';
+import { CommonActions, useNavigation } from '@react-navigation/native';
 import React, { useContext, useEffect, useState } from 'react';
 import { Alert, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
 
@@ -12,8 +12,9 @@ const AddEmail = ({ username, password }: any) => {
     const [email, setEmail] = useState('');
     const [validateEmailLoading, setValidateEmailLoading] = useState(false);
     const [signUpLoading, setSignUpLoading] = useState(false);
+    const [firstTimeSignUp, setFirstTimeSignUp] = useState(false);
 
-    const { state: AppState, userEmailExistRequest } = useContext(AppContext);
+    const { state: AppState, userEmailExistRequest, signUpRequest } = useContext(AppContext);
     const previousAppState: any = usePrevious(AppState);
 
     const handleEmailChange = (text: string) => {
@@ -25,12 +26,17 @@ const AddEmail = ({ username, password }: any) => {
         await userEmailExistRequest({ email });
     }
 
+    const handleSignUp = async () => {
+        setSignUpLoading(true);
+        await signUpRequest({ email, name: username, password });
+    }
+
     useEffect(() => {
         if (validateEmailLoading && AppState?.Auth && AppState?.Auth?.userEmailExistSuccess === true && AppState?.Auth?.userEmailExistResponse) {
             if (previousAppState?.Auth !== AppState?.Auth) {
                 setValidateEmailLoading(false);
                 if (AppState?.Auth?.userEmailExistResponse?.data?.message === "User not exist" && AppState?.Auth?.userEmailExistResponse?.status === 200) {
-                    //handle sign up
+                    handleSignUp();
                 } else {
                     Alert.alert(
                         "Alert",
@@ -56,6 +62,48 @@ const AddEmail = ({ username, password }: any) => {
             }
         }
     }, [validateEmailLoading, AppState?.Auth?.userEmailExistSuccess, AppState?.Auth?.userEmailExistResponse, AppState?.Auth?.error]);
+
+    useEffect(() => {
+        if (signUpLoading && AppState?.Auth && AppState?.Auth?.signUpSuccess === true && AppState?.Auth?.signUpResponse) {
+            if (previousAppState?.Auth !== AppState?.Auth) {
+                setSignUpLoading(false);
+                if (AppState?.Auth?.signUpResponse?.status === "Success" || AppState?.Auth?.signUpResponse?.status === 200) {
+                    setFirstTimeSignUp(true);
+                } else {
+                    Alert.alert(
+                        "Alert",
+                        AppState?.Auth?.signUpResponse?.message ? AppState?.Auth?.signUpResponse?.message : "Something went wrong",
+                        [
+                            {
+                                text: "OK",
+                                onPress: () => { }
+                            }
+                        ],
+                        { cancelable: false }
+                    );
+                }
+            }
+        } else if (signUpLoading && AppState?.Auth && AppState?.Auth?.signUpSuccess === false && AppState?.Auth?.error) {
+            if (previousAppState?.Auth !== AppState?.Auth) {
+                setSignUpLoading(false);
+                if (AppState?.Auth?.error && AppState?.Auth?.error?.code && AppState?.Auth?.error?.code === 401) {
+                    Alert.alert("", AppState?.Auth?.error?.error?.toString());
+                } else {
+                    Alert.alert(AppState?.Auth?.error?.error)
+                }
+            }
+        }
+    }, [signUpLoading, AppState?.Auth?.signUpSuccess, AppState?.Auth?.signUpResponse, AppState?.Auth?.error]);
+
+    useEffect(() => {
+        if (firstTimeSignUp && !AppState?.Loader?.loaderVisible) {
+            navigation.dispatch(
+                CommonActions.reset({
+                    index: 0,
+                    routes: [{ name: "HomeStack" }]
+                }));
+        }
+    }, [firstTimeSignUp, AppState?.Loader?.loaderVisible]);
 
     return (
         <View style={styles.container}>
