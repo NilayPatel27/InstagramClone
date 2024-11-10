@@ -1,17 +1,21 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
 import { CommonActions, useNavigation } from '@react-navigation/native';
 
 import { NavigationBar } from '@instagram/components/molecules';
+import { AppContext } from '@instagram/context/index.tsx';
 
 const SettingTemplate = () => {
     const navigation = useNavigation();
+
+    const { logOutRequest } = useContext(AppContext);
 
     const onBack = () => {
         navigation.goBack();
     }
 
     const onLogoutPress = () => {
+        logOutRequest();
         navigation.dispatch(
             CommonActions.reset({
                 index: 0,
