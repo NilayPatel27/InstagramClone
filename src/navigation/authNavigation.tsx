@@ -1,7 +1,7 @@
 import React from 'react'
-import { LoginPage, SignUpPage, CreatePasswordPage } from '@instagram/index';
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 
+import { LoginPage, SignUpPage, CreatePasswordPage, AddEmailPage } from '@instagram/index';
 
 const AuthStack = () => {
     const screenOptions = {
@@ -22,6 +22,7 @@ const AuthStack = () => {
             <Stack.Screen name="LoginPage" component={LoginPage} />
             <Stack.Screen name="SignUpPage" component={SignUpPage} />
             <Stack.Screen name="CreatePasswordPage" component={CreatePasswordPage} />
+            <Stack.Screen name="AddEmailPage" component={AddEmailPage} />
 
         </Stack.Navigator>
     )
