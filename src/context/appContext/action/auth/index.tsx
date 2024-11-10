@@ -20,10 +20,23 @@ export const loginRequest = (dispatch: any) => async (params: any) => {
 export const logOutRequest = (dispatch: any) => async () => {
     try {
         const response = await GET(LOGINURL, {});
-        __DEV__ && console.log("LogOut", response);
+        _DEV_ && console.log("LogOut", response);
         await useAccess("userToken", "");
         dispatch({ type: TYPES.LOGOUT_SUCCESS, payload: {} });
     } catch (error) {
         dispatch({ type: TYPES.LOGOUT_FAILURE, payload: error });
     }
 };
+
+export const userNameExistRequest = (dispatch: any) => async (params: any) => {
+    console.log("userNameExist", params);
+    try {
+        const response = await POST('http://192.168.2.52:5000/usernameexist', params, {});
+        console.log("userNameExist", response);
+        dispatch({ type: TYPES.USERNAMEEXIST_SUCCESS, payload: response });
+        return response;
+    } catch (error) {
+        console.log("userNameExist", error);
+        dispatch({ type: TYPES.USERNAMEEXIST_SUCCESS, payload: error });
+    }
+}

@@ -17,6 +17,12 @@ const Reducer = (state: any, action: any) => {
         case TYPE.SET_LOADER_VISIBLE:
             return { ...state, Loader: { ...state.Loader, loaderVisible: action?.payload } };
 
+        //#region USERNAMEEXIST
+        case TYPE.USERNAMEEXIST_SUCCESS:
+            return { ...state, Auth: { ...state.Auth, userNameExistSuccess: true, userNameExistResponse: action?.payload } };
+        case TYPE.USERNAMEEXIST_FAILURE:
+            return { ...state, Auth: { ...state.Auth, userNameExistSuccess: false, error: action?.payload } };
+
         default:
             return state;
     }
