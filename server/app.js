@@ -9,7 +9,6 @@ const User = require('./models/user.js')
 const postRoutes = require('./routes/posts')
 const userRoutes = require('./routes/users');
 require('dotenv').config();
-const userRoutes = require('./routes/users');
 
 require('./models/user')
 
