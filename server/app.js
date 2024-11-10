@@ -7,8 +7,8 @@ const bcrypt = require('bcryptjs')
 const jwt = require('jsonwebtoken')
 const User = require('./models/user.js')
 const postRoutes = require('./routes/posts')
-const userRoutes = require('./routes/users');
-require('dotenv').config();
+const userRoutes = require('./routes/users')
+require('dotenv').config()
 
 require('./models/user')
 
