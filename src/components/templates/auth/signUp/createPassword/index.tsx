@@ -1,8 +1,9 @@
-import { useNavigation } from '@react-navigation/native';
 import React, { useState } from 'react';
+import { useNavigation, useRoute } from '@react-navigation/native';
 import { StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
 
-const CreatePassword = () => {
+const CreatePassword = ({ username }: any) => {
+
     const navigation = useNavigation();
 
     const [password, setUserPassword] = useState('');
@@ -12,8 +13,8 @@ const CreatePassword = () => {
     }
 
     const handleNextPress = () => {
-        console.log('password', password);
-        navigation.navigate('AddEmailPage');
+        console.log('password', { username, password });
+        navigation.navigate('AddEmailPage', { username, password });
     }
 
     return (

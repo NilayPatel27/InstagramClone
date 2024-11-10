@@ -2,7 +2,7 @@ import { useNavigation } from '@react-navigation/native';
 import React, { useState } from 'react';
 import { StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
 
-const AddEmail = () => {
+const AddEmail = ({ username, password }: any) => {
     const navigation = useNavigation();
 
     const [email, setEmail] = useState('');
@@ -12,7 +12,7 @@ const AddEmail = () => {
     }
 
     const handleNextPress = () => {
-        console.log('validate an email', email);
+        console.log('validate an email', { username, password, email });
     }
 
     return (
