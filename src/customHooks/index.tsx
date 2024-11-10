@@ -1,3 +1,4 @@
 import useStoragePermission from './useStoragePermission';
+import usePrevious from './usePrevious';
 
-export { useStoragePermission };
+export { useStoragePermission, usePrevious };

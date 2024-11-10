@@ -1,82 +1,134 @@
-import React, { useState } from 'react';
-import {
-  View, Text, TextInput, TouchableOpacity, StyleSheet,
-} from 'react-native';
 import AntDesign from 'react-native-vector-icons/AntDesign';
+import React, { useContext, useEffect, useState } from 'react';
 import { CommonActions, useNavigation } from "@react-navigation/native";
+import { View, Text, TextInput, TouchableOpacity, StyleSheet, Alert } from 'react-native';
 
+import { Loader } from '@instagram/components/atoms';
+import { AppContext } from '@instagram/context/index.tsx';
+import { usePrevious } from '@instagram/customHooks/index.tsx';
 
 const LoginTemplate = () => {
   const navigation = useNavigation();
 
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [firstTimeLogin, setFirstTimeLogin] = useState(false);
 
-  const handleLogin = () => {
-    console.log('handleLogin', email, password);
-    navigation.dispatch(
-      CommonActions.reset({
-        index: 0,
-        routes: [{ name: "HomeStack" }]
-      }));
+  const [loginLoading, setLoginLoading] = useState(false);
+
+  const AppContextState = useContext(AppContext);
+
+  const { state: AppState, loginRequest } = AppContextState;
+  const previousAppState: any = usePrevious(AppState);
+
+  useEffect(() => {
+    if (loginLoading && AppState?.Auth && AppState?.Auth?.loginSuccess === true && AppState?.Auth?.loginResponse) {
+      if (previousAppState?.Auth !== AppState?.Auth) {
+        setLoginLoading(false);
+        if (AppState?.Auth?.loginResponse?.status === "Success" || AppState?.Auth?.loginResponse?.status === 200) {
+          setFirstTimeLogin(true);
+        } else {
+          Alert.alert(
+            "Alert",
+            AppState?.Auth?.loginResponse?.message ? AppState?.Auth?.loginResponse?.message : "Something went wrong",
+            [
+              {
+                text: "OK",
+                onPress: () => { }
+              }
+            ],
+            { cancelable: false }
+          );
+        }
+      }
+    } else if (loginLoading && AppState?.Auth && AppState?.Auth?.loginSuccess === false && AppState?.Auth?.error) {
+      if (previousAppState?.Auth !== AppState?.Auth) {
+        setLoginLoading(false);
+        if (AppState?.Auth?.error && AppState?.Auth?.error?.code && AppState?.Auth?.error?.code === 401) {
+          Alert.alert("", AppState?.Auth?.error?.error?.toString());
+        } else {
+          Alert.alert(AppState?.Auth?.error?.error)
+        }
+      }
+    }
+  }, [loginLoading, AppState?.Auth?.loginSuccess, AppState?.Auth?.loginResponse, AppState?.Auth?.error]);
+
+  useEffect(() => {
+    if (firstTimeLogin && !AppState?.Loader?.loaderVisible) {
+      navigation.dispatch(
+        CommonActions.reset({
+          index: 0,
+          routes: [{ name: "HomeStack" }]
+        }));
+    }
+  }, [firstTimeLogin, AppState?.Loader?.loaderVisible]);
+
+
+  const handleLogin = async () => {
+    setLoginLoading(true);
+    await loginRequest({ email, password });
   };
 
   const handleSignUp = () => {
     console.log('handleSignUp');
     navigation.navigate('SignUpPage');
   };
+
   return (
-    <View style={styles.container}>
-      {/* Instagram Logo */}
-      <AntDesign
-        name="instagram"
-        size={100}
-        // style={styles.logo}
-        color={'#C13584'}
-      />
+    <>
+      <View style={styles.container}>
+        {/* Instagram Logo */}
+        <AntDesign
+          name="instagram"
+          size={100}
+          // style={styles.logo}
+          color={'#C13584'}
+        />
 
-      {/* Email Input */}
-      <TextInput
-        style={styles.input}
-        placeholder="Username or email"
-        placeholderTextColor="#888"
-        value={email}
-        onChangeText={setEmail}
-        keyboardType="email-address"
-        autoCapitalize="none"
-      />
+        {/* Email Input */}
+        <TextInput
+          style={styles.input}
+          placeholder="Username or email"
+          placeholderTextColor="#888"
+          value={email}
+          onChangeText={setEmail}
+          keyboardType="email-address"
+          autoCapitalize="none"
+        />
 
-      {/* Password Input */}
-      <TextInput
-        style={styles.input}
-        placeholder="Password"
-        placeholderTextColor="#888"
-        secureTextEntry
-        value={password}
-        onChangeText={setPassword}
-        autoCapitalize="none"
-      />
+        {/* Password Input */}
+        <TextInput
+          style={styles.input}
+          placeholder="Password"
+          placeholderTextColor="#888"
+          secureTextEntry
+          value={password}
+          onChangeText={setPassword}
+          autoCapitalize="none"
+        />
 
-      {/* Login Button */}
-      <TouchableOpacity style={styles.loginButton} onPress={() => handleLogin()}>
-        <Text style={styles.loginText}>Log In</Text>
-      </TouchableOpacity>
-
-      {/* Divider */}
-      <View style={styles.divider}>
-        <View style={styles.line} />
-        <Text style={styles.orText}>OR</Text>
-        <View style={styles.line} />
-      </View>
-
-      {/* Sign Up Link */}
-      <View style={styles.signupContainer}>
-        <Text style={styles.signupText}>Don't have an account? </Text>
-        <TouchableOpacity onPress={() => handleSignUp()}>
-          <Text style={styles.signupLink}>Sign Up.</Text>
+        {/* Login Button */}
+        <TouchableOpacity style={styles.loginButton} onPress={() => handleLogin()}>
+          <Text style={styles.loginText}>Log In</Text>
         </TouchableOpacity>
+
+        {/* Divider */}
+        <View style={styles.divider}>
+          <View style={styles.line} />
+          <Text style={styles.orText}>OR</Text>
+          <View style={styles.line} />
+        </View>
+
+        {/* Sign Up Link */}
+        <View style={styles.signupContainer}>
+          <Text style={styles.signupText}>Don't have an account? </Text>
+          <TouchableOpacity onPress={() => handleSignUp()}>
+            <Text style={styles.signupLink}>Sign Up.</Text>
+          </TouchableOpacity>
+        </View>
       </View>
-    </View>
+      <Loader visible={loginLoading} />
+    </>
   );
 };
 

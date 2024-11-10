@@ -1,45 +1,42 @@
+import { useNavigation } from '@react-navigation/native';
 import React, { useState } from 'react';
-import { useNavigation, useRoute } from '@react-navigation/native';
 import { StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
 
-const CreatePassword = ({ username }: any) => {
-
+const AddEmail = ({ username, password }: any) => {
     const navigation = useNavigation();
 
-    const [password, setUserPassword] = useState('');
+    const [email, setEmail] = useState('');
 
-    const handlePasswordChange = (text: string) => {
-        setUserPassword(text.toLowerCase());
+    const handleEmailChange = (text: string) => {
+        setEmail(text.toLowerCase());
     }
 
     const handleNextPress = () => {
-        console.log('password', { username, password });
-        navigation.navigate('AddEmailPage', { username, password });
+        console.log('validate an email', { username, password, email });
     }
 
     return (
         <View style={styles.container}>
-            <Text style={styles.text1}>Create a password</Text>
-            <Text style={styles.text2}>For security, your password must be 6 characters or more.</Text>
+            <Text style={styles.text1}>Add an Email</Text>
             <TextInput
-                style={styles.passwordInput}
-                placeholder="Password"
+                style={styles.emailInput}
+                placeholder="Email"
                 placeholderTextColor="#888"
-                value={password}
-                onChangeText={handlePasswordChange}
-                keyboardType="name-phone-pad"
+                value={email}
+                onChangeText={handleEmailChange}
+                keyboardType="email-address"
             />
             <TouchableOpacity
                 onPress={handleNextPress}
                 style={styles.nextButtonContainer}
-                disabled={password.length < 1}>
-                <Text style={[styles.nextButtonText, { color: password.length < 1 ? '#99b7f3' : '#fff', }]}>Next</Text>
+                disabled={email.length < 1}>
+                <Text style={[styles.nextButtonText, { color: email.length < 1 ? '#99b7f3' : '#fff', }]}>Next</Text>
             </TouchableOpacity>
         </View >
     )
 }
 
-export default CreatePassword
+export default AddEmail
 
 const styles = StyleSheet.create({
     container: {
@@ -59,7 +56,7 @@ const styles = StyleSheet.create({
         color: '#666',
         textAlign: 'center',
     },
-    passwordInput: {
+    emailInput: {
         width: '90%',
         height: 50,
         borderWidth: 1,

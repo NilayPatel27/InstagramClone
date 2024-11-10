@@ -1,7 +1,10 @@
-import React from 'react'
-import { LoginPage, SignUpPage, CreatePasswordPage } from '@instagram/index';
+import { View } from 'react-native';
+import React, { useContext } from 'react'
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 
+import { AppContext } from '@instagram/context/index.tsx';
+import { LoaderComponent } from '@instagram/components/atoms/index.tsx';
+import { LoginPage, SignUpPage, CreatePasswordPage, AddEmailPage } from '@instagram/index';
 
 const AuthStack = () => {
     const screenOptions = {
@@ -16,14 +19,23 @@ const AuthStack = () => {
         }
     };
     const Stack = createNativeStackNavigator();
+
+    const { state: AppState } = useContext(AppContext);
+
     return (
-        <Stack.Navigator screenOptions={screenOptions} initialRouteName='LoginPage'>
+        <View style={{ flex: 1, zIndex: 1 }}>
+            <Stack.Navigator screenOptions={screenOptions} initialRouteName='LoginPage'>
 
-            <Stack.Screen name="LoginPage" component={LoginPage} />
-            <Stack.Screen name="SignUpPage" component={SignUpPage} />
-            <Stack.Screen name="CreatePasswordPage" component={CreatePasswordPage} />
+                <Stack.Screen name="LoginPage" component={LoginPage} />
+                <Stack.Screen name="SignUpPage" component={SignUpPage} />
+                <Stack.Screen name="CreatePasswordPage" component={CreatePasswordPage} />
+                <Stack.Screen name="AddEmailPage" component={AddEmailPage} />
 
-        </Stack.Navigator>
+            </Stack.Navigator>
+            {AppState?.Loader?.loaderVisible === true && (
+                <LoaderComponent />
+            )}
+        </View>
     )
 }
 
