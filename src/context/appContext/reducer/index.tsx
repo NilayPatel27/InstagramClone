@@ -13,6 +13,10 @@ const Reducer = (state: any, action: any) => {
         case TYPE.LOGOUT_FAILURE:
             return state;
 
+        //#region loader
+        case TYPE.SET_LOADER_VISIBLE:
+            return { ...state, Loader: { ...state.Loader, loaderVisible: action?.payload } };
+
         default:
             return state;
     }

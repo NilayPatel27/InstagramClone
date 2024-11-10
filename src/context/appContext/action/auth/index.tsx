@@ -8,21 +8,20 @@ const { ACCESS_KEY, LOGINURL } = config;
 
 export const loginRequest = (dispatch: any) => async (params: any) => {
     try {
-        const response = await POST(LOGINURL, params, {});
-        await useAccess(ACCESS_KEY, JSON.stringify({
-            accessToken: response?.accessToken
-        }));
-        dispatch({ type: TYPES.LOGIN_SUCCESS, payload: response });
+        const loginResponse = await POST('http://192.168.2.52:5000/login', params, {});
+        console.log("Login", loginResponse);
+        await useAccess("userToken", JSON.stringify(loginResponse?.data?.token));
+        dispatch({ type: TYPES.LOGIN_SUCCESS, payload: loginResponse });
     } catch (error) {
         dispatch({ type: TYPES.LOGIN_FAILURE, payload: error });
     }
 };
 
-export const logoutRequest = (dispatch: any) => async () => {
+export const logOutRequest = (dispatch: any) => async () => {
     try {
         const response = await GET(LOGINURL, {});
         __DEV__ && console.log("LogOut", response);
-        await useAccess(ACCESS_KEY, "");
+        await useAccess("userToken", "");
         dispatch({ type: TYPES.LOGOUT_SUCCESS, payload: {} });
     } catch (error) {
         dispatch({ type: TYPES.LOGOUT_FAILURE, payload: error });

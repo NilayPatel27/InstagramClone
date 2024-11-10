@@ -12,7 +12,7 @@ const SignUpTemplate = () => {
 
   const handleNextPress = () => {
     console.log('username', username);
-    navigation.navigate('CreatePasswordPage');
+    navigation.navigate('CreatePasswordPage', { username: username });
   }
 
   return (
