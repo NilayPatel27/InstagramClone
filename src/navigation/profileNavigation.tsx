@@ -1,6 +1,9 @@
-import React from 'react'
+import { View } from 'react-native';
+import React, { useContext } from 'react';
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 
+import { AppContext } from '@instagram/context/index.tsx';
+import { LoaderComponent } from '@instagram/components/atoms/index.tsx';
 import { ProfilePage, SettingPage, FeedUploaderPage } from '@instagram/index.tsx';
 
 const ProfileStack = () => {
@@ -18,14 +21,23 @@ const ProfileStack = () => {
 
     const Stack = createNativeStackNavigator();
 
+    const { state: AppState } = useContext(AppContext);
+
+
     return (
-        <Stack.Navigator screenOptions={screenOptions} initialRouteName='ProfilePage'>
+        <View style={{ flex: 1, zIndex: 1 }}>
 
-            <Stack.Screen name="ProfilePage" component={ProfilePage} />
-            <Stack.Screen name="SettingPage" component={SettingPage} />
-            <Stack.Screen name="FeedUploader" component={FeedUploaderPage} />
+            <Stack.Navigator screenOptions={screenOptions} initialRouteName='ProfilePage'>
 
-        </Stack.Navigator>
+                <Stack.Screen name="ProfilePage" component={ProfilePage} />
+                <Stack.Screen name="SettingPage" component={SettingPage} />
+                <Stack.Screen name="FeedUploader" component={FeedUploaderPage} />
+
+            </Stack.Navigator>
+            {AppState?.Loader?.loaderVisible === true && (
+                <LoaderComponent />
+            )}
+        </View>
     )
 }
 
