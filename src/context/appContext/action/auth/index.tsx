@@ -40,3 +40,15 @@ export const userNameExistRequest = (dispatch: any) => async (params: any) => {
         dispatch({ type: TYPES.USERNAMEEXIST_SUCCESS, payload: error });
     }
 }
+
+export const userEmailExistRequest = (dispatch: any) => async (params: any) => {
+    try {
+        const response = await POST('http://192.168.2.52:5000/useremailexist', params, {});
+        console.log("userEmailExist", response);
+        dispatch({ type: TYPES.USEREMAILEXIST_SUCCESS, payload: response });
+        return response;
+    } catch (error) {
+        console.log("userEmailExist", error);
+        dispatch({ type: TYPES.USEREMAILEXIST_SUCCESS, payload: error });
+    }
+}

@@ -1,19 +1,61 @@
 import { useNavigation } from '@react-navigation/native';
-import React, { useState } from 'react';
-import { StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
+import React, { useContext, useEffect, useState } from 'react';
+import { Alert, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
+
+import { Loader } from '@instagram/components/atoms';
+import { AppContext } from '@instagram/context/index.tsx';
+import { usePrevious } from '@instagram/customHooks/index.tsx';
 
 const AddEmail = ({ username, password }: any) => {
     const navigation = useNavigation();
 
     const [email, setEmail] = useState('');
+    const [validateEmailLoading, setValidateEmailLoading] = useState(false);
+    const [signUpLoading, setSignUpLoading] = useState(false);
+
+    const { state: AppState, userEmailExistRequest } = useContext(AppContext);
+    const previousAppState: any = usePrevious(AppState);
 
     const handleEmailChange = (text: string) => {
         setEmail(text.toLowerCase());
     }
 
-    const handleNextPress = () => {
-        console.log('validate an email', { username, password, email });
+    const handleNextPress = async () => {
+        setValidateEmailLoading(true);
+        await userEmailExistRequest({ email });
     }
+
+    useEffect(() => {
+        if (validateEmailLoading && AppState?.Auth && AppState?.Auth?.userEmailExistSuccess === true && AppState?.Auth?.userEmailExistResponse) {
+            if (previousAppState?.Auth !== AppState?.Auth) {
+                setValidateEmailLoading(false);
+                if (AppState?.Auth?.userEmailExistResponse?.data?.message === "User not exist" && AppState?.Auth?.userEmailExistResponse?.status === 200) {
+                    //handle sign up
+                } else {
+                    Alert.alert(
+                        "Alert",
+                        AppState?.Auth?.userEmailExistResponse?.data?.message ? AppState?.Auth?.userEmailExistResponse?.data?.message : "Something went wrong",
+                        [
+                            {
+                                text: "OK",
+                                onPress: () => { }
+                            }
+                        ],
+                        { cancelable: false }
+                    );
+                }
+            }
+        } else if (validateEmailLoading && AppState?.Auth && AppState?.Auth?.userEmailExistSuccess === false && AppState?.Auth?.error) {
+            if (previousAppState?.Auth !== AppState?.Auth) {
+                setValidateEmailLoading(false);
+                if (AppState?.Auth?.error && AppState?.Auth?.error?.code && AppState?.Auth?.error?.code === 401) {
+                    Alert.alert("", AppState?.Auth?.error?.error?.toString());
+                } else {
+                    Alert.alert(AppState?.Auth?.error?.error)
+                }
+            }
+        }
+    }, [validateEmailLoading, AppState?.Auth?.userEmailExistSuccess, AppState?.Auth?.userEmailExistResponse, AppState?.Auth?.error]);
 
     return (
         <View style={styles.container}>
@@ -30,8 +72,9 @@ const AddEmail = ({ username, password }: any) => {
                 onPress={handleNextPress}
                 style={styles.nextButtonContainer}
                 disabled={email.length < 1}>
-                <Text style={[styles.nextButtonText, { color: email.length < 1 ? '#99b7f3' : '#fff', }]}>Next</Text>
+                <Text style={[styles.nextButtonText, { color: email.length < 1 ? '#99b7f3' : '#fff', }]}>Sign Up</Text>
             </TouchableOpacity>
+            <Loader visible={validateEmailLoading || signUpLoading} />
         </View >
     )
 }

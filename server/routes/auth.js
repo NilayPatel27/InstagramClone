@@ -56,6 +56,24 @@ router.post('/usernameexist', (req, res) => {
         })
 })
 
+//email exist
+router.post('/useremailexist', (req, res) => {
+    const { email } = req.body
+    if (!email) {
+        return res.status(422).json({ error: "Please add all the fields" })
+    }
+    User.findOne({ email: email })
+        .then((savedUser) => {
+            if (savedUser) {
+                return res.json({ message: "User already exists with that email" })
+            }
+            res.json({ message: "User not exist" })
+        })
+        .catch(err => {
+            console.log(err)
+        })
+})
+
 router.post('/login', (req, res) => {
     const { email, password } = req.body
     console.log({ email, password })

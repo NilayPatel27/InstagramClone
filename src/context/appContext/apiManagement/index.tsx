@@ -17,7 +17,7 @@ const POST = async (url: any, data: any, header: any) => {
     try {
         console.log(url, data, { headers: newHeader });
         // const response = await axios.post(url, data, { headers: newHeader });
-        const response = await axios.post('http://192.168.2.52:5000/login', data, { headers: newHeader });
+        const response = await axios.post(url, data, newHeader);
         __DEV__ && console.log("Result:  ", response, "\n \n URL:", url, "\n \n PARAMS:", data, "\n \n HEADER:", newHeader);
         return response;
     } catch (error) {

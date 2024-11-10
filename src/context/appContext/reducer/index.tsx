@@ -23,6 +23,12 @@ const Reducer = (state: any, action: any) => {
         case TYPE.USERNAMEEXIST_FAILURE:
             return { ...state, Auth: { ...state.Auth, userNameExistSuccess: false, error: action?.payload } };
 
+        //#region USEREMAILEXIST
+        case TYPE.USEREMAILEXIST_SUCCESS:
+            return { ...state, Auth: { ...state.Auth, userEmailExistSuccess: true, userEmailExistResponse: action?.payload } };
+        case TYPE.USEREMAILEXIST_FAILURE:
+            return { ...state, Auth: { ...state.Auth, userEmailExistSuccess: false, error: action?.payload } };
+
         default:
             return state;
     }
