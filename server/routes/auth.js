@@ -47,9 +47,9 @@ router.post('/usernameexist', (req, res) => {
     User.findOne({ name: name })
         .then((savedUser) => {
             if (savedUser) {
-                return res.status(422).json({ error: "user already exists with that name" })
+                return res.json({ message: "User already exists with that name" })
             }
-            res.json({ message: "user not exist" })
+            res.json({ message: "User not exist" })
         })
         .catch(err => {
             console.log(err)
