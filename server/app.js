@@ -6,6 +6,7 @@ const { MONGOURI } = require('./keys')
 const bcrypt = require('bcryptjs')
 const jwt = require('jsonwebtoken')
 const User = require('./models/user.js')
+const postRoutes = require('./routes/posts')
 
 require('./models/user')
 
@@ -83,6 +84,7 @@ app.post('/api/login', async (req, res) => {
     }
 });
 
+app.use('/api/posts', postRoutes);
 
 app.listen(PORT, () => {
     console.log("sever is running on", PORT)
