@@ -2,7 +2,7 @@ import { useNavigation } from '@react-navigation/native';
 import React, { useState } from 'react';
 import { StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
 
-const createPassword = () => {
+const CreatePassword = () => {
     const navigation = useNavigation();
 
     const [password, setUserPassword] = useState('');
@@ -38,7 +38,7 @@ const createPassword = () => {
     )
 }
 
-export default createPassword
+export default CreatePassword
 
 const styles = StyleSheet.create({
     container: {
