@@ -7,6 +7,7 @@ const bcrypt = require('bcryptjs')
 const jwt = require('jsonwebtoken')
 const User = require('./models/user.js')
 const postRoutes = require('./routes/posts')
+const userRoutes = require('./routes/users');
 
 require('./models/user')
 
@@ -85,6 +86,8 @@ app.post('/api/login', async (req, res) => {
 });
 
 app.use('/api/posts', postRoutes);
+
+app.use('/api/users', userRoutes);
 
 app.listen(PORT, () => {
     console.log("sever is running on", PORT)
