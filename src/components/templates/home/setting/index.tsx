@@ -27,8 +27,11 @@ const SettingTemplate = () => {
         <>
             <NavigationBar rightProps={{ onPress: false, back: true, right: false, onBack, text: 'Settings' }} navigation={navigation} />
             <View style={styles.container}>
-                <TouchableOpacity onPress={() => onLogoutPress()} style={styles.button}>
-                    <Text style={styles.text}>Logout</Text>
+                <TouchableOpacity style={styles.logoutButton} onPress={onLogoutPress}>
+                    <Text style={styles.buttonText}>Logout</Text>
+                </TouchableOpacity>
+                <TouchableOpacity style={styles.deleteButton} onPress={() => console.log('deleteButtonPress')}>
+                    <Text style={styles.buttonText}>Delete Account</Text>
                 </TouchableOpacity>
             </View>
         </>
@@ -37,21 +40,31 @@ const SettingTemplate = () => {
 
 const styles = StyleSheet.create({
     container: {
+        flex: 1,
+        // justifyContent: 'center',
         alignItems: 'center',
-        marginVertical: 20,
-    },
-    button: {
-        backgroundColor: 'transparent',
-        paddingVertical: 10,
         paddingHorizontal: 20,
+        marginTop: 20,
+    },
+    logoutButton: {
+        width: '80%',
+        paddingVertical: 12,
+        backgroundColor: '#4CAF50', // Green color for logout button
         borderRadius: 8,
-        borderWidth: 1,
-        borderColor: '#d1d1d1',
+        alignItems: 'center',
+        marginBottom: 20,
     },
-    text: {
-        color: '#d1d1d1',
+    deleteButton: {
+        width: '80%',
+        paddingVertical: 12,
+        backgroundColor: '#FF5252', // Red color for delete button
+        borderRadius: 8,
+        alignItems: 'center',
+    },
+    buttonText: {
+        color: '#FFFFFF',
         fontSize: 16,
-        fontWeight: 'bold',
-    },
+        fontWeight: '600',
+    }
 });
 export default SettingTemplate
