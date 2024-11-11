@@ -1,5 +1,6 @@
-import React, { useCallback, useEffect, useRef, useState } from 'react';
-import { useFocusEffect, useNavigation } from '@react-navigation/native';
+import RNFS from "react-native-fs";
+import React, { useCallback, useContext, useEffect, useRef, useState } from 'react';
+import { CommonActions, useFocusEffect, useNavigation } from '@react-navigation/native';
 import {
     View, Text, Animated, Alert, ScrollView, BackHandler,
     Image, FlatList, SafeAreaView, useWindowDimensions, TouchableOpacity
@@ -9,8 +10,12 @@ import DocumentPicker from "react-native-document-picker";
 import ImageCropPicker from 'react-native-image-crop-picker';
 
 import { Images } from "@instagram/assets/index.tsx";
-import { useStoragePermission } from '@instagram/customHooks/index.tsx';
+import { usePrevious, useStoragePermission } from '@instagram/customHooks/index.tsx';
 import PostHeader from '@instagram/components/templates/home/FeedUploader/PostHeader/index';
+import { useGetAccess } from '@instagram/customHooks/useAccess';
+import { Loader } from "@instagram/components/atoms";
+import { AppContext } from "@instagram/context";
+
 
 const FeedUploaderTemplate = () => {
     const navigation = useNavigation();
@@ -20,6 +25,9 @@ const FeedUploaderTemplate = () => {
 
     const [index, setIndex] = useState(false);
     const [indexOfPost, setIndexOfPost] = useState(0);
+    const [feedUploadLoading, setFeedUploadLoading] = useState(false);
+    const [postUploading, setPostUploading] = useState(false);
+
 
     const scrollX = useRef<any>(new Animated.Value(0)).current;
     const viewConfigRef = useRef({ viewAreaCoveragePercentThreshold: 50 });
@@ -27,6 +35,11 @@ const FeedUploaderTemplate = () => {
     const onViewRef = useRef((viewableItems: any) => {
         setIndexOfPost(viewableItems?.viewableItems[0]?.index);
     });
+
+
+    const { state: AppState, documentUploadRequest } = useContext(AppContext);
+    const previousAppState: any = usePrevious(AppState);
+
 
     const { permission, requestStoragePermission } = useStoragePermission();
 
@@ -137,6 +150,9 @@ const FeedUploaderTemplate = () => {
         newData.splice(indexx, 1);
         setImages(newData);
         setIndex(!index);
+        if (newData.length === 0 || newData === undefined || newData === null) {
+            navigation.goBack();
+        }
     };
 
     const renderItems = ({ item, index }: any) => {
@@ -184,6 +200,68 @@ const FeedUploaderTemplate = () => {
             setIndex(!index);
         });
     };
+
+    useEffect(() => {
+        if (feedUploadLoading && AppState?.DocumentUpload && AppState?.DocumentUpload?.documentUploadSuccess === true && AppState?.DocumentUpload?.documentUploadResponse) {
+            if (previousAppState?.DocumentUpload !== AppState?.DocumentUpload) {
+                setFeedUploadLoading(false);
+                if (AppState?.DocumentUpload?.documentUploadResponse?.status === "Success" || AppState?.DocumentUpload?.documentUploadResponse?.status === 200) {
+                    setPostUploading(true);
+                } else {
+                    Alert.alert(
+                        "Alert",
+                        AppState?.DocumentUpload?.documentUploadResponse?.message ? AppState?.DocumentUpload?.documentUploadResponse?.message : "Something went wrong",
+                        [
+                            {
+                                text: "OK",
+                                onPress: () => { }
+                            }
+                        ],
+                        { cancelable: false }
+                    );
+                }
+            }
+        } else if (feedUploadLoading && AppState?.DocumentUpload && AppState?.DocumentUpload?.documentUploadSuccess === false && AppState?.DocumentUpload?.error) {
+            if (previousAppState?.DocumentUpload !== AppState?.DocumentUpload) {
+                setFeedUploadLoading(false);
+                if (AppState?.DocumentUpload?.error && AppState?.DocumentUpload?.error?.code && AppState?.DocumentUpload?.error?.code === 401) {
+                    Alert.alert("", AppState?.DocumentUpload?.error?.error?.toString());
+                } else {
+                    Alert.alert(AppState?.DocumentUpload?.error?.error)
+                }
+            }
+        }
+    }, [feedUploadLoading, AppState?.DocumentUpload?.documentUploadSuccess, AppState?.DocumentUpload?.documentUploadResponse, AppState?.DocumentUpload?.error]);
+
+    useEffect(() => {
+        if (postUploading && !AppState?.Loader?.loaderVisible) {
+            navigation.goBack();
+        }
+    }, [postUploading, AppState?.Loader?.loaderVisible]);
+
+    const onPostUploadPress = async () => {
+        const userData: any = await useGetAccess("user");
+
+        let array: any = [];
+        if (images?.length > 0) {
+            for (let i = 0; i < images?.length; i++) {
+                await RNFS.readFile(images[i]?.uri, "base64")
+                    .then(base64 => {
+                        array.push(`data:${images[i]?.type};base64,${base64}`);
+                    }).catch(() => {
+                        return;
+                    });
+            }
+            let data = new FormData();
+            data.append("userId", JSON.parse(userData).user._id);
+            data.append("feeds", array);
+
+            setFeedUploadLoading(true);
+
+            documentUploadRequest(data);
+        }
+    }
+
     return (
         <SafeAreaView style={{ flex: 1 }}>
 
@@ -285,6 +363,23 @@ const FeedUploaderTemplate = () => {
 
                 </ScrollView>
             </View>
+            {/* //upload button  */}
+            <View style={{ backgroundColor: '#fff', padding: 10, alignItems: 'center', justifyContent: 'center' }}>
+                <TouchableOpacity
+                    style={{ backgroundColor: '#0095f6', padding: 10, borderRadius: 5, width: '95%', alignItems: 'center', justifyContent: 'center' }}
+                    disabled={images?.length < 1}
+                    onPress={onPostUploadPress}
+                >
+                    <Text
+                        style={{
+                            color: images?.length < 1 ? '#99b7f3' : '#fff',
+                            fontSize: 16,
+                            fontWeight: 'bold'
+                        }}>Upload</Text>
+                </TouchableOpacity>
+            </View>
+            <Loader visible={feedUploadLoading} />
+
         </SafeAreaView>
 
     )
