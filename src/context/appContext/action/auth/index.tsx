@@ -2,7 +2,7 @@ import config from "react-native-config";
 
 import TYPES from "@instagram/context/appContext/types";
 import { useAccess } from "@instagram/customHooks/useAccess";
-import { GET, POST } from "@instagram/context/appContext/apiManagement/index.tsx";
+import { GET, POST, FORMDATA_POST } from "@instagram/context/appContext/apiManagement/index.tsx";
 
 const { ACCESS_KEY, LOGINURL } = config;
 
@@ -11,6 +11,7 @@ export const loginRequest = (dispatch: any) => async (params: any) => {
         const loginResponse = await POST('http://192.168.2.52:5000/login', params, {});
         console.log("Login", loginResponse);
         await useAccess("userToken", JSON.stringify(loginResponse?.data?.token));
+        await useAccess("user", JSON.stringify(loginResponse?.data));
         dispatch({ type: TYPES.LOGIN_SUCCESS, payload: loginResponse });
     } catch (error) {
         dispatch({ type: TYPES.LOGIN_FAILURE, payload: error });
@@ -64,3 +65,32 @@ export const signUpRequest = (dispatch: any) => async (params: any) => {
         dispatch({ type: TYPES.SIGNUP_FAILURE, payload: error });
     }
 }
+
+//#region ImageUpload
+export const documentUploadRequest = (dispatch: any) => async (params: any) => {
+    try {
+        console.log("paramsparams", params);
+        const response = await FORMDATA_POST('http://192.168.2.52:5000/addposts', params, {});
+        console.log("response", response);
+        dispatch({ type: TYPES.DOCUMENT_UPLOAD_SUCCESS, payload: response });
+        return response;
+    }
+    catch (err) {
+        dispatch({ type: TYPES.DOCUMENT_UPLOAD_FAILURE, payload: err });
+    }
+}
+//#endregion
+
+//#region feedList
+export const feedListRequest = (dispatch: any) => async () => {
+    try {
+        const response = await GET('http://192.168.2.52:5000/allposts', {});
+        console.log("feedList", response);
+        dispatch({ type: TYPES.FEEDLIST_SUCCESS, payload: response });
+        return response;
+    } catch (error) {
+        console.log("feedList", error);
+        dispatch({ type: TYPES.FEEDLIST_FAILURE, payload: error });
+    }
+}
+
