@@ -20,7 +20,7 @@ export const loginRequest = (dispatch: any) => async (params: any) => {
 export const logOutRequest = (dispatch: any) => async () => {
     try {
         const response = await GET(LOGINURL, {});
-        DEV && console.log("LogOut", response);
+        __DEV__ && console.log("LogOut", response);
         await useAccess("userToken", "");
         dispatch({ type: TYPES.LOGOUT_SUCCESS, payload: {} });
     } catch (error) {
