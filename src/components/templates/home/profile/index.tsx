@@ -1,14 +1,24 @@
-import React from 'react';
-import { useNavigation } from '@react-navigation/native';
-import { Dimensions, FlatList, Image, StyleSheet, Text, View } from 'react-native';
+import React, { useContext, useEffect, useState } from 'react';
+import { useFocusEffect, useNavigation } from '@react-navigation/native';
+import { Alert, Dimensions, FlatList, Image, StyleSheet, Text, View } from 'react-native';
 
 import { Images } from '@instagram/assets';
 import { NavigationBar } from '@instagram/components/molecules/index.tsx';
 import { Divider } from '@rneui/base';
+import { useGetAccess } from '@instagram/customHooks/useAccess';
+import { AppContext } from '@instagram/context';
+import { usePrevious } from '@instagram/customHooks';
+import { Loader } from '@instagram/components/atoms';
 
 const ProfileTemplate = () => {
 
     const navigation = useNavigation();
+    const [userData, setUserData] = useState<any>({});
+    const { state: AppState, feedListRequest } = useContext(AppContext);
+    const previousAppState: any = usePrevious(AppState);
+
+    const [userFeedList, setUserFeedList] = useState([]);
+    const [userFeedListLoading, setUserFeedListLoading] = useState(false);
 
     const onPress = () => {
         navigation.navigate("SettingPage");
@@ -16,22 +26,77 @@ const ProfileTemplate = () => {
 
     const description = "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.";
 
-    //Dummy data for posts
-    const data = [
-        { id: 1, image: Images.Back },
-        { id: 2, image: Images.Remove },
-        { id: 3, image: Images.Edit },
-        { id: 4, image: Images.Image },
-        { id: 5, image: Images.Plus },
-        { id: 6, image: Images.WhitePlus },
-        { id: 7, image: Images.Delete },
-        { id: 8, image: Images.Hide },
-        { id: 9, image: Images.HideAll },
-        { id: 10, image: Images.Report },
-    ];
-
     const screenWidth = Dimensions.get('window').width;
     const postSize = screenWidth / 3 - 2;
+
+    const getUserData = async () => {
+        const data: any = await useGetAccess("user");
+        setUserData(JSON.parse(data));
+    }
+
+    useEffect(() => {
+        getUserData();
+        setUserFeedListLoading(true);
+        feedListRequest();
+    }, []);
+
+    useEffect(() => {
+        if (userFeedListLoading && AppState?.FeedList && AppState?.FeedList?.feedListSuccess === true && AppState?.FeedList?.feedListResponse) {
+            if (previousAppState?.FeedList !== AppState?.FeedList) {
+                setUserFeedListLoading(false);
+                if (AppState?.FeedList?.feedListResponse?.status === "Success" || AppState?.FeedList?.feedListResponse?.status === 200) {
+                    const userFeedlist = AppState?.FeedList?.feedListResponse?.data?.posts.filter((item: any) => item.userId === userData?.user?._id);
+                    setUserFeedList(userFeedlist);
+                    console.log("cjdscbks", { userFeedlist, userData });
+                } else {
+                    Alert.alert(
+                        "Alert",
+                        AppState?.FeedList?.feedListResponse?.message ? AppState?.FeedList?.feedListResponse?.message : "Something went wrong",
+                        [
+                            {
+                                text: "OK",
+                                onPress: () => { }
+                            }
+                        ],
+                        { cancelable: false }
+                    );
+                }
+            }
+        } else if (userFeedListLoading && AppState?.FeedList && AppState?.FeedList?.feedListSuccess === false && AppState?.FeedList?.error) {
+            if (previousAppState?.FeedList !== AppState?.FeedList) {
+                setUserFeedListLoading(false);
+                if (AppState?.FeedList?.error && AppState?.FeedList?.error?.code && AppState?.FeedList?.error?.code === 401) {
+                    Alert.alert("", AppState?.FeedList?.error?.error?.toString());
+                } else {
+                    Alert.alert(AppState?.FeedList?.error?.error)
+                }
+            }
+        }
+    }, [userFeedListLoading, AppState?.FeedList?.feedListSuccess, AppState?.FeedList?.feedListResponse, AppState?.FeedList?.error]);
+
+    useFocusEffect(
+        React.useCallback(() => {
+            setUserFeedListLoading(true);
+            feedListRequest();
+            return () => {
+            };
+        }, [])
+    );
+
+    const renderItem = (item: any) => {
+        return (
+            <>
+                <View style={{
+                    margin: 1,
+                    width: postSize,
+                    height: postSize,
+                }}>
+                    <Image source={{ uri: item.feeds[0] }} style={styles.postImage} />
+                </View>
+            </>
+        );
+    };
+
     return (
         <>
             <NavigationBar rightProps={{ onPress, back: false, right: true, onBack: false, postButton: true }} navigation={navigation} />
@@ -57,26 +122,31 @@ const ProfileTemplate = () => {
                 </View>
             </View>
             <View style={styles.profileDescription}>
-                <Text style={styles.username}>User Name</Text>
+                <Text style={styles.username}>Nilay Patel</Text>
                 <Text style={styles.description}>{description}</Text>
             </View>
             <Divider />
-            <FlatList
-                data={data}
-                keyExtractor={(item) => item.id.toString()}
-                renderItem={({ item }) => (
-                    <View style={{
-                        margin: 1,
-                        width: postSize,
-                        height: postSize,
-                    }}>
-                        <Image source={item.image} style={styles.postImage} />
-                    </View>
-                )}
-                numColumns={3}
-                showsVerticalScrollIndicator={false}
-                contentContainerStyle={{ backgroundColor: 'white' }}
-            />
+            {
+                userFeedList.length > 0 &&
+
+                <View style={{
+                    flex: 1,
+                    flexDirection: 'row',
+                    flexWrap: 'wrap',
+                    justifyContent: 'space-between',
+                    backgroundColor: 'white',
+                }}>
+                    <FlatList
+                        data={userFeedList}
+                        keyExtractor={(item, index) => index.toString()}
+                        renderItem={({ item }) => renderItem(item)}
+                        numColumns={3}
+                        showsVerticalScrollIndicator={false}
+                        contentContainerStyle={{ backgroundColor: 'white' }}
+                    />
+                </View>
+            }
+            <Loader visible={userFeedListLoading} />
         </>
     )
 }
