@@ -1,9 +1,9 @@
-import config from "react-native-config";
-
+// import config from "react-native-config";
 import TYPES from "@instagram/context/appContext/types";
 import { useAccess } from "@instagram/customHooks/useAccess";
 import { GET, POST, FORMDATA_POST } from "@instagram/context/appContext/apiManagement/index.tsx";
 
+const config = require("react-native-config");
 const { ACCESS_KEY, LOGINURL } = config;
 
 export const loginRequest = (dispatch: any) => async (params: any) => {
