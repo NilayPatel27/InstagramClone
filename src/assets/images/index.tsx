@@ -1,12 +1,12 @@
-const Back = require("./PostImages/Back.png");
-const Remove = require("./PostImages/remove.png");
-const Edit = require("./PostImages/edit.png");
-const Image = require("./PostImages/image.png");
 const Plus = require("./PostImages/plus.png");
-const WhitePlus = require("./PostImages/whitePlus.png");
-const Delete = require("./PostImages/delete.png");
+const Back = require("./PostImages/Back.png");
+const Edit = require("./PostImages/edit.png");
 const Hide = require("./PostImages/hide.png");
-const HideAll = require("./PostImages/hideAll.png");
+const User = require("./PostImages/User.jpg");
+const Image = require("./PostImages/image.png");
+const Delete = require("./PostImages/delete.png");
+const Remove = require("./PostImages/remove.png");
 const Report = require("./PostImages/report.png");
-
-export { Back, Remove, Edit, Image, Plus, WhitePlus, Delete, Hide, HideAll, Report };
+const HideAll = require("./PostImages/hideAll.png");
+const WhitePlus = require("./PostImages/whitePlus.png");
+export { Back, Remove, Edit, Image, Plus, WhitePlus, Delete, Hide, HideAll, Report, User };

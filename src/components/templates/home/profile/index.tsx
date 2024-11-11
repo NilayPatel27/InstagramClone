@@ -104,7 +104,7 @@ const ProfileTemplate = () => {
             {/* profile header section */}
             <View style={styles.container}>
                 <View style={styles.imageContainer}>
-                    <Image source={Images.Plus} style={styles.userImage} />
+                    <Image source={Images.User} style={styles.userImage} />
                 </View>
                 <View style={styles.countContainer}>
                     <View style={styles.statsContainer}>
