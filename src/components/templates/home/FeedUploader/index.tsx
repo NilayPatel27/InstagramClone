@@ -12,7 +12,7 @@ import ImageCropPicker from 'react-native-image-crop-picker';
 import { Images } from "@instagram/assets/index.tsx";
 import { usePrevious, useStoragePermission } from '@instagram/customHooks/index.tsx';
 import PostHeader from '@instagram/components/templates/home/FeedUploader/PostHeader/index';
-import { useGetAccess } from '@instagram/customHooks/useAccess';
+import { getAccess } from '@instagram/customHooks/useAccess';
 import { Loader } from "@instagram/components/atoms";
 import { AppContext } from "@instagram/context";
 
@@ -240,7 +240,7 @@ const FeedUploaderTemplate = () => {
     }, [postUploading, AppState?.Loader?.loaderVisible]);
 
     const onPostUploadPress = async () => {
-        const userData: any = await useGetAccess("user");
+        const userData: any = await getAccess("user");
 
         let array: any = [];
         if (images?.length > 0) {

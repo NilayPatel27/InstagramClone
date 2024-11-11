@@ -5,7 +5,7 @@ import { Alert, Dimensions, FlatList, Image, StyleSheet, Text, View } from 'reac
 import { Images } from '@instagram/assets';
 import { NavigationBar } from '@instagram/components/molecules/index.tsx';
 import { Divider } from '@rneui/base';
-import { useGetAccess } from '@instagram/customHooks/useAccess';
+import { getAccess } from '@instagram/customHooks/setAccess';
 import { AppContext } from '@instagram/context';
 import { usePrevious } from '@instagram/customHooks';
 import { Loader } from '@instagram/components/atoms';
@@ -30,7 +30,7 @@ const ProfileTemplate = () => {
     const postSize = screenWidth / 3 - 2;
 
     const getUserData = async () => {
-        const data: any = await useGetAccess("user");
+        const data: any = await getAccess("user");
         setUserData(JSON.parse(data));
     }
 
