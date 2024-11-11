@@ -16,6 +16,9 @@ app.use(express.json())
 app.use(require('./routes/auth'))
 app.use(express.json())
 
+app.use(express.json({ limit: '50mb' }));
+app.use(express.urlencoded({ limit: '50mb', extended: true }));
+
 function isValidUsername(username) {
 
     const usernameRegex = /^[a-zA-Z0-9._]{3,30}$/

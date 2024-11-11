@@ -2,21 +2,16 @@ const mongoose = require('mongoose');
 
 const PostSchema = new mongoose.Schema({
   userId: {
-    type: mongoose.Schema.Types.ObjectId,
-    required: true,
-    ref: 'user'
-  },
-  description: {
-    type: String,
-    required: true
-  },
-  imageUrl: {
     type: String,
     required: true
   },
   createdAt: {
     type: Date,
     default: Date.now
+  },
+  feeds: {
+    type: [String],
+    required: true
   }
 });
 

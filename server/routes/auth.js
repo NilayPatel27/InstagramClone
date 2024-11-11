@@ -4,6 +4,9 @@ const mongoose = require('mongoose')
 const User = mongoose.model("User")
 const bcrypt = require('bcryptjs')
 const jwt = require('jsonwebtoken')
+const Post = require('../models/Post');
+const multer = require('multer');
+const upload = multer();
 
 router.post('/signup', (req, res) => {
     const { name, email, password } = req.body
@@ -103,5 +106,43 @@ router.post('/login', (req, res) => {
                     console.log(err)
                 })
         })
-})
+});
+
+router.post('/addposts', upload.none(), async (req, res) => {
+    try {
+        console.log('req.body:', req.body);
+        const { userId, feeds } = req.body;
+
+
+        // Validate required fields
+        if (!userId || !feeds) {
+            return res.status(400).json({ error: 'userId and feeds are required' });
+        }
+
+        // Create a new post using the Post model
+        const newPost = new Post({
+            userId,
+            feeds
+        });
+
+        // Save the new post to MongoDB
+        await newPost.save();
+
+        res.status(200).json({ message: 'Post created successfully', post: newPost });
+    } catch (error) {
+        console.error('Error creating post:', error);
+        res.status(500).json({ error: 'Internal server error' });
+    }
+});
+
+//get all posts
+router.get('/allposts', async (req, res) => {
+    try {
+        const posts = await Post.find();
+        res.status(200).json({ posts });
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ error: 'Failed to fetch posts' });
+    }
+});
 module.exports = router
