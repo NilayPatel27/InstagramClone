@@ -5,7 +5,7 @@ import { Alert, Dimensions, FlatList, Image, StyleSheet, Text, View } from 'reac
 import { Images } from '@instagram/assets';
 import { NavigationBar } from '@instagram/components/molecules/index.tsx';
 import { Divider } from '@rneui/base';
-import { getAccess } from '@instagram/customHooks/setAccess';
+import { getAccess } from '@instagram/customHooks/useAccess';
 import { AppContext } from '@instagram/context';
 import { usePrevious } from '@instagram/customHooks';
 import { Loader } from '@instagram/components/atoms';
