@@ -3,7 +3,9 @@ import { HomeTemplate } from "@instagram/components/templates/home/index.tsx";
 
 const Home = () => {
     return (
-        <HomeTemplate />
+        <>
+            <HomeTemplate />
+        </>
     );
 };
 
