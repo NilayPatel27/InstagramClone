@@ -1,6 +1,4 @@
-// import AsyncStorage from "@react-native-async-storage/async-storage";
-
-const AsyncStorage = require('@react-native-async-storage/async-storage');
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 export const setAccess = async (key: any, value: any) => {
     try {
