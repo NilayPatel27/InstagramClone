@@ -34,6 +34,19 @@ const Reducer = (state: any, action: any) => {
         case TYPE.USEREMAILEXIST_FAILURE:
             return { ...state, Auth: { ...state.Auth, userEmailExistSuccess: false, error: action?.payload } };
 
+        //#region DocumentUpload
+        case TYPE.DOCUMENT_UPLOAD_SUCCESS:
+            return { ...state, DocumentUpload: { ...state.DocumentUpload, documentUploadSuccess: true, documentUploadResponse: action.payload } };
+        case TYPE.DOCUMENT_UPLOAD_FAILURE:
+            return { ...state, DocumentUpload: { ...state.DocumentUpload, documentUploadSuccess: false, error: action.payload } };
+        //#endregion
+
+        //#region FeedList
+        case TYPE.FEEDLIST_SUCCESS:
+            return { ...state, FeedList: { ...state.FeedList, feedListSuccess: true, feedListResponse: action.payload } };
+        case TYPE.FEEDLIST_FAILURE:
+            return { ...state, FeedList: { ...state.FeedList, feedListSuccess: false, error: action.payload } };
+
         default:
             return state;
     }

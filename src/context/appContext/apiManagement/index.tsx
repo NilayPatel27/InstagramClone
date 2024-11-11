@@ -28,7 +28,7 @@ const POST = async (url: any, data: any, header: any) => {
 const FORMDATA_POST = async (url: any, data: any, header: any) => {
     const newHeader = { ...MULTI_PART_HEADER, ...header };
     try {
-        const response = await axios.post(url, data, newHeader);
+        const response = await axios.post(url, data, { headers: newHeader });
         __DEV__ && console.log("Result:  ", response, "\n \n URL:", url, "\n \n PARAMS:", data, "\n \n HEADER:", newHeader);
         return response;
     } catch (error) {
