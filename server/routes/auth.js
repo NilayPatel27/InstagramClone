@@ -28,7 +28,9 @@ router.post('/signup', (req, res) => {
 
                     user.save()
                         .then(user => {
-                            res.json({ message: "saved successfully" })
+                            const token = jwt.sign({ _id: user._id }, "Instagram@123");
+                            const { _id, name, email } = user;
+                            res.json({ token, user: { _id, name, email }, message: "Successfully signed up" });
                         })
                         .catch(error => {
                             console.log(err)
@@ -143,6 +145,22 @@ router.get('/allposts', async (req, res) => {
     } catch (error) {
         console.error(error);
         res.status(500).json({ error: 'Failed to fetch posts' });
+    }
+});
+
+//delete account by id
+router.delete('/deleteaccount/:userId', async (req, res) => {
+    try {
+        const { userId } = req.params;
+        const user = await User.findById(userId);
+        if (!user) {
+            return res.status(404).json({ error: 'User not found.' });
+        }
+        await User.findByIdAndDelete(userId);
+        res.status(200).json({ message: 'User deleted successfully.' });
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ error: 'Failed to delete user.' });
     }
 });
 module.exports = router
