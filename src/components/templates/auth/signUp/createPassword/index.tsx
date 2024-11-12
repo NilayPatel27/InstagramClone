@@ -9,7 +9,7 @@ const CreatePassword = ({ username }: any) => {
     const [password, setUserPassword] = useState('');
 
     const handlePasswordChange = (text: string) => {
-        setUserPassword(text.toLowerCase());
+        setUserPassword(text);
     }
 
     const handleNextPress = () => {
