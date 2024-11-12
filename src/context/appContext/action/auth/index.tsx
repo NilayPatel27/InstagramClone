@@ -1,14 +1,14 @@
 // import config from "react-native-config";
 import TYPES from "@instagram/context/appContext/types";
 import { setAccess } from "@instagram/customHooks/useAccess/index.tsx";
-import { GET, POST, FORMDATA_POST } from "@instagram/context/appContext/apiManagement/index.tsx";
+import { GET, POST, FORMDATA_POST, DELETE } from "@instagram/context/appContext/apiManagement/index.tsx";
 
 const config = require("react-native-config");
 const { ACCESS_KEY, LOGINURL } = config;
 
 export const loginRequest = (dispatch: any) => async (params: any) => {
     try {
-        const loginResponse = await POST('http://192.168.2.52:5000/login', params, {});
+        const loginResponse = await POST('http://10.0.0.105:5000/login', params, {});
         console.log("Login", loginResponse);
         await setAccess("userToken", JSON.stringify(loginResponse?.data?.token));
         await setAccess("user", JSON.stringify(loginResponse?.data));
@@ -21,8 +21,9 @@ export const loginRequest = (dispatch: any) => async (params: any) => {
 export const logOutRequest = (dispatch: any) => async () => {
     try {
         const response = await GET(LOGINURL, {});
-        __DEV__ && console.log("LogOut", response);
+        _DEV_ && console.log("LogOut", response);
         await setAccess("userToken", "");
+        await setAccess("user", "");
         dispatch({ type: TYPES.LOGOUT_SUCCESS, payload: {} });
     } catch (error) {
         dispatch({ type: TYPES.LOGOUT_FAILURE, payload: error });
@@ -32,7 +33,7 @@ export const logOutRequest = (dispatch: any) => async () => {
 export const userNameExistRequest = (dispatch: any) => async (params: any) => {
     console.log("userNameExist", params);
     try {
-        const response = await POST('http://192.168.2.52:5000/usernameexist', params, {});
+        const response = await POST('http://10.0.0.105:5000/usernameexist', params, {});
         console.log("userNameExist", response);
         dispatch({ type: TYPES.USERNAMEEXIST_SUCCESS, payload: response });
         return response;
@@ -44,7 +45,7 @@ export const userNameExistRequest = (dispatch: any) => async (params: any) => {
 
 export const userEmailExistRequest = (dispatch: any) => async (params: any) => {
     try {
-        const response = await POST('http://192.168.2.52:5000/useremailexist', params, {});
+        const response = await POST('http://10.0.0.105:5000/useremailexist', params, {});
         console.log("userEmailExist", response);
         dispatch({ type: TYPES.USEREMAILEXIST_SUCCESS, payload: response });
         return response;
@@ -56,10 +57,12 @@ export const userEmailExistRequest = (dispatch: any) => async (params: any) => {
 
 export const signUpRequest = (dispatch: any) => async (params: any) => {
     try {
-        const response = await POST('http://192.168.2.52:5000/signup', params, {});
-        console.log("signUp", response);
-        dispatch({ type: TYPES.SIGNUP_SUCCESS, payload: response });
-        return response;
+        const signupResponse = await POST('http://10.0.0.105:5000/signup', params, {});
+        console.log("signUp", signupResponse);
+        await setAccess("userToken", JSON.stringify(signupResponse?.data?.token));
+        await setAccess("user", JSON.stringify(signupResponse?.data));
+        dispatch({ type: TYPES.SIGNUP_SUCCESS, payload: signupResponse });
+        return signupResponse;
     } catch (error) {
         console.log("signUp", error);
         dispatch({ type: TYPES.SIGNUP_FAILURE, payload: error });
@@ -70,7 +73,7 @@ export const signUpRequest = (dispatch: any) => async (params: any) => {
 export const documentUploadRequest = (dispatch: any) => async (params: any) => {
     try {
         console.log("paramsparams", params);
-        const response = await FORMDATA_POST('http://192.168.2.52:5000/addposts', params, {});
+        const response = await FORMDATA_POST('http://10.0.0.105:5000/addposts', params, {});
         console.log("response", response);
         dispatch({ type: TYPES.DOCUMENT_UPLOAD_SUCCESS, payload: response });
         return response;
@@ -84,7 +87,7 @@ export const documentUploadRequest = (dispatch: any) => async (params: any) => {
 //#region feedList
 export const feedListRequest = (dispatch: any) => async () => {
     try {
-        const response = await GET('http://192.168.2.52:5000/allposts', {});
+        const response = await GET('http://10.0.0.105:5000/allposts', {});
         console.log("feedList", response);
         dispatch({ type: TYPES.FEEDLIST_SUCCESS, payload: response });
         return response;
@@ -93,4 +96,19 @@ export const feedListRequest = (dispatch: any) => async () => {
         dispatch({ type: TYPES.FEEDLIST_FAILURE, payload: error });
     }
 }
+//#endregion
 
+//#region deleteUserAccount
+export const deleteUserAccountRequest = (dispatch: any) => async (params: any) => {
+    try {
+        console.log("deleteUserAccount", params);
+        const response = await DELETE(http://10.0.0.105:5000/deleteaccount/${params});
+        console.log("deleteUserAccount", response);
+        dispatch({ type: TYPES.DELETEUSERACCOUNT_SUCCESS, payload: response });
+        return response;
+    } catch (error) {
+        console.log("deleteUserAccount", error);
+        dispatch({ type: TYPES.DELETEUSERACCOUNT_FAILURE, payload: error });
+    }
+}
+//#endregion

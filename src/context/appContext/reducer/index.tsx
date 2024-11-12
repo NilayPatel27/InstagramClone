@@ -47,6 +47,13 @@ const Reducer = (state: any, action: any) => {
         case TYPE.FEEDLIST_FAILURE:
             return { ...state, FeedList: { ...state.FeedList, feedListSuccess: false, error: action.payload } };
 
+        //#region DeleteUserAccount
+        case TYPE.DELETEUSERACCOUNT_SUCCESS:
+            return { ...state, Auth: { ...state.Auth, deleteUserAccountSuccess: true, deleteUserAccountResponse: action.payload } };
+        case TYPE.DELETEUSERACCOUNT_FAILURE:
+            return { ...state, Auth: { ...state.Auth, deleteUserAccountSuccess: false, error: action.payload } };
+        //#endregion
+
         default:
             return state;
     }
