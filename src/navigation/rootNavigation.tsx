@@ -1,5 +1,4 @@
-import * as React from 'react';
-
+import React, { useEffect } from 'react'
 import AuthStack from '@instagram/navigation/authNavigation';
 import HomeStack from '@instagram/navigation/homeNavigation';
 
@@ -8,6 +7,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
 import { Loader } from '@instagram/components/atoms';
+import { getAccess } from '@instagram/customHooks/useAccess';
 
 const RootNavigation = () => {
 
@@ -27,46 +27,48 @@ const RootNavigation = () => {
     }
   };
 
-  React.useEffect(() => {
+  useEffect(() => {
     const checkLoginStatus = async () => {
-      try {
-        await AsyncStorage.getItem('userToken').then((token) => {
+      const allKeys = await AsyncStorage.getAllKeys();
+      if (allKeys.includes("userToken")) {
+        await getAccess("userToken").then((token) => {
           setUserToken(token);
           setIsLoading(false);
+        }).catch((e) => {
+          console.log("Failed to fetch user token:", e);
         });
-      } catch (e) {
-        console.error("Failed to fetch user token:", e);
-      } finally {
         setIsLoading(false);
       }
     };
-
     checkLoginStatus();
   }, []);
 
-  if (isLoading) {
-    return null;
-  }
-
   return (
-    <NavigationContainer>
-      <Stack.Navigator screenOptions={screenOptions}>
-        {
-          userToken ? (
-            <>
-              <Stack.Screen name="HomeStack" component={HomeStack} />
-              <Stack.Screen name="AuthStack" component={AuthStack} />
-            </>
-          ) : (
-            <>
-              <Stack.Screen name="AuthStack" component={AuthStack} />
-              <Stack.Screen name="HomeStack" component={HomeStack} />
-            </>
-          )
-        }
-      </Stack.Navigator>
-      <Loader visible={isLoading} />
-    </NavigationContainer>
+    <>
+      {
+        isLoading ? <></> :
+          <>
+            <NavigationContainer>
+              <Stack.Navigator screenOptions={screenOptions}>
+                {
+                  userToken ? (
+                    <>
+                      <Stack.Screen name="HomeStack" component={HomeStack} />
+                      <Stack.Screen name="AuthStack" component={AuthStack} />
+                    </>
+                  ) : (
+                    <>
+                      <Stack.Screen name="AuthStack" component={AuthStack} />
+                      <Stack.Screen name="HomeStack" component={HomeStack} />
+                    </>
+                  )
+                }
+              </Stack.Navigator>
+              <Loader visible={isLoading} />
+            </NavigationContainer>
+          </>
+      }
+    </>
   )
 }
 
