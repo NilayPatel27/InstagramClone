@@ -9,6 +9,7 @@ import { getAccess } from '@instagram/customHooks/useAccess';
 import { AppContext } from '@instagram/context';
 import { usePrevious } from '@instagram/customHooks';
 import { Loader } from '@instagram/components/atoms';
+import Foundation from 'react-native-vector-icons/Foundation';
 
 const ProfileTemplate = () => {
 
@@ -85,15 +86,21 @@ const ProfileTemplate = () => {
 
     const renderItem = (item: any) => {
         return (
-            <>
-                <View style={{
-                    margin: 1,
-                    width: postSize,
-                    height: postSize,
-                }}>
-                    <Image source={{ uri: item.feeds[0] }} style={styles.postImage} />
-                </View>
-            </>
+            <View style={{
+                margin: 1,
+                width: postSize,
+                height: postSize,
+            }}>
+                {item.feeds.length > 1 &&
+                    <Foundation
+                        name="page-multiple"
+                        size={25}
+                        color={'white'}
+                        style={styles.multiFeedIcon}
+                    />
+                }
+                <Image source={{ uri: item.feeds[0] }} style={styles.postImage} />
+            </View>
         );
     };
 
@@ -207,6 +214,12 @@ const styles = StyleSheet.create({
         color: 'black',
         textAlign: 'justify'
     },
+    multiFeedIcon: {
+        position: 'absolute',
+        zIndex: 1,
+        top: 5,
+        right: 5
+    }
 });
 
 export default ProfileTemplate
