@@ -112,7 +112,6 @@ router.post('/login', (req, res) => {
 
 router.post('/addposts', upload.none(), async (req, res) => {
     try {
-        console.log('req.body:', req.body);
         const { userId, feeds } = req.body;
 
 
@@ -120,11 +119,14 @@ router.post('/addposts', upload.none(), async (req, res) => {
         if (!userId || !feeds) {
             return res.status(400).json({ error: 'userId and feeds are required' });
         }
+        let feedsArray = feeds.split(',data:image').map((item, index) => {
+            return index === 0 ? item : `data:image${item}`;
+        });
 
         // Create a new post using the Post model
         const newPost = new Post({
             userId,
-            feeds
+            feeds: feedsArray
         });
 
         // Save the new post to MongoDB
