@@ -1,10 +1,8 @@
-// import config from "react-native-config";
 import TYPES from "@instagram/context/appContext/types";
 import { setAccess } from "@instagram/customHooks/useAccess/index.tsx";
 import { GET, POST, FORMDATA_POST, DELETE } from "@instagram/context/appContext/apiManagement/index.tsx";
 
-const config = require("react-native-config");
-const { ACCESS_KEY, LOGINURL } = config;
+const LOGINURL = 'http://localhost:5000/login';
 
 export const loginRequest = (dispatch: any) => async (params: any) => {
     try {
@@ -21,7 +19,7 @@ export const loginRequest = (dispatch: any) => async (params: any) => {
 export const logOutRequest = (dispatch: any) => async () => {
     try {
         const response = await GET(LOGINURL, {});
-        _DEV_ && console.log("LogOut", response);
+        __DEV__ && console.log("LogOut", response);
         await setAccess("userToken", "");
         await setAccess("user", "");
         dispatch({ type: TYPES.LOGOUT_SUCCESS, payload: {} });
@@ -102,7 +100,7 @@ export const feedListRequest = (dispatch: any) => async () => {
 export const deleteUserAccountRequest = (dispatch: any) => async (params: any) => {
     try {
         console.log("deleteUserAccount", params);
-        const response = await DELETE(http://10.0.0.105:5000/deleteaccount/${params});
+        const response = await DELETE(`http://10.0.0.105:5000/deleteaccount/${params}`);
         console.log("deleteUserAccount", response);
         dispatch({ type: TYPES.DELETEUSERACCOUNT_SUCCESS, payload: response });
         return response;
