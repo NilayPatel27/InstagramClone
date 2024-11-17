@@ -84,10 +84,10 @@ const ProfileTemplate = () => {
         }, [])
     );
 
-    const renderItem = (item: any) => {
+    const renderItem = (item: any, index: any) => {
         return (
             <TouchableHighlight
-                onPress={() => navigation.navigate("FeedsList", { feed: item })}
+                onPress={() => navigation.navigate("FeedsList", { userFeedList, index })}
                 underlayColor="white"
             >
                 <View style={{
@@ -151,7 +151,7 @@ const ProfileTemplate = () => {
                     <FlatList
                         data={userFeedList}
                         keyExtractor={(item, index) => index.toString()}
-                        renderItem={({ item }) => renderItem(item)}
+                        renderItem={({ item, index }) => renderItem(item, index)}
                         numColumns={3}
                         showsVerticalScrollIndicator={false}
                         contentContainerStyle={{ backgroundColor: 'white' }}
