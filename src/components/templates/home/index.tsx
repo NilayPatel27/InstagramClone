@@ -5,5 +5,6 @@ import SettingTemplate from "@instagram/components/templates/home/setting/index"
 import FeedUploaderTemplate from "@instagram/components/templates/home/FeedUploader/index";
 import PostHeader from "@instagram/components/templates/home/FeedUploader/PostHeader/index";
 import FeedsListTemplate from "@instagram/components/templates/home/FeedsList/index";
+import OneFeedTemplate from "@instagram/components/templates/home/FeedsList/OneFeed/index";
 
-export { HomeTemplate, ProfileTemplate, SearchTemplate, SettingTemplate, FeedUploaderTemplate, PostHeader, FeedsListTemplate };
+export { HomeTemplate, ProfileTemplate, SearchTemplate, SettingTemplate, FeedUploaderTemplate, PostHeader, FeedsListTemplate, OneFeedTemplate };
