@@ -1,6 +1,6 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { useFocusEffect, useNavigation } from '@react-navigation/native';
-import { Alert, Dimensions, FlatList, Image, StyleSheet, Text, View } from 'react-native';
+import { Alert, Dimensions, FlatList, Image, StyleSheet, Text, TouchableHighlight, View } from 'react-native';
 
 import { Images } from '@instagram/assets';
 import { NavigationBar } from '@instagram/components/molecules/index.tsx';
@@ -86,21 +86,26 @@ const ProfileTemplate = () => {
 
     const renderItem = (item: any) => {
         return (
-            <View style={{
-                margin: 1,
-                width: postSize,
-                height: postSize,
-            }}>
-                {item.feeds.length > 1 &&
-                    <Foundation
-                        name="page-multiple"
-                        size={25}
-                        color={'white'}
-                        style={styles.multiFeedIcon}
-                    />
-                }
-                <Image source={{ uri: item.feeds[0] }} style={styles.postImage} />
-            </View>
+            <TouchableHighlight
+                onPress={() => navigation.navigate("FeedsList", { feed: item })}
+                underlayColor="white"
+            >
+                <View style={{
+                    margin: 1,
+                    width: postSize,
+                    height: postSize,
+                }}>
+                    {item.feeds.length > 1 &&
+                        <Foundation
+                            name="page-multiple"
+                            size={25}
+                            color={'white'}
+                            style={styles.multiFeedIcon}
+                        />
+                    }
+                    <Image source={{ uri: item.feeds[0] }} style={styles.postImage} />
+                </View>
+            </TouchableHighlight>
         );
     };
 

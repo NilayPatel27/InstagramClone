@@ -8,5 +8,6 @@ import ProfilePage from '@instagram/screens/homeModule/profile/index';
 import SearchPage from '@instagram/screens/homeModule/search/index';
 import SettingPage from '@instagram/screens/homeModule/setting/index';
 import FeedUploaderPage from '@instagram/screens/homeModule/FeedUploader/index';
+import FeedsListPage from '@instagram/screens/homeModule/FeedsList/index';
 
-export { LoginPage, SignUpPage, CreatePasswordPage, HomePage, ProfilePage, SearchPage, SettingPage, FeedUploaderPage, AddEmailPage };
+export { LoginPage, SignUpPage, CreatePasswordPage, HomePage, ProfilePage, SearchPage, SettingPage, FeedUploaderPage, AddEmailPage, FeedsListPage };
