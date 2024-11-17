@@ -10,5 +10,6 @@ import SettingPage from '@instagram/screens/homeModule/setting/index';
 import FeedUploaderPage from '@instagram/screens/homeModule/FeedUploader/index';
 import FeedsListPage from '@instagram/screens/homeModule/FeedsList/index';
 import OneFeedPage from '@instagram/screens/homeModule/FeedsList/OneFeed/index';
+import MultiFeedsPage from '@instagram/screens/homeModule/FeedsList/MultiFeeds/index';
 
-export { LoginPage, SignUpPage, CreatePasswordPage, HomePage, ProfilePage, SearchPage, SettingPage, FeedUploaderPage, AddEmailPage, FeedsListPage, OneFeedPage };
+export { LoginPage, SignUpPage, CreatePasswordPage, HomePage, ProfilePage, SearchPage, SettingPage, FeedUploaderPage, AddEmailPage, FeedsListPage, OneFeedPage, MultiFeedsPage };

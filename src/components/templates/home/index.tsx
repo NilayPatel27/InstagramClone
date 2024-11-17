@@ -6,5 +6,6 @@ import FeedUploaderTemplate from "@instagram/components/templates/home/FeedUploa
 import PostHeader from "@instagram/components/templates/home/FeedUploader/PostHeader/index";
 import FeedsListTemplate from "@instagram/components/templates/home/FeedsList/index";
 import OneFeedTemplate from "@instagram/components/templates/home/FeedsList/OneFeed/index";
+import MultiFeedsTemplate from "@instagram/components/templates/home/FeedsList/MultiFeeds/index";
 
-export { HomeTemplate, ProfileTemplate, SearchTemplate, SettingTemplate, FeedUploaderTemplate, PostHeader, FeedsListTemplate, OneFeedTemplate };
+export { HomeTemplate, ProfileTemplate, SearchTemplate, SettingTemplate, FeedUploaderTemplate, PostHeader, FeedsListTemplate, OneFeedTemplate, MultiFeedsTemplate };
