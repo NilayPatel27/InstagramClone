@@ -1,11 +1,73 @@
-import React from 'react';
-import { View, Text } from 'react-native';
+import { useUserData } from '@instagram/customHooks';
+import React, { useEffect, useRef, useState } from 'react';
+import { View, Text, Animated, Image, useWindowDimensions } from 'react-native';
+import PostHeader from '@instagram/components/templates/home/FeedUploader/PostHeader/index';
 
-const MultiFeedTemplate = () => {
+const MultiFeedTemplate = ({ imageList }: any) => {
+    const { width: windowWidth } = useWindowDimensions();
+
+    const [indexOfPost, setIndexOfPost] = useState(0);
+
+    const scrollX: any = useRef(new Animated.Value(0)).current;
+
+    const onViewRef = useRef((viewableItems: any) => {
+        setIndexOfPost(viewableItems?.viewableItems[0]?.index);
+    });
+
+    const viewConfigRef = useRef({ viewAreaCoveragePercentThreshold: 50 });
+    const { userData } = useUserData();
+
+    useEffect(() => {
+        return () => {
+            scrollX?.current?.scrollToIndex({ animated: true, index: 0 });
+            scrollX?.removeAllListeners();
+        };
+    }, []);
+
+    const renderItem = (item: any, index: any) => {
+        return (
+            <>
+
+                <View style={{
+                    aspectRatio: 1, width: windowWidth, backgroundColor: "white", marginBottom: 10
+                }}>
+                    <Image
+                        source={{ uri: item }}
+                        resizeMode="contain"
+                        style={{ width: windowWidth, aspectRatio: 1, marginVertical: 5 }}
+                    />
+                </View>
+            </>
+        );
+    }
     return (
-        <View>
-            <Text>MultiFeedTemplate</Text>
-        </View>
+        <>
+            <PostHeader userName={userData?.user?.name ? userData?.user?.name : "User Name"} profileUri={""} options={false} />
+            <View>
+                <Animated.FlatList
+                    ref={scrollX}
+                    data={imageList ? imageList : []}
+                    onScroll={Animated.event(
+                        [{ nativeEvent: { contentOffset: { x: scrollX } } }],
+                        { useNativeDriver: false }
+                    )}
+                    renderItem={({ item: image, index }: any) => renderItem(image, index)}
+                    keyExtractor={(_, index) => index.toString()}
+                    horizontal={true}
+                    showsHorizontalScrollIndicator={false}
+                    pagingEnabled={true}
+                    viewabilityConfig={viewConfigRef?.current}
+                    onViewableItemsChanged={onViewRef?.current}
+                    getItemLayout={(_, index) => ({ length: windowWidth, offset: windowWidth * index, index })}
+
+                />
+                <View style={{
+                    position: "absolute", backgroundColor: "#2d333aCC", borderRadius: 10, padding: 5, top: 10, right: 10
+                }}>
+                    <Text style={{ color: "white", fontWeight: 'bold' }}>{indexOfPost + 1}/{imageList?.length}</Text>
+                </View>
+            </View>
+        </>
     )
 }
 

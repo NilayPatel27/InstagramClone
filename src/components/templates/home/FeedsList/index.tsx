@@ -1,10 +1,25 @@
-import { View, Text } from 'react-native'
-import React from 'react'
+import React from 'react';
+import { View, FlatList } from 'react-native';
 
-const FeedsListTemplate = () => {
+import { OneFeedTemplate, MultiFeedsTemplate } from '@instagram/components/templates/home/index.tsx';
+
+const FeedsListTemplate = ({ index, userFeedList }: any) => {
+
+    const renderFeeds = (item: any, index: any) => {
+        return (
+            item.feeds.length > 1
+                ? <MultiFeedsTemplate imageList={item.feeds} />
+                : <OneFeedTemplate image={item.feeds[0]} />
+        )
+    }
+
     return (
-        <View>
-            <Text>FeedsListTemplate</Text>
+        <View style={{ flex: 1, backgroundColor: "white" }} >
+            <FlatList
+                data={userFeedList ? userFeedList : []}
+                renderItem={({ item }) => renderFeeds(item, index)}
+                keyExtractor={(_, index) => index.toString()}
+            />
         </View>
     )
 }
