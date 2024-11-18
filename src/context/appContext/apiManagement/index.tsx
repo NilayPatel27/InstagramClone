@@ -36,10 +36,10 @@ const FORMDATA_POST = async (url: any, data: any, header: any) => {
     };
 }
 
-const DELETE = async (url: any) => {
+const DELETE = async (url: any, data?: any) => {
     try {
         console.log("deleteUSerUrl", url);
-        const response = await axios.delete(url);
+        const response = await data ? axios.delete(url, { data }) : axios.delete(url);
         __DEV__ && console.log("Result:  ", response, "\n \n URL:", url, "\n \n HEADER:");
         return response;
     } catch (error) {

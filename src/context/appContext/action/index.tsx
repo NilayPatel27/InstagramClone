@@ -7,5 +7,6 @@ import { signUpRequest } from "@instagram/context/appContext/action/auth/index.t
 import { documentUploadRequest } from "@instagram/context/appContext/action/auth/index.tsx";
 import { feedListRequest } from "@instagram/context/appContext/action/auth/index.tsx";
 import { deleteUserAccountRequest } from "@instagram/context/appContext/action/auth/index.tsx";
+import { deleteUserFeedRequest } from "@instagram/context/appContext/action/auth/index";
 
-export { loginRequest, setLoader, logOutRequest, userNameExistRequest, userEmailExistRequest, signUpRequest, documentUploadRequest, feedListRequest, deleteUserAccountRequest };
+export { loginRequest, setLoader, logOutRequest, userNameExistRequest, userEmailExistRequest, signUpRequest, documentUploadRequest, feedListRequest, deleteUserAccountRequest, deleteUserFeedRequest };

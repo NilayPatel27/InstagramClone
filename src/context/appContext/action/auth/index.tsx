@@ -110,3 +110,18 @@ export const deleteUserAccountRequest = (dispatch: any) => async (params: any) =
     }
 }
 //#endregion
+
+//#region deleteUserFeed
+export const deleteUserFeedRequest = (dispatch: any) => async (params: any) => {
+    try {
+        console.log("deleteUserFeed", params);
+        const response = await DELETE(`http://10.0.0.105:5000/deletepost/${params.feedId}`, { userId: params.userId });
+        console.log("deleteUserFeed", response);
+        dispatch({ type: TYPES.DELETEUSERFEED_SUCCESS, payload: response });
+        return response;
+    } catch (error) {
+        console.log("deleteUserFeed", error);
+        dispatch({ type: TYPES.DELETEUSERFEED_FAILURE, payload: error });
+    }
+}
+//#endregion
