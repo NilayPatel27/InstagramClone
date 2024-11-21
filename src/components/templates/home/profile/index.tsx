@@ -1,25 +1,19 @@
-import React, { useContext, useEffect, useState } from 'react';
+import { Divider } from '@rneui/base';
+import React, { useEffect } from 'react';
+import Foundation from 'react-native-vector-icons/Foundation';
 import { useFocusEffect, useNavigation } from '@react-navigation/native';
-import { Alert, Dimensions, FlatList, Image, StyleSheet, Text, TouchableHighlight, View } from 'react-native';
+import { Dimensions, FlatList, Image, StyleSheet, Text, TouchableHighlight, View } from 'react-native';
 
 import { Images } from '@instagram/assets';
-import { NavigationBar } from '@instagram/components/molecules/index.tsx';
-import { Divider } from '@rneui/base';
-import { getAccess } from '@instagram/customHooks/useAccess';
-import { AppContext } from '@instagram/context';
-import { usePrevious } from '@instagram/customHooks';
 import { Loader } from '@instagram/components/atoms';
-import Foundation from 'react-native-vector-icons/Foundation';
+import { useFeedsList } from '@instagram/customHooks';
+import { NavigationBar } from '@instagram/components/molecules/index.tsx';
 
 const ProfileTemplate = () => {
 
     const navigation = useNavigation();
-    const [userData, setUserData] = useState<any>({});
-    const { state: AppState, feedListRequest } = useContext(AppContext);
-    const previousAppState: any = usePrevious(AppState);
 
-    const [userFeedList, setUserFeedList] = useState([]);
-    const [userFeedListLoading, setUserFeedListLoading] = useState(false);
+    const { getFeedsList, userFeedListLoading, userFeedList } = useFeedsList();
 
     const onPress = () => {
         navigation.navigate("SettingPage");
@@ -30,55 +24,13 @@ const ProfileTemplate = () => {
     const screenWidth = Dimensions.get('window').width;
     const postSize = screenWidth / 3 - 2;
 
-    const getUserData = async () => {
-        const data: any = await getAccess("user");
-        setUserData(JSON.parse(data));
-    }
-
     useEffect(() => {
-        getUserData();
-        setUserFeedListLoading(true);
-        feedListRequest();
+        getFeedsList();
     }, []);
-
-    useEffect(() => {
-        if (userFeedListLoading && AppState?.FeedList && AppState?.FeedList?.feedListSuccess === true && AppState?.FeedList?.feedListResponse) {
-            if (previousAppState?.FeedList !== AppState?.FeedList) {
-                setUserFeedListLoading(false);
-                if (AppState?.FeedList?.feedListResponse?.status === "Success" || AppState?.FeedList?.feedListResponse?.status === 200) {
-                    const userFeedlist = AppState?.FeedList?.feedListResponse?.data?.posts.filter((item: any) => item.userId === userData?.user?._id);
-                    setUserFeedList(userFeedlist);
-                    console.log("cjdscbks", { userFeedlist, userData });
-                } else {
-                    Alert.alert(
-                        "Alert",
-                        AppState?.FeedList?.feedListResponse?.message ? AppState?.FeedList?.feedListResponse?.message : "Something went wrong",
-                        [
-                            {
-                                text: "OK",
-                                onPress: () => { }
-                            }
-                        ],
-                        { cancelable: false }
-                    );
-                }
-            }
-        } else if (userFeedListLoading && AppState?.FeedList && AppState?.FeedList?.feedListSuccess === false && AppState?.FeedList?.error) {
-            if (previousAppState?.FeedList !== AppState?.FeedList) {
-                setUserFeedListLoading(false);
-                if (AppState?.FeedList?.error && AppState?.FeedList?.error?.code && AppState?.FeedList?.error?.code === 401) {
-                    Alert.alert("", AppState?.FeedList?.error?.error?.toString());
-                } else {
-                    Alert.alert(AppState?.FeedList?.error?.error)
-                }
-            }
-        }
-    }, [userFeedListLoading, AppState?.FeedList?.feedListSuccess, AppState?.FeedList?.feedListResponse, AppState?.FeedList?.error]);
 
     useFocusEffect(
         React.useCallback(() => {
-            setUserFeedListLoading(true);
-            feedListRequest();
+            getFeedsList();
             return () => {
             };
         }, [])
@@ -120,7 +72,7 @@ const ProfileTemplate = () => {
                 </View>
                 <View style={styles.countContainer}>
                     <View style={styles.statsContainer}>
-                        <Text style={styles.stat}>15</Text>
+                        <Text style={styles.stat}>{userFeedList ? userFeedList.length : 0}</Text>
                         <Text style={styles.statLabel}>posts</Text>
                     </View>
                     <View style={styles.statsContainer}>
@@ -132,7 +84,7 @@ const ProfileTemplate = () => {
                         <Text style={styles.statLabel}>following</Text>
                     </View>
                 </View>
-            </View>
+            </View >
             <View style={styles.profileDescription}>
                 <Text style={styles.username}>Nilay Patel</Text>
                 <Text style={styles.description}>{description}</Text>
@@ -150,7 +102,7 @@ const ProfileTemplate = () => {
                 }}>
                     <FlatList
                         data={userFeedList}
-                        keyExtractor={(item, index) => index.toString()}
+                        keyExtractor={(_, index) => index.toString()}
                         renderItem={({ item, index }) => renderItem(item, index)}
                         numColumns={3}
                         showsVerticalScrollIndicator={false}
