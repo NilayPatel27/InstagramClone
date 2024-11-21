@@ -5,7 +5,7 @@ import { Loader } from '@instagram/components/atoms';
 import { useDeleteFeed, useFeedsList, useUserData } from '@instagram/customHooks';
 import { OneFeedTemplate, MultiFeedsTemplate } from '@instagram/components/templates/home/index.tsx';
 
-const FeedsListTemplate = ({ index }: any) => {
+const FeedsListTemplate = () => {
 
     const { deleteFeed, deleteUserFeedLoading, deletFeedSuccess } = useDeleteFeed();
 
@@ -40,7 +40,7 @@ const FeedsListTemplate = ({ index }: any) => {
         <View style={{ flex: 1, backgroundColor: "white" }} >
             <FlatList
                 data={userFeedsList ? userFeedsList : []}
-                renderItem={({ item }) => renderFeeds(item, index)}
+                renderItem={({ item, index }) => renderFeeds(item, index)}
                 keyExtractor={(_, index) => index.toString()}
             />
             <Loader visible={userFeedListLoading} />

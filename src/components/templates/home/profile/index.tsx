@@ -39,7 +39,7 @@ const ProfileTemplate = () => {
     const renderItem = (item: any, index: any) => {
         return (
             <TouchableHighlight
-                onPress={() => navigation.navigate("FeedsList", { userFeedList, index })}
+                onPress={() => navigation.navigate("FeedsList")}
                 underlayColor="white"
             >
                 <View style={{
