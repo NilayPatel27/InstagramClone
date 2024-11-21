@@ -2,6 +2,7 @@ import { Alert } from "react-native";
 import { useContext, useEffect, useState } from "react";
 
 import { AppContext } from "@instagram/context";
+import { useFeedsList } from '@instagram/customHooks';
 import usePrevious from "@instagram/customHooks/usePrevious";
 
 const useDeleteFeed = () => {
@@ -11,13 +12,14 @@ const useDeleteFeed = () => {
     const previousAppState: any = usePrevious(AppState);
 
     const [deleteUserFeedLoading, setDeleteUserFeedLoading] = useState(false);
+    const { getFeedsList } = useFeedsList();
 
     useEffect(() => {
         if (deleteUserFeedLoading && AppState?.Auth?.deleteUserFeedSuccess === true && AppState?.Auth?.deleteUserFeedResponse) {
             if (previousAppState?.Auth !== AppState?.Auth) {
                 setDeleteUserFeedLoading(false);
                 if (AppState?.Auth?.deleteUserFeedResponse?.status === "Success" || AppState?.Auth?.deleteUserFeedResponse?.status === 200) {
-
+                    getFeedsList();
                 } else {
                     Alert.alert(
                         "Alert",
