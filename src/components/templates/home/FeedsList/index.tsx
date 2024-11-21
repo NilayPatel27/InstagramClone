@@ -1,5 +1,6 @@
-import React, { useEffect } from 'react';
 import { View, FlatList } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
+import React, { useEffect, useState } from 'react';
 
 import { Loader } from '@instagram/components/atoms';
 import { useDeleteFeed, useFeedsList, useUserData } from '@instagram/customHooks';
@@ -11,28 +12,48 @@ const FeedsListTemplate = () => {
 
     const { getFeedsList, userFeedListLoading, userFeedList: userFeedsList } = useFeedsList();
 
+    const [firstTime, setFirstTime] = useState(true);
+
     const { userData } = useUserData();
 
     const onDeletePress = ({ feedId }: any) => {
         deleteFeed({ feedId, userId: userData?.user?._id });
+        setFirstTime(false);
     }
 
-    const userName = userData?.user?.name ? userData?.user?.name : "User Name";
+    const navigation = useNavigation();
+
+    const userName = userData?.user?.name || "User Name";
 
     useEffect(() => {
         getFeedsList();
-    }, []);
-
-    useEffect(() => {
-        if (deletFeedSuccess)
-            getFeedsList();
     }, [deletFeedSuccess]);
 
+    useEffect(() => {
+        if (!firstTime && userFeedsList && userFeedsList.length === 0) {
+            navigation.goBack();
+        }
+    }, [userFeedsList, firstTime]);
+
     const renderFeeds = (item: any, index: any) => {
+
+        const props = {
+            feedId: item?._id,
+            onDeletePress,
+            deleteUserFeedLoading,
+            userName
+        }
+
         return (
             item.feeds.length > 1
-                ? <MultiFeedsTemplate imageList={item.feeds} feedId={item?._id} onDeletePress={onDeletePress} deleteUserFeedLoading={deleteUserFeedLoading} userName={userName} />
-                : <OneFeedTemplate image={item.feeds[0]} feedId={item?._id} onDeletePress={onDeletePress} deleteUserFeedLoading={deleteUserFeedLoading} userName={userName} />
+                ? <MultiFeedsTemplate
+                    imageList={item.feeds}
+                    {...props}
+                />
+                : <OneFeedTemplate
+                    image={item.feeds[0]}
+                    {...props}
+                />
         )
     }
 
@@ -43,7 +64,7 @@ const FeedsListTemplate = () => {
                 renderItem={({ item, index }) => renderFeeds(item, index)}
                 keyExtractor={(_, index) => index.toString()}
             />
-            <Loader visible={userFeedListLoading} />
+            <Loader visible={userFeedListLoading || deleteUserFeedLoading} />
         </View>
     )
 }

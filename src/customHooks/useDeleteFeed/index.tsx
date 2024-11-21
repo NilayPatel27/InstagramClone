@@ -11,7 +11,6 @@ const useDeleteFeed = () => {
     const previousAppState: any = usePrevious(AppState);
 
     const [deleteUserFeedLoading, setDeleteUserFeedLoading] = useState(false);
-
     const [deletFeedSuccess, setDeletFeedSuccess] = useState(false);
 
     useEffect(() => {
@@ -19,7 +18,7 @@ const useDeleteFeed = () => {
             if (previousAppState?.Auth !== AppState?.Auth) {
                 setDeleteUserFeedLoading(false);
                 if (AppState?.Auth?.deleteUserFeedResponse?.status === "Success" || AppState?.Auth?.deleteUserFeedResponse?.status === 200) {
-                    setDeletFeedSuccess(true);
+                    setDeletFeedSuccess(!deletFeedSuccess);
                 } else {
                     Alert.alert(
                         "Alert",
@@ -32,13 +31,13 @@ const useDeleteFeed = () => {
                         ],
                         { cancelable: false }
                     );
-                    setDeletFeedSuccess(false);
+                    setDeletFeedSuccess(!deletFeedSuccess);
                 }
             }
         } else if (deleteUserFeedLoading && AppState?.Auth && AppState?.Auth?.deleteUserFeedSuccess === false && AppState?.Auth?.error) {
             if (previousAppState?.Auth !== AppState?.Auth) {
                 setDeleteUserFeedLoading(false);
-                setDeletFeedSuccess(false);
+                setDeletFeedSuccess(!deletFeedSuccess);
                 if (AppState?.Auth?.error && AppState?.Auth?.error?.code && AppState?.Auth?.error?.code === 401) {
                     Alert.alert("", AppState?.Auth?.error?.error?.toString());
                 } else {
