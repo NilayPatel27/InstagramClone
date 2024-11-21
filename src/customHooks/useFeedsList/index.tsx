@@ -1,0 +1,65 @@
+import { Alert } from "react-native";
+import { useContext, useEffect, useState } from "react";
+
+import { AppContext } from "@instagram/context";
+import usePrevious from "@instagram/customHooks/usePrevious";
+import { getAccess } from '@instagram/customHooks/useAccess';
+
+const useFeedsList = () => {
+
+    const { state: AppState, feedListRequest } = useContext(AppContext);
+
+    const previousAppState: any = usePrevious(AppState);
+
+    const [userFeedListLoading, setUserFeedListLoading] = useState(false);
+    const [userFeedList, setUserFeedList] = useState([]);
+    const [userData, setUserData] = useState<any>({});
+
+    const getUserData = async () => {
+        const data: any = await getAccess("user");
+        setUserData(JSON.parse(data));
+    }
+
+    const getFeedsList = () => {
+        getUserData();
+        setUserFeedListLoading(true);
+        feedListRequest();
+    }
+
+    useEffect(() => {
+        if (userFeedListLoading && AppState?.FeedList && AppState?.FeedList?.feedListSuccess === true && AppState?.FeedList?.feedListResponse) {
+            if (previousAppState?.FeedList !== AppState?.FeedList) {
+                setUserFeedListLoading(false);
+                if (AppState?.FeedList?.feedListResponse?.status === "Success" || AppState?.FeedList?.feedListResponse?.status === 200) {
+                    const userFeedlist = AppState?.FeedList?.feedListResponse?.data?.posts.filter((item: any) => item.userId === userData?.user?._id);
+                    setUserFeedList(userFeedlist);
+                } else {
+                    Alert.alert(
+                        "Alert",
+                        AppState?.FeedList?.feedListResponse?.message ? AppState?.FeedList?.feedListResponse?.message : "Something went wrong",
+                        [
+                            {
+                                text: "OK",
+                                onPress: () => { }
+                            }
+                        ],
+                        { cancelable: false }
+                    );
+                }
+            }
+        } else if (userFeedListLoading && AppState?.FeedList && AppState?.FeedList?.feedListSuccess === false && AppState?.FeedList?.error) {
+            if (previousAppState?.FeedList !== AppState?.FeedList) {
+                setUserFeedListLoading(false);
+                if (AppState?.FeedList?.error && AppState?.FeedList?.error?.code && AppState?.FeedList?.error?.code === 401) {
+                    Alert.alert("", AppState?.FeedList?.error?.error?.toString());
+                } else {
+                    Alert.alert(AppState?.FeedList?.error?.error)
+                }
+            }
+        }
+    }, [userFeedListLoading, AppState?.FeedList?.feedListSuccess, AppState?.FeedList?.feedListResponse, AppState?.FeedList?.error]);
+
+    return { getFeedsList, userFeedListLoading, userFeedList };
+};
+
+export default useFeedsList;
