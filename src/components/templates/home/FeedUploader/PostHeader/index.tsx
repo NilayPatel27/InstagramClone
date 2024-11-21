@@ -1,15 +1,32 @@
-import { Image, StyleSheet, Text, Touchable, TouchableOpacity, useWindowDimensions, View } from 'react-native'
-import React from 'react'
-import { Images } from "@instagram/assets/index.tsx";
+import React from 'react';
 import SimpleLineIcons from 'react-native-vector-icons/SimpleLineIcons';
+import { Alert, Image, StyleSheet, Text, TouchableOpacity, useWindowDimensions, View } from 'react-native';
+
+import { Images } from "@instagram/assets/index.tsx";
 interface PostHeaderProps {
     userName: string,
     profileUri: string,
-    options: boolean
+    options: boolean,
+    onDeletePress?: any,
+    feedId?: string
 }
-const PostHeader = ({ userName, profileUri }: PostHeaderProps) => {
+const PostHeader = ({ userName, profileUri, onDeletePress }: PostHeaderProps) => {
 
     const { width: windowWidth } = useWindowDimensions();
+
+    const onOptionPress = () => {
+        Alert.alert("Are you sure you want to delete this post?", "", [
+            {
+                text: "Cancel",
+                onPress: () => { }
+            },
+            {
+                text: "Delete",
+                onPress: () => onDeletePress()
+            }
+        ])
+    }
+
     return (
         <View style={{
             flexDirection: "row", justifyContent: "space-between", backgroundColor: "#fff",
@@ -21,7 +38,7 @@ const PostHeader = ({ userName, profileUri }: PostHeaderProps) => {
                 <Text style={{ color: "rgb(0, 0, 0)", fontSize: 15, fontWeight: "bold" }}>{userName}</Text>
             </View>
             <TouchableOpacity
-                onPress={() => { }}>
+                onPress={onOptionPress}>
                 <SimpleLineIcons
                     name="options-vertical"
                     size={20}

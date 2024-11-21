@@ -8,8 +8,8 @@ const FeedsListTemplate = ({ index, userFeedList }: any) => {
     const renderFeeds = (item: any, index: any) => {
         return (
             item.feeds.length > 1
-                ? <MultiFeedsTemplate imageList={item.feeds} />
-                : <OneFeedTemplate image={item.feeds[0]} />
+                ? <MultiFeedsTemplate imageList={item.feeds} feedId={item?._id} />
+                : <OneFeedTemplate image={item.feeds[0]} feedId={item?._id} />
         )
     }
 
