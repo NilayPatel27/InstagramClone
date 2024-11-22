@@ -4,6 +4,7 @@ import { useContext, useEffect, useState } from "react";
 import { AppContext } from "@instagram/context";
 import usePrevious from "@instagram/customHooks/usePrevious";
 import { getAccess } from '@instagram/customHooks/useAccess';
+import { useNavigationState } from "@react-navigation/native";
 
 const useFeedsList = () => {
 
@@ -26,13 +27,24 @@ const useFeedsList = () => {
         feedListRequest();
     }
 
+    const currentScreen = useNavigationState((state) => {
+        const route = state.routes[state.index];
+        return route.name;
+    });
+
     useEffect(() => {
         if (userFeedListLoading && AppState?.FeedList && AppState?.FeedList?.feedListSuccess === true && AppState?.FeedList?.feedListResponse) {
             if (previousAppState?.FeedList !== AppState?.FeedList) {
                 setUserFeedListLoading(false);
                 if (AppState?.FeedList?.feedListResponse?.status === "Success" || AppState?.FeedList?.feedListResponse?.status === 200) {
-                    const userFeedlist = AppState?.FeedList?.feedListResponse?.data?.posts.filter((item: any) => item.userId === userData?.user?._id);
-                    setUserFeedList(userFeedlist);
+                    const isHomePage = currentScreen === "HomePage";
+
+                    const filteredFeedList = AppState?.FeedList?.feedListResponse?.data?.posts?.filter(
+                        (item: any) => isHomePage || item.userId === userData?.user?._id
+                    );
+
+                    setUserFeedList(filteredFeedList);
+
                 } else {
                     Alert.alert(
                         "Alert",
