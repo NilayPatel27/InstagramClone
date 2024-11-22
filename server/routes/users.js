@@ -1,6 +1,25 @@
 const express = require('express');
 const router = express.Router();
+const mongoose = require('mongoose');
+const Post = require('../models/Post');
 const User = require('../models/user');
+
+router.get('/user/:id', (req, res) => {
+  User.findone({ _id: req.param.id })
+    .select("-password")
+    .then(user => {
+      Post.find({ postedBy: req.param.id })
+        .populate("postedBy", "_id name")
+        .exec((err, posts) => {
+          if (err) {
+            return res.status(422).json({ error: err })
+          }
+          res.json({user,posts})
+        })
+    }).catch(err => {
+      return res.status(400).json({ error: "User not found" })
+    })
+})
 
 router.get('/search', async (req, res) => {
   try {
@@ -39,4 +58,8 @@ router.delete('/delete/:userId', async (req, res) => {
   }
 });
 
+router.put
+
 module.exports = router;
+
+

@@ -57,7 +57,7 @@ app.post('/signup', async (req, res) => {
         })
         await newUser.save()
         res.status(201).json({ message: 'User registered successfully' })
-    } catch (error) {
+    }catch (error) {
         console.error('Signup error:', error)
         res.status(422).json({ message: 'Server error' })
     }
