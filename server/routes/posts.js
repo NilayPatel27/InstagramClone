@@ -1,6 +1,10 @@
 const express = require('express');
 const router = express.Router();
 const Post = require('../models/Post');
+
+
+
+
 // Delete a post by postID
 router.delete('/delete/:postId', async (req, res) => {
   try {
