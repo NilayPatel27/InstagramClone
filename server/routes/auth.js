@@ -9,7 +9,7 @@ const multer = require('multer');
 const upload = multer();
 
 router.post('/signup', (req, res) => {
-    const { name, email, password } = req.body
+    const { name, email, password, profileImage, userName } = req.body
     if (!email || !password || !name) {
         return res.status(422).json({ error: "Please add all the fields" })
     }
@@ -23,17 +23,22 @@ router.post('/signup', (req, res) => {
                     const user = new User({
                         email,
                         password: hashedpassword,
-                        name
+                        name,
+                        profileImage,
+                        userName: userName.toLowerCase(),
+                        bio: "",
+                        followers: [],
+                        following: []
                     })
 
                     user.save()
                         .then(user => {
                             const token = jwt.sign({ _id: user._id }, "Instagram@123");
-                            const { _id, name, email } = user;
-                            res.json({ token, user: { _id, name, email }, message: "Successfully signed up" });
+                            const { _id, name, email, profileImage, userName, bio, followers, following } = user;
+                            res.json({ token, user: { _id, name, email, profileImage, userName, bio, followers, following }, message: "Successfully signed up" });
                         })
                         .catch(error => {
-                            console.log(err)
+                            console.log(error)
                         })
                 })
         })
@@ -98,8 +103,8 @@ router.post('/login', (req, res) => {
                             { userId: savedUser._id.toString() },
                             'Instagram@123'
                         )
-                        const { _id, name, email } = savedUser;
-                        res.json({ token, user: { _id, name, email }, message: "Successfully signed in" });
+                        const { _id, name, email, profileImage, userName, bio, followers, following } = savedUser;
+                        res.json({ token, user: { _id, name, email, profileImage, userName, bio, followers, following }, message: "Successfully signed in" });
                     } else {
                         return res.status(422).json({ error: "Invalid Email or password" })
                     }
@@ -143,7 +148,13 @@ router.post('/addposts', upload.none(), async (req, res) => {
 router.get('/allposts', async (req, res) => {
     try {
         const posts = await Post.find();
-        res.status(200).json({ posts });
+
+        let newPosts = [];
+        for (let i = 0; i < posts.length; i++) {
+            const user = await User.findById(posts[i].userId);
+            newPosts.push({ ...posts[i]._doc, userName: user.userName, profileImage: user.profileImage });
+        }
+        res.status(200).json({ posts: newPosts });
     } catch (error) {
         console.error(error);
         res.status(500).json({ error: 'Failed to fetch posts' });

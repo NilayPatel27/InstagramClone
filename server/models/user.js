@@ -15,12 +15,18 @@ const userSchema = new mongoose.Schema({
     },
     profileImage: {
         type: String,
-        required: true
+        required: false
     },
     userName: {
         type: String,
         required: true
-    }
+    },
+    bio: {
+        type: String,
+        required: false
+    },
+    followers: [String],
+    following: [String]
 })
 
 mongoose.model("User", userSchema)
