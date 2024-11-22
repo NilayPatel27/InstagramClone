@@ -22,6 +22,7 @@ const userSchema = new mongoose.Schema({
         type: String,
         required: true
     },
+<<<<<<< Updated upstream
 <<<<<<< HEAD
     followers:[{type:ObjectId,ref:"User"}],
     following:[{type:ObjectId,ref:"User"}],
@@ -33,6 +34,10 @@ const userSchema = new mongoose.Schema({
     followers: [String],
     following: [String]
 >>>>>>> cb22162f792e80d4aeedf3989e8ef63fd1b7be4c
+=======
+    followers:[{type:ObjectId,ref:"User"}],
+    following:[{type:ObjectId,ref:"User"}],
+>>>>>>> Stashed changes
 })
 
 mongoose.model("User", userSchema)
