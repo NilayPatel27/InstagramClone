@@ -4,7 +4,7 @@ import { SafeAreaView, StyleSheet, Text, View } from 'react-native';
 import { HeaderRight, HeaderLeft } from '@instagram/components/atoms/index.tsx';
 
 interface NavigationBarProps {
-    rightProps: { onBack: any, back: boolean, right: boolean, onPress: any, text?: any, postButton?: boolean }
+    rightProps: { onBack: any, back: boolean, right: boolean, onPress?: any, text?: any, postButton?: boolean }
     navigation: any
     userName?: string
 }
@@ -16,14 +16,14 @@ const NavigationBar = ({ rightProps, navigation, userName }: NavigationBarProps)
                 rightProps.back &&
                 <View style={{ alignItems: "center", flexDirection: "row", padding: 5, paddingVertical: 8, width: '100%' }}>
                     <HeaderLeft navigation={navigation} onBack={rightProps.onBack} />
-                    {rightProps.text && <Text style={{ color: 'black', fontSize: 20, marginLeft: 15 }}>{rightProps.text}</Text>}
+                    {rightProps.text && <Text style={{ color: 'black', fontSize: 20, marginLeft: 15, fontWeight: '500' }}>{rightProps.text}</Text>}
                 </View>
             }
 
             {
                 userName &&
                 <View style={{ alignItems: "center", flexDirection: "row", padding: 5, paddingVertical: 8 }}>
-                    <Text style={{ color: 'black', fontSize: 20, marginLeft: 15 }}>{userName}</Text>
+                    <Text style={{ color: 'black', fontSize: 20, marginLeft: 15, fontWeight: '500' }}>{userName}</Text>
                 </View>
             }
 
