@@ -1,25 +1,30 @@
 import { Divider } from '@rneui/base';
-import React, { useEffect } from 'react';
+import React, { useEffect, useRef } from 'react';
+import RBSheet from 'react-native-raw-bottom-sheet';
 import Foundation from 'react-native-vector-icons/Foundation';
 import { useFocusEffect, useNavigation } from '@react-navigation/native';
-import { Dimensions, FlatList, Image, StyleSheet, Text, TouchableHighlight, View } from 'react-native';
+import { Dimensions, FlatList, Image, StyleSheet, Text, TouchableHighlight, TouchableOpacity, View } from 'react-native';
 
 import { Images } from '@instagram/assets';
 import { Loader } from '@instagram/components/atoms';
-import { useFeedsList } from '@instagram/customHooks';
+import { useFeedsList, useUserData } from '@instagram/customHooks';
 import { NavigationBar } from '@instagram/components/molecules/index.tsx';
 
 const ProfileTemplate = () => {
 
     const navigation = useNavigation();
+    const { userData } = useUserData();
+
+    const userName = userData?.user?.name || "User Name";
+    const userBio = userData?.user?.bio || "User Bio";
+    const followers = userData?.user?.followers?.length || 0;
+    const following = userData?.user?.following?.length || 0;
 
     const { getFeedsList, userFeedListLoading, userFeedList } = useFeedsList();
 
     const onPress = () => {
         navigation.navigate("SettingPage");
     }
-
-    const description = "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.";
 
     const screenWidth = Dimensions.get('window').width;
     const postSize = screenWidth / 3 - 2;
@@ -35,6 +40,8 @@ const ProfileTemplate = () => {
             };
         }, [])
     );
+
+    const refRBSheet: any = useRef();
 
     const renderItem = (item: any, index: any) => {
         return (
@@ -61,9 +68,17 @@ const ProfileTemplate = () => {
         );
     };
 
+    const handleEditProfile = () => {
+        navigation.navigate("EditProfile");
+    };
+
+    const handleContact = () => {
+        refRBSheet?.current?.open();
+    };
+
     return (
         <>
-            <NavigationBar rightProps={{ onPress, back: false, right: true, onBack: false, postButton: true }} navigation={navigation} />
+            <NavigationBar rightProps={{ onPress, back: false, right: true, onBack: false, postButton: true }} navigation={navigation} userName={userData?.user?.userName} />
 
             {/* profile header section */}
             <View style={styles.container}>
@@ -76,18 +91,26 @@ const ProfileTemplate = () => {
                         <Text style={styles.statLabel}>posts</Text>
                     </View>
                     <View style={styles.statsContainer}>
-                        <Text style={styles.stat}>1017</Text>
+                        <Text style={styles.stat}>{followers}</Text>
                         <Text style={styles.statLabel}>followers</Text>
                     </View>
                     <View style={styles.statsContainer}>
-                        <Text style={styles.stat}>1358</Text>
+                        <Text style={styles.stat}>{following}</Text>
                         <Text style={styles.statLabel}>following</Text>
                     </View>
                 </View>
             </View >
             <View style={styles.profileDescription}>
-                <Text style={styles.username}>Nilay Patel</Text>
-                <Text style={styles.description}>{description}</Text>
+                <Text style={styles.username}>{userName}</Text>
+                <Text style={styles.description}>{userBio}</Text>
+            </View>
+            <View style={styles.buttonContainer}>
+                <TouchableOpacity style={styles.editButton} onPress={handleEditProfile}>
+                    <Text style={styles.buttonText}>Edit profile</Text>
+                </TouchableOpacity>
+                <TouchableOpacity style={styles.contactButton} onPress={handleContact}>
+                    <Text style={styles.buttonText}>Contact</Text>
+                </TouchableOpacity>
             </View>
             <Divider />
             {
@@ -110,6 +133,36 @@ const ProfileTemplate = () => {
                     />
                 </View>
             }
+            <RBSheet
+                ref={refRBSheet}
+                draggable={true}
+                closeOnPressBack={true}
+                closeOnPressMask={true}
+                customStyles={{
+                    wrapper: {
+                        backgroundColor: "rgba(0,0,0, 0.3)",
+                    },
+                    draggableIcon: {
+                        backgroundColor: "gray",
+                    },
+                    container: {
+                        borderTopLeftRadius: 15,
+                        borderTopRightRadius: 15,
+                        backgroundColor: 'white'
+                    }
+                }}
+                closeDuration={0}
+                height={200}
+            >
+                <View style={{ backgroundColor: 'white', justifyContent: "space-around" }}>
+                    <Text style={{ fontSize: 18, fontWeight: 'bold', color: 'black', alignSelf: "center", paddingVertical: 10 }}>Contact</Text>
+                    <Divider />
+                    <View style={{ justifyContent: 'space-between', padding: 15 }}>
+                        <Text style={{ fontSize: 16, color: 'black', fontWeight: "bold" }}>Email</Text>
+                        <Text style={{ fontSize: 16, color: 'black' }}>{userData?.user?.email}</Text>
+                    </View>
+                </View>
+            </RBSheet>
             <Loader visible={userFeedListLoading} />
         </>
     )
@@ -125,46 +178,46 @@ const styles = StyleSheet.create({
     },
     imageContainer: {
         flexDirection: 'row',
-        alignItems: 'center',
+        alignItems: 'center'
     },
     countContainer: {
         flexDirection: 'row',
-        justifyContent: 'space-around',
+        justifyContent: 'space-around'
     },
     userImage: {
         width: 80,
         height: 80,
-        borderRadius: 40,
+        borderRadius: 40
     },
     statsContainer: {
         alignItems: 'center',
         marginHorizontal: 12,
-        backgroundColor: 'white',
+        backgroundColor: 'white'
     },
     stat: {
         fontSize: 16,
         fontWeight: 'bold',
-        color: 'black',
+        color: 'black'
     },
     statLabel: {
         fontSize: 14,
-        color: 'black',
+        color: 'black'
     },
     username: {
         fontSize: 18,
         fontWeight: 'bold',
-        color: 'black',
+        color: 'black'
     },
     postImage: {
         width: '100%',
-        height: '100%',
+        height: '100%'
     },
     userNameContainre: {
-        backgroundColor: 'white',
+        backgroundColor: 'white'
     },
     profileDescription: {
         padding: 10,
-        backgroundColor: 'white',
+        backgroundColor: 'white'
     },
     description: {
         fontSize: 16,
@@ -176,6 +229,33 @@ const styles = StyleSheet.create({
         zIndex: 1,
         top: 5,
         right: 5
+    },
+    buttonContainer: {
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        width: '100%',
+        padding: 7,
+        backgroundColor: 'white'
+    },
+    editButton: {
+        flex: 1,
+        backgroundColor: '#D3D3D3',
+        padding: 8,
+        borderRadius: 5,
+        alignItems: 'center',
+        marginHorizontal: 5
+    },
+    contactButton: {
+        flex: 1,
+        backgroundColor: '#D3D3D3',
+        padding: 8,
+        borderRadius: 5,
+        alignItems: 'center',
+        marginHorizontal: 5
+    },
+    buttonText: {
+        color: '#000',
+        fontWeight: '400'
     }
 });
 

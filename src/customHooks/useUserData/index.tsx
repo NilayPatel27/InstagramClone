@@ -3,7 +3,6 @@ import { getAccess } from "../useAccess";
 
 const useUserData = () => {
     const [userData, setUserData] = useState<any>({});
-    console.log("userData", userData);
 
     useEffect(() => {
         const getUserData = async () => {

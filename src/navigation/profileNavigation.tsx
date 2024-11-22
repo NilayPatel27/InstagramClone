@@ -4,7 +4,7 @@ import { createNativeStackNavigator } from "@react-navigation/native-stack";
 
 import { AppContext } from '@instagram/context/index.tsx';
 import { LoaderComponent } from '@instagram/components/atoms/index.tsx';
-import { ProfilePage, SettingPage, FeedUploaderPage, FeedsListPage } from '@instagram/index.tsx';
+import { ProfilePage, SettingPage, FeedUploaderPage, FeedsListPage, EditProfile } from '@instagram/index.tsx';
 
 const ProfileStack = () => {
     const screenOptions = {
@@ -33,6 +33,7 @@ const ProfileStack = () => {
                 <Stack.Screen name="SettingPage" component={SettingPage} />
                 <Stack.Screen name="FeedUploader" component={FeedUploaderPage} />
                 <Stack.Screen name="FeedsList" component={FeedsListPage} />
+                <Stack.Screen name="EditProfile" component={EditProfile} />
 
             </Stack.Navigator>
             {AppState?.Loader?.loaderVisible === true && (

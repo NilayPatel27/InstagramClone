@@ -1,5 +1,5 @@
-import { CommonActions, useNavigation } from '@react-navigation/native';
 import React, { useContext, useEffect, useState } from 'react';
+import { CommonActions, useNavigation } from '@react-navigation/native';
 import { Alert, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
 
 import { Loader } from '@instagram/components/atoms';
@@ -28,7 +28,7 @@ const AddEmail = ({ username, password }: any) => {
 
     const handleSignUp = async () => {
         setSignUpLoading(true);
-        await signUpRequest({ email, name: username, password });
+        await signUpRequest({ email, name: "User Name", password, userName: username, profileImage: "" });
     }
 
     useEffect(() => {

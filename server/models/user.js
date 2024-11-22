@@ -16,14 +16,23 @@ const userSchema = new mongoose.Schema({
     },
     profileImage: {
         type: String,
-        required: true
+        required: false
     },
     userName: {
         type: String,
         required: true
     },
+<<<<<<< HEAD
     followers:[{type:ObjectId,ref:"User"}],
     following:[{type:ObjectId,ref:"User"}],
+=======
+    bio: {
+        type: String,
+        required: false
+    },
+    followers: [String],
+    following: [String]
+>>>>>>> cb22162f792e80d4aeedf3989e8ef63fd1b7be4c
 })
 
 mongoose.model("User", userSchema)

@@ -1,5 +1,6 @@
-import React, { useEffect } from 'react';
 import { View, FlatList } from 'react-native';
+import React, { useEffect, useState } from 'react';
+import { useNavigation, useNavigationState } from '@react-navigation/native';
 
 import { Loader } from '@instagram/components/atoms';
 import { useDeleteFeed, useFeedsList, useUserData } from '@instagram/customHooks';
@@ -11,29 +12,58 @@ const FeedsListTemplate = () => {
 
     const { getFeedsList, userFeedListLoading, userFeedList: userFeedsList } = useFeedsList();
 
+    const [firstTime, setFirstTime] = useState(true);
+
+    const currentScreen = useNavigationState((state) => {
+        const route = state.routes[state.index];
+        return route.name;
+    });
+
+    const isHomePage = currentScreen === "HomePage";
+
     const { userData } = useUserData();
 
     const onDeletePress = ({ feedId }: any) => {
         deleteFeed({ feedId, userId: userData?.user?._id });
+        setFirstTime(false);
     }
 
-    const userName = userData?.user?.name ? userData?.user?.name : "User Name";
+    const navigation = useNavigation();
 
     useEffect(() => {
         getFeedsList();
-    }, []);
-
-    useEffect(() => {
-        if (deletFeedSuccess)
-            getFeedsList();
     }, [deletFeedSuccess]);
 
+    useEffect(() => {
+        if (!firstTime && userFeedsList && userFeedsList.length === 0 && !isHomePage) {
+            navigation.goBack();
+        }
+    }, [userFeedsList, firstTime]);
+
     const renderFeeds = (item: any, index: any) => {
+        const props = {
+            feedId: item?._id,
+            onDeletePress,
+            deleteUserFeedLoading,
+            userName: item?.userName || "User Name",
+            userId: item?.userId
+        }
+
         return (
             item.feeds.length > 1
-                ? <MultiFeedsTemplate imageList={item.feeds} feedId={item?._id} onDeletePress={onDeletePress} deleteUserFeedLoading={deleteUserFeedLoading} userName={userName} />
-                : <OneFeedTemplate image={item.feeds[0]} feedId={item?._id} onDeletePress={onDeletePress} deleteUserFeedLoading={deleteUserFeedLoading} userName={userName} />
+                ? <MultiFeedsTemplate
+                    imageList={item.feeds}
+                    {...props}
+                />
+                : <OneFeedTemplate
+                    image={item.feeds[0]}
+                    {...props}
+                />
         )
+    }
+
+    const onRefresh = () => {
+        getFeedsList();
     }
 
     return (
@@ -42,8 +72,10 @@ const FeedsListTemplate = () => {
                 data={userFeedsList ? userFeedsList : []}
                 renderItem={({ item, index }) => renderFeeds(item, index)}
                 keyExtractor={(_, index) => index.toString()}
+                onRefresh={onRefresh}
+                refreshing={userFeedListLoading}
             />
-            <Loader visible={userFeedListLoading} />
+            <Loader visible={userFeedListLoading || deleteUserFeedLoading} />
         </View>
     )
 }
