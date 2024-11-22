@@ -18,17 +18,15 @@ const EditPorfileTemplate = () => {
     const [userFullName, setUserFullName] = useState(userData?.user?.name || "User Name");
     const [userBio, setUserBio] = useState(userData?.user?.bio || "Bio");
 
-    useEffect(() => {
-        setUserFullName(userData?.user?.name || "User Name");
-    }, [userData?.user?.name])
-
     const onEditPicturePress = () => {
+    }
+
+    const onUploadButtonPress = () => {
     }
 
     return (
         <View style={{ flex: 1, backgroundColor: "white" }}>
-            <NavigationBar rightProps={{ back: true, right: false, onBack, text: "Edit profile" }} navigation={navigation} />
-
+            <NavigationBar rightProps={{ back: true, right: true, onBack, text: "Edit profile", onPress: onUploadButtonPress, uploadButton: true }} navigation={navigation} />
             <View style={styles.imageContainer}>
                 {
                     userData?.user?.profileImage ?

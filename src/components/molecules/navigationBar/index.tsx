@@ -2,9 +2,8 @@ import React from 'react';
 import { SafeAreaView, StyleSheet, Text, View } from 'react-native';
 
 import { HeaderRight, HeaderLeft } from '@instagram/components/atoms/index.tsx';
-
 interface NavigationBarProps {
-    rightProps: { onBack: any, back: boolean, right: boolean, onPress?: any, text?: any, postButton?: boolean }
+    rightProps: { onBack: any, back: boolean, right: boolean, onPress?: any, text?: any, postButton?: boolean, menuButton?: boolean, uploadButton?: boolean }
     navigation: any
     userName?: string
 }
@@ -14,7 +13,7 @@ const NavigationBar = ({ rightProps, navigation, userName }: NavigationBarProps)
         <SafeAreaView style={styles.safeAreaViewStyle}>
             {
                 rightProps.back &&
-                <View style={{ alignItems: "center", flexDirection: "row", padding: 5, paddingVertical: 8, width: '100%' }}>
+                <View style={{ alignItems: "center", flexDirection: "row", padding: 5, paddingVertical: 8 }}>
                     <HeaderLeft navigation={navigation} onBack={rightProps.onBack} />
                     {rightProps.text && <Text style={{ color: 'black', fontSize: 20, marginLeft: 15, fontWeight: '500' }}>{rightProps.text}</Text>}
                 </View>
@@ -29,7 +28,7 @@ const NavigationBar = ({ rightProps, navigation, userName }: NavigationBarProps)
 
             {
                 rightProps.right &&
-                <HeaderRight onPress={rightProps.onPress} navigation={navigation} postButton={rightProps.postButton} />
+                <HeaderRight onPress={rightProps.onPress} navigation={navigation} postButton={rightProps.postButton} menuButton={rightProps.menuButton} uploadButton={rightProps.uploadButton} />
             }
         </SafeAreaView>
     )

@@ -78,7 +78,7 @@ const ProfileTemplate = () => {
 
     return (
         <>
-            <NavigationBar rightProps={{ onPress, back: false, right: true, onBack: false, postButton: true }} navigation={navigation} userName={userData?.user?.userName} />
+            <NavigationBar rightProps={{ onPress, back: false, right: true, onBack: false, postButton: true, menuButton: true }} navigation={navigation} userName={userData?.user?.userName} />
 
             {/* profile header section */}
             <View style={styles.container}>

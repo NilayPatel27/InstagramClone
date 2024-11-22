@@ -1,5 +1,5 @@
-import React, { useEffect, useRef, useState } from 'react';
-import { Alert, Animated, PermissionsAndroid, Platform, StyleSheet, TouchableHighlight, View } from 'react-native';
+import React from 'react';
+import { StyleSheet, TouchableOpacity, View } from 'react-native';
 
 import Octicons from 'react-native-vector-icons/Octicons';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
@@ -7,10 +7,12 @@ import FontAwesome from 'react-native-vector-icons/FontAwesome';
 interface HeaderRightProps {
     onPress: any,
     navigation: any,
-    postButton?: boolean
+    postButton?: boolean,
+    menuButton?: boolean,
+    uploadButton?: boolean
 }
 
-const HeaderRight = ({ onPress, navigation, postButton }: HeaderRightProps) => {
+const HeaderRight = ({ onPress, navigation, postButton, menuButton, uploadButton }: HeaderRightProps) => {
 
     const onPostButtonPress = () => {
         navigation.navigate("FeedUploader");
@@ -18,23 +20,34 @@ const HeaderRight = ({ onPress, navigation, postButton }: HeaderRightProps) => {
 
     return (
         <View style={styles.rowStyle}>
+
             {
                 postButton &&
-                <TouchableHighlight
+                <TouchableOpacity
                     onPress={() => onPostButtonPress()}
                     style={styles.buttonStyle}
-                    underlayColor={"#f0f0f0"}
                 >
                     <FontAwesome name="plus-square-o" size={30} color={"black"} />
-                </TouchableHighlight>
+                </TouchableOpacity>
             }
-            <TouchableHighlight
-                onPress={() => onPress()}
-                style={styles.buttonStyle}
-                underlayColor={"#f0f0f0"}
-            >
-                <Octicons name="three-bars" size={30} color={"black"} />
-            </TouchableHighlight>
+
+            {menuButton &&
+                <TouchableOpacity
+                    onPress={() => onPress()}
+                    style={styles.buttonStyle}
+                >
+                    <Octicons name="three-bars" size={30} color={"black"} />
+                </TouchableOpacity>
+            }
+
+            {uploadButton &&
+                <TouchableOpacity
+                    onPress={() => onPress()}
+                    style={styles.buttonStyle}>
+                    <Octicons name="upload" size={30} color={"black"} />
+                </TouchableOpacity>
+            }
+
         </View>
     )
 }
