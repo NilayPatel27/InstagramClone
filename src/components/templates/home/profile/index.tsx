@@ -6,20 +6,24 @@ import { Dimensions, FlatList, Image, StyleSheet, Text, TouchableHighlight, View
 
 import { Images } from '@instagram/assets';
 import { Loader } from '@instagram/components/atoms';
-import { useFeedsList } from '@instagram/customHooks';
+import { useFeedsList, useUserData } from '@instagram/customHooks';
 import { NavigationBar } from '@instagram/components/molecules/index.tsx';
 
 const ProfileTemplate = () => {
 
     const navigation = useNavigation();
+    const { userData } = useUserData();
+
+    const userName = userData?.user?.name || "User Name";
+    const userBio = userData?.user?.bio || "User Bio";
+    const followers = userData?.user?.followers?.length || 0;
+    const following = userData?.user?.following?.length || 0;
 
     const { getFeedsList, userFeedListLoading, userFeedList } = useFeedsList();
 
     const onPress = () => {
         navigation.navigate("SettingPage");
     }
-
-    const description = "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.";
 
     const screenWidth = Dimensions.get('window').width;
     const postSize = screenWidth / 3 - 2;
@@ -76,18 +80,18 @@ const ProfileTemplate = () => {
                         <Text style={styles.statLabel}>posts</Text>
                     </View>
                     <View style={styles.statsContainer}>
-                        <Text style={styles.stat}>1017</Text>
+                        <Text style={styles.stat}>{followers}</Text>
                         <Text style={styles.statLabel}>followers</Text>
                     </View>
                     <View style={styles.statsContainer}>
-                        <Text style={styles.stat}>1358</Text>
+                        <Text style={styles.stat}>{following}</Text>
                         <Text style={styles.statLabel}>following</Text>
                     </View>
                 </View>
             </View >
             <View style={styles.profileDescription}>
-                <Text style={styles.username}>Nilay Patel</Text>
-                <Text style={styles.description}>{description}</Text>
+                <Text style={styles.username}>{userName}</Text>
+                <Text style={styles.description}>{userBio}</Text>
             </View>
             <Divider />
             {
