@@ -10,7 +10,7 @@ interface PostHeaderProps {
     onDeletePress?: any,
     feedId?: string
 }
-const PostHeader = ({ userName, profileUri, onDeletePress }: PostHeaderProps) => {
+const PostHeader = ({ userName, profileUri, onDeletePress, options }: PostHeaderProps) => {
 
     const { width: windowWidth } = useWindowDimensions();
 
@@ -39,11 +39,14 @@ const PostHeader = ({ userName, profileUri, onDeletePress }: PostHeaderProps) =>
             </View>
             <TouchableOpacity
                 onPress={onOptionPress}>
-                <SimpleLineIcons
-                    name="options-vertical"
-                    size={20}
-                    color={'black'}
-                />
+                {
+                    options &&
+                    <SimpleLineIcons
+                        name="options-vertical"
+                        size={20}
+                        color={'black'}
+                    />
+                }
             </TouchableOpacity>
         </View>
     )

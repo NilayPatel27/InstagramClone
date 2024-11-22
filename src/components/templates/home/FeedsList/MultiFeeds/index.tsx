@@ -2,9 +2,10 @@ import React, { useEffect, useRef, useState } from 'react';
 import { View, Text, Animated, Image, useWindowDimensions } from 'react-native';
 
 import { Loader } from '@instagram/components/atoms';
+import { useUserData } from '@instagram/customHooks';
 import PostHeader from '@instagram/components/templates/home/FeedUploader/PostHeader/index';
 
-const MultiFeedTemplate = ({ imageList, feedId, onDeletePress, deleteUserFeedLoading, userName }: any) => {
+const MultiFeedTemplate = ({ imageList, feedId, onDeletePress, deleteUserFeedLoading, userName, userId }: any) => {
     const { width: windowWidth } = useWindowDimensions();
 
     const [indexOfPost, setIndexOfPost] = useState(0);
@@ -14,6 +15,10 @@ const MultiFeedTemplate = ({ imageList, feedId, onDeletePress, deleteUserFeedLoa
     const onViewRef = useRef((viewableItems: any) => {
         setIndexOfPost(viewableItems?.viewableItems[0]?.index);
     });
+
+    const { userData } = useUserData();
+
+    const options = userData?.user?._id === userId;
 
     const viewConfigRef = useRef({ viewAreaCoveragePercentThreshold: 50 });
 
@@ -42,7 +47,7 @@ const MultiFeedTemplate = ({ imageList, feedId, onDeletePress, deleteUserFeedLoa
     }
     return (
         <>
-            <PostHeader userName={userName} profileUri={""} options={false} onDeletePress={() => onDeletePress({ feedId })} />
+            <PostHeader userName={userName} profileUri={""} options={options} onDeletePress={() => onDeletePress({ feedId })} />
             <View>
                 <Animated.FlatList
                     ref={scrollX}
