@@ -125,3 +125,17 @@ export const deleteUserFeedRequest = (dispatch: any) => async ({ feedId, userId 
     }
 }
 //#endregion
+
+//#region allUsers
+export const allUsersRequest = (dispatch: any) => async () => {
+    try {
+        const response = await GET('http://10.0.0.105:5000/alluserslist', {});
+        console.log("allUsers", response);
+        dispatch({ type: TYPES.ALLUSERS_SUCCESS, payload: response });
+        return response;
+    } catch (error) {
+        console.log("allUsers", error);
+        dispatch({ type: TYPES.ALLUSERS_FAILURE, payload: error });
+    }
+}
+//#endregion

@@ -61,6 +61,13 @@ const Reducer = (state: any, action: any) => {
             return { ...state, Auth: { ...state.Auth, deleteUserFeedSuccess: false, error: action.payload } };
         //#endregion
 
+        //#region AllUsers
+        case TYPE.ALLUSERS_SUCCESS:
+            return { ...state, Auth: { ...state.Auth, allUsersSuccess: true, allUsersResponse: action.payload } };
+        case TYPE.ALLUSERS_FAILURE:
+            return { ...state, Auth: { ...state.Auth, allUsersSuccess: false, error: action.payload } };
+        //#endregion
+
         default:
             return state;
     }
