@@ -1,6 +1,9 @@
-import React, { useState } from 'react';
-import { useNavigation } from '@react-navigation/native';
-import { View, TextInput, StyleSheet, Text, TouchableOpacity } from 'react-native';
+import React, { useEffect, useState } from 'react';
+import { useFocusEffect, useNavigation } from '@react-navigation/native';
+import { View, TextInput, StyleSheet, Text, TouchableOpacity, FlatList, Image } from 'react-native';
+
+import { Images } from '@instagram/assets';
+import { useAllUsersList } from '@instagram/customHooks';
 
 const SearchTemplate = () => {
 
@@ -10,6 +13,63 @@ const SearchTemplate = () => {
 
     const onUserProfilePress = () => {
         navigation.navigate("OtherUserProfilePage");
+    }
+
+    const { allUsersList, getAllUsersList } = useAllUsersList();
+
+    const [searchedUserList, setSearchedUserList] = useState([]);
+
+    useFocusEffect(
+        React.useCallback(() => {
+            getAllUsersList();
+            return () => {
+            };
+        }, [])
+    );
+
+    useEffect(() => {
+        if (searchText === "") {
+            getAllUsersList();
+            setSearchedUserList([]);
+        } else {
+            const filteredList = allUsersList.filter((item: any) => item.userName.toLowerCase().includes(searchText.toLowerCase()));
+            setSearchedUserList(filteredList ? filteredList : []);
+        }
+    }, [searchText]);
+
+    const renderUserItem = (item: any) => {
+        return (
+            <TouchableOpacity style={styles.renderItemContainer} onPress={onUserProfilePress}>
+
+                <View style={{
+                    height: 55,
+                    width: 55,
+                    borderRadius: 25,
+                    backgroundColor: "lightgray"
+                }}>
+                    {
+                        item.profileImage ?
+                            <Image
+                                source={{ uri: item.profileImage }}
+                                style={{
+                                    width: 55,
+                                    height: 55,
+                                    borderRadius: 40
+                                }}
+                            />
+                            :
+                            <Image source={Images.User} style={styles.userImage} />
+                    }
+
+                </View>
+
+                <View style={{ paddingLeft: 10 }}>
+                    <Text style={{ color: "black", paddingHorizontal: 10 }}>{item.userName}</Text>
+                    <Text style={{ color: "black", paddingHorizontal: 10 }}>{item.name}</Text>
+                </View>
+
+            </TouchableOpacity>
+        )
     }
 
     return (
@@ -22,9 +82,12 @@ const SearchTemplate = () => {
                     onChangeText={(text) => setSearchText(text)}
                 />
             </View>
-            <TouchableOpacity style={{ backgroundColor: "red", padding: 5, margin: 10 }} onPress={onUserProfilePress}>
-                <Text style={{ color: "black", padding: 5, paddingHorizontal: 10 }}>Name</Text>
-            </TouchableOpacity>
+
+            <FlatList
+                data={searchedUserList ? searchedUserList : []}
+                renderItem={({ item }: any) => renderUserItem(item)}
+                keyExtractor={(item, index) => index.toString()}
+            />
         </View>
     )
 }
@@ -38,6 +101,19 @@ const styles = StyleSheet.create({
         backgroundColor: 'lightgray',
         borderRadius: 30,
         margin: 10
+    },
+    userImage: {
+        width: 55,
+        height: 55,
+        borderRadius: 40
+    },
+    renderItemContainer: {
+        backgroundColor: "white",
+        padding: 5,
+        margin: 10,
+        borderRadius: 10,
+        flexDirection: 'row',
+        alignItems: 'center'
     }
 });
 

@@ -19,7 +19,7 @@ const useAllUsersList = () => {
             if (previousAppState?.Auth !== AppState?.Auth) {
                 setAllUsersListLoading(false);
                 if (AppState?.Auth?.allUsersResponse?.status === "Success" || AppState?.Auth?.allUsersResponse?.status === 200) {
-                    setAllUsersList(AppState?.Auth?.allUsersResponse?.data);
+                    setAllUsersList(AppState?.Auth?.allUsersResponse?.data?.usersList);
                 } else {
                     Alert.alert(
                         "Alert",
