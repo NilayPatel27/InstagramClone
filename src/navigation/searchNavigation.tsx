@@ -3,7 +3,7 @@ import React, { useContext } from 'react';
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 
 import { AppContext } from '@instagram/context/index.tsx';
-import { OtherUserProfile, SearchPage } from '@instagram/index.tsx';
+import { FeedsListPage, OtherUserProfile, SearchPage } from '@instagram/index.tsx';
 import { LoaderComponent } from '@instagram/components/atoms/index.tsx';
 
 const SearchStack = () => {
@@ -31,6 +31,7 @@ const SearchStack = () => {
 
                 <Stack.Screen name="SearchPage" component={SearchPage} />
                 <Stack.Screen name="OtherUserProfilePage" component={OtherUserProfile} />
+                <Stack.Screen name="FeedsList" component={FeedsListPage} />
 
             </Stack.Navigator>
             {AppState?.Loader?.loaderVisible === true && (

@@ -10,7 +10,7 @@ interface NavigationBarProps {
 
 const NavigationBar = ({ rightProps, navigation, userName }: NavigationBarProps) => {
     return (
-        <SafeAreaView style={styles.safeAreaViewStyle}>
+        <SafeAreaView style={rightProps.back && !rightProps.right ? styles.safeAreaViewStyle : styles.safeAreaViewStyle2}>
             {
                 rightProps.back &&
                 <View style={{ alignItems: "center", flexDirection: "row", padding: 5, paddingVertical: 8 }}>
@@ -37,5 +37,6 @@ const NavigationBar = ({ rightProps, navigation, userName }: NavigationBarProps)
 export default NavigationBar
 
 const styles = StyleSheet.create({
-    safeAreaViewStyle: { alignItems: "center", flexDirection: "row", justifyContent: "space-between", backgroundColor: 'white' }
+    safeAreaViewStyle: { alignItems: "center", flexDirection: "row", backgroundColor: 'white' },
+    safeAreaViewStyle2: { alignItems: "center", flexDirection: "row", justifyContent: "space-between", backgroundColor: 'white' }
 })
