@@ -199,4 +199,19 @@ router.delete('/deletepost/:postId', async (req, res) => {
         res.status(500).json({ error: 'Failed to delete post.' });
     }
 });
+
+router.get('/alluserslist', upload.none(), async (req, res) => {
+    try {
+        const users = await User.find();
+
+        const usersList = users.map((user) => {
+            return { name: user.name, profileImage: user.profileImage, userName: user.userName, _id: user._id };
+        });
+        res.status(200).json({ usersList });
+    } catch (error) {
+        console.error('Error fetching users:', error);
+        res.status(500).json({ error: 'Internal server error' });
+    }
+
+});
 module.exports = router
