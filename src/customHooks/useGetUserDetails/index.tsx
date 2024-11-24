@@ -20,7 +20,6 @@ const useGetUserDetails = () => {
                 setGetUserDetailsLoading(false);
                 if (AppState?.Auth?.getUserDetailsResponse?.status === "Success" || AppState?.Auth?.getUserDetailsResponse?.status === 200) {
                     setUserDetails(AppState?.Auth?.getUserDetailsResponse?.data?.user);
-                    console.log("userDetails", userDetails);
                 } else {
                     Alert.alert(
                         "Alert",

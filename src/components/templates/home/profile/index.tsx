@@ -25,18 +25,21 @@ const ProfileTemplate = () => {
     const screenWidth = Dimensions.get('window').width;
     const postSize = screenWidth / 3 - 2;
 
-    useEffect(() => {
-        if (userData?.user?._id)
-            getUserDetail({ userId: userData?.user?._id });
-        getFeedsList();
-    }, [userData]);
-
     useFocusEffect(
         React.useCallback(() => {
             getFeedsList();
             return () => {
             };
-        }, [])
+        }, [userData])
+    );
+
+    useFocusEffect(
+        React.useCallback(() => {
+            if (userData?.user?._id)
+                getUserDetail({ userId: userData?.user?._id });
+            return () => {
+            };
+        }, [userData])
     );
 
     const refRBSheet: any = useRef();
