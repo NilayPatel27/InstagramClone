@@ -139,3 +139,17 @@ export const allUsersRequest = (dispatch: any) => async () => {
     }
 }
 //#endregion
+
+//#region getUserDetails
+export const getUserDetails = (dispatch: any) => async (params: any) => {
+    try {
+        const response = await GET(`http://10.0.0.105:5000/user/${params.userId}`, {});
+        console.log("getUserDetails", response);
+        dispatch({ type: TYPES.GETUSERDETAILS_SUCCESS, payload: response });
+        return response;
+    } catch (error) {
+        console.log("getUserDetails", error);
+        dispatch({ type: TYPES.GETUSERDETAILS_FAILURE, payload: error });
+    }
+}
+//#endregion
