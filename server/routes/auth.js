@@ -229,4 +229,23 @@ router.get('/user/:userId', async (req, res) => {
         res.status(500).json({ error: 'Failed to get user details.' });
     }
 });
+
+//update user Name and Bio and profile image
+router.put('/updateprofile', async (req, res) => {
+    try {
+        const { userId, name, bio, profileImage } = req.body;
+        const user = await User.findById(userId);
+        if (!user) {
+            return res.status(404).json({ error: 'User not found.' });
+        }
+        user.name = name;
+        user.bio = bio;
+        user.profileImage = profileImage;
+        await user.save();
+        res.status(200).json({ message: 'Profile updated successfully', user });
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ error: 'Failed to update profile.' });
+    }
+});
 module.exports = router
