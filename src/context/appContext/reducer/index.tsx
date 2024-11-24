@@ -75,6 +75,13 @@ const Reducer = (state: any, action: any) => {
             return { ...state, Auth: { ...state.Auth, getUserDetailsSuccess: false, error: action.payload } };
         //#endregion
 
+        //#region UpdateUserDetails
+        case TYPE.UPDATEUSERDETAILS_SUCCESS:
+            return { ...state, Auth: { ...state.Auth, updateUserDetailsSuccess: true, updateUserDetailsResponse: action.payload } };
+        case TYPE.UPDATEUSERDETAILS_FAILURE:
+            return { ...state, Auth: { ...state.Auth, updateUserDetailsSuccess: false, error: action.payload } };
+        //#endregion
+
         default:
             return state;
     }

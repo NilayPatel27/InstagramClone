@@ -153,3 +153,17 @@ export const getUserDetails = (dispatch: any) => async (params: any) => {
     }
 }
 //#endregion
+
+//#region updateUserDetails
+export const updateUserDetails = (dispatch: any) => async (params: any) => {
+    try {
+        const response = await POST('http://10.0.0.105:5000/updateprofile', params, {});
+        console.log("updateUserDetails", response);
+        dispatch({ type: TYPES.UPDATEUSERDETAILS_SUCCESS, payload: response });
+        return response;
+    } catch (error) {
+        console.log("updateUserDetails", error);
+        dispatch({ type: TYPES.UPDATEUSERDETAILS_FAILURE, payload: error });
+    }
+}
+//#endregion
