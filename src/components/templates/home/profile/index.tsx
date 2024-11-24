@@ -7,18 +7,14 @@ import { Dimensions, FlatList, Image, StyleSheet, Text, TouchableHighlight, Touc
 
 import { Images } from '@instagram/assets';
 import { Loader } from '@instagram/components/atoms';
-import { useFeedsList, useUserData } from '@instagram/customHooks';
 import { NavigationBar } from '@instagram/components/molecules/index.tsx';
+import { useFeedsList, useGetUserDetails, useUserData } from '@instagram/customHooks';
 
 const ProfileTemplate = () => {
 
     const navigation = useNavigation();
     const { userData } = useUserData();
-
-    const userName = userData?.user?.name || "User Name";
-    const userBio = userData?.user?.bio || "User Bio";
-    const followers = userData?.user?.followers?.length || 0;
-    const following = userData?.user?.following?.length || 0;
+    const { userDetails, getUserDetail, getUserDetailsLoading }: any = useGetUserDetails();
 
     const { getFeedsList, userFeedListLoading, userFeedList } = useFeedsList();
 
@@ -30,8 +26,10 @@ const ProfileTemplate = () => {
     const postSize = screenWidth / 3 - 2;
 
     useEffect(() => {
+        if (userData?.user?._id)
+            getUserDetail({ userId: userData?.user?._id });
         getFeedsList();
-    }, []);
+    }, [userData]);
 
     useFocusEffect(
         React.useCallback(() => {
@@ -78,7 +76,7 @@ const ProfileTemplate = () => {
 
     return (
         <>
-            <NavigationBar rightProps={{ onPress, back: false, right: true, onBack: false, postButton: true, menuButton: true }} navigation={navigation} userName={userData?.user?.userName} />
+            <NavigationBar rightProps={{ onPress, back: false, right: true, onBack: false, postButton: true, menuButton: true }} navigation={navigation} userName={userDetails?.userName} />
 
             {/* profile header section */}
             <View style={styles.container}>
@@ -87,23 +85,32 @@ const ProfileTemplate = () => {
                 </View>
                 <View style={styles.countContainer}>
                     <View style={styles.statsContainer}>
-                        <Text style={styles.stat}>{userFeedList ? userFeedList.length : 0}</Text>
+                        <Text style={styles.stat}>{userFeedList ? userFeedList?.length : 0}</Text>
                         <Text style={styles.statLabel}>posts</Text>
                     </View>
                     <View style={styles.statsContainer}>
-                        <Text style={styles.stat}>{followers}</Text>
+                        <Text style={styles.stat}>{userDetails ? userDetails?.followers?.length : 0}</Text>
                         <Text style={styles.statLabel}>followers</Text>
                     </View>
                     <View style={styles.statsContainer}>
-                        <Text style={styles.stat}>{following}</Text>
+                        <Text style={styles.stat}>{userDetails ? userDetails?.following?.length : 0}</Text>
                         <Text style={styles.statLabel}>following</Text>
                     </View>
                 </View>
             </View >
-            <View style={styles.profileDescription}>
-                <Text style={styles.username}>{userName}</Text>
-                <Text style={styles.description}>{userBio}</Text>
-            </View>
+            {
+                (userDetails?.name || userDetails?.bio) &&
+                <View style={styles.profileDescription}>
+                    {
+                        userDetails?.name &&
+                        <Text style={styles.name}>{userDetails?.name}</Text>
+                    }
+                    {
+                        userDetails?.bio &&
+                        <Text style={styles.description}>{userDetails?.bio}</Text>
+                    }
+                </View>
+            }
             <View style={styles.buttonContainer}>
                 <TouchableOpacity style={styles.editButton} onPress={handleEditProfile}>
                     <Text style={styles.buttonText}>Edit profile</Text>
@@ -159,11 +166,11 @@ const ProfileTemplate = () => {
                     <Divider />
                     <View style={{ justifyContent: 'space-between', padding: 15 }}>
                         <Text style={{ fontSize: 16, color: 'black', fontWeight: "bold" }}>Email</Text>
-                        <Text style={{ fontSize: 16, color: 'black' }}>{userData?.user?.email}</Text>
+                        <Text style={{ fontSize: 16, color: 'black' }}>{userDetails?.email}</Text>
                     </View>
                 </View>
             </RBSheet>
-            <Loader visible={userFeedListLoading} />
+            <Loader visible={userFeedListLoading || getUserDetailsLoading} />
         </>
     )
 }
@@ -203,7 +210,7 @@ const styles = StyleSheet.create({
         fontSize: 14,
         color: 'black'
     },
-    username: {
+    name: {
         fontSize: 18,
         fontWeight: 'bold',
         color: 'black'
