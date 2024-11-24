@@ -1,6 +1,6 @@
 import TYPES from "@instagram/context/appContext/types";
 import { setAccess } from "@instagram/customHooks/useAccess/index.tsx";
-import { GET, POST, FORMDATA_POST, DELETE } from "@instagram/context/appContext/apiManagement/index.tsx";
+import { GET, POST, FORMDATA_POST, DELETE, FORMDATA_PUT } from "@instagram/context/appContext/apiManagement/index.tsx";
 
 const LOGINURL = 'http://localhost:5000/login';
 
@@ -157,7 +157,7 @@ export const getUserDetails = (dispatch: any) => async (params: any) => {
 //#region updateUserDetails
 export const updateUserDetails = (dispatch: any) => async (params: any) => {
     try {
-        const response = await POST('http://10.0.0.105:5000/updateprofile', params, {});
+        const response = await FORMDATA_PUT('http://10.0.0.105:5000/updateprofile', params, {});
         console.log("updateUserDetails", response);
         dispatch({ type: TYPES.UPDATEUSERDETAILS_SUCCESS, payload: response });
         return response;
