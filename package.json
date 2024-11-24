@@ -1,5 +1,5 @@
 {
-  "name": "instagramClone",
+  "name": "instagramclone",
   "version": "0.0.1",
   "private": true,
   "scripts": {
@@ -46,6 +46,7 @@
     "@types/react-test-renderer": "^18.0.0",
     "babel-jest": "^29.7.0",
     "babel-plugin-module-resolver": "^5.0.2",
+    "cypress": "^13.16.0",
     "eslint": "^8.19.0",
     "jest": "^29.6.3",
     "prettier": "2.8.8",
@@ -54,5 +55,10 @@
   },
   "engines": {
     "node": ">=18"
-  }
+  },
+  "description": "Kindly join in with this below link:\r https://app.getpostman.com/join-team?invite_code=6b045591dfcddeddcf06813ffa2d3716",
+  "main": "index.js",
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
 }
