@@ -5,5 +5,6 @@ import useDeleteFeed from './useDeleteFeed';
 import useStoragePermission from './useStoragePermission';
 import useAllUsersList from './useAllUsersList';
 import useGetUserDetails from './useGetUserDetails';
+import useUpdateUserDetails from './useUpdateUserDetails';
 
-export { useStoragePermission, usePrevious, useUserData, useDeleteFeed, useFeedsList, useAllUsersList, useGetUserDetails };
+export { useStoragePermission, usePrevious, useUserData, useDeleteFeed, useFeedsList, useAllUsersList, useGetUserDetails, useUpdateUserDetails };

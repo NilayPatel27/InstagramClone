@@ -231,7 +231,7 @@ router.get('/user/:userId', async (req, res) => {
 });
 
 //update user Name and Bio and profile image
-router.put('/updateprofile', async (req, res) => {
+router.put('/updateprofile', upload.none(), async (req, res) => {
     try {
         const { userId, name, bio, profileImage } = req.body;
         const user = await User.findById(userId);
