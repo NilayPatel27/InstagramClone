@@ -157,7 +157,7 @@ export const getUserDetails = (dispatch: any) => async (params: any) => {
 //#region updateUserDetails
 export const updateUserDetails = (dispatch: any) => async (params: any) => {
     try {
-    const response = await FORMDATA_PUT('http://10.0.0.105:5000/updateprofile', params, {});
+        const response = await FORMDATA_PUT('http://10.0.0.105:5000/updateprofile', params, {});
         console.log("updateUserDetails", response);
         dispatch({ type: TYPES.UPDATEUSERDETAILS_SUCCESS, payload: response });
         return response;
@@ -178,6 +178,20 @@ export const followUser = (dispatch: any) => async (params: any) => {
     } catch (error) {
         console.log("followUser", error);
         dispatch({ type: TYPES.FOLLOWUSER_FAILURE, payload: error });
+    }
+}
+//#endregion
+
+//#region unFollowUser
+export const unFollowUser = (dispatch: any) => async (params: any) => {
+    try {
+        const response = await PUT('http://10.0.0.105:5000/unfollow', params, {});
+        console.log("unFollowUser", response);
+        dispatch({ type: TYPES.UNFOLLOWUSER_SUCCESS, payload: response });
+        return response;
+    } catch (error) {
+        console.log("unFollowUser", error);
+        dispatch({ type: TYPES.UNFOLLOWUSER_FAILURE, payload: error });
     }
 }
 //#endregion
