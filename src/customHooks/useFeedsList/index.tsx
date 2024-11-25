@@ -12,9 +12,9 @@ const useFeedsList = () => {
     const previousAppState: any = usePrevious(AppState);
 
     const [otherUserId, setOtherUserId] = useState("");
+    const [userFeedList, setUserFeedList] = useState([]);
     const [userFeedListLoading, setUserFeedListLoading] = useState(false);
     const [currentUserDetails, setCurrentUserDetails] = useState<any>({});
-    const [userFeedList, setUserFeedList] = useState([]);
 
     const { userData } = useUserData();
     const { getUserDetail: getCurrentUserDetail }: any = useGetUserDetails();
@@ -55,6 +55,7 @@ const useFeedsList = () => {
                     const isHomePage = currentScreen === "HomePage";
                     const isOtherUserProfilePage = currentScreen === "OtherUserProfilePage";
                     const isProfilePage = currentScreen === "ProfilePage";
+                    const isFeedsListPage = currentScreen === "FeedsList";
 
                     const filteredFeedList = AppState?.FeedList?.feedListResponse?.data?.posts?.filter(
                         (item: any) => {
@@ -64,10 +65,16 @@ const useFeedsList = () => {
                                 return item.userId === otherUserId;
                             } else if (isProfilePage) {
                                 return item.userId === userData.user._id;
-                            } else
-                                return item.userId === userData.user._id;
-                        });
+                            } else if (isFeedsListPage) {
+                                if (otherUserId)
+                                    return item.userId === otherUserId;
+                                else
+                                    return item.userId === userData.user._id;
+                            }
+                        }
+                    );
                     setUserFeedList(filteredFeedList);
+
                 } else {
                     Alert.alert(
                         "Alert",
