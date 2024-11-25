@@ -2,8 +2,8 @@ import { Alert } from "react-native";
 import { useContext, useEffect, useState } from "react";
 
 import { AppContext } from "@instagram/context";
+import { useUserData } from "@instagram/customHooks";
 import usePrevious from "@instagram/customHooks/usePrevious";
-import { getAccess } from '@instagram/customHooks/useAccess';
 import { useNavigationState } from "@react-navigation/native";
 
 const useFeedsList = () => {
@@ -14,15 +14,10 @@ const useFeedsList = () => {
 
     const [userFeedListLoading, setUserFeedListLoading] = useState(false);
     const [userFeedList, setUserFeedList] = useState([]);
-    const [userData, setUserData] = useState<any>({});
 
-    const getUserData = async () => {
-        const data: any = await getAccess("user");
-        setUserData(JSON.parse(data));
-    }
+    const { userData } = useUserData();
 
     const getFeedsList = () => {
-        getUserData();
         setUserFeedListLoading(true);
         feedListRequest();
     }
