@@ -8,7 +8,7 @@ import { Image, StyleSheet, Text, TouchableOpacity, View, FlatList, TouchableHig
 import { Images } from '@instagram/assets';
 import { Loader } from '@instagram/components/atoms';
 import { NavigationBar } from '@instagram/components/molecules';
-import useFollowUser from '@instagram/customHooks/useFollowUser';
+import { useFollowUser, useUnFollowUser } from '@instagram/customHooks';
 import { useFeedsList, useGetUserDetails, useUserData } from '@instagram/customHooks';
 
 const OtherUserProfileTemplate = ({ otherUserId }: { otherUserId: string }) => {
@@ -20,19 +20,22 @@ const OtherUserProfileTemplate = ({ otherUserId }: { otherUserId: string }) => {
     const [otherUserBio, setOtherUserBio] = useState("");
     const [otherUserName, setOtherUserName] = useState("");
     const [otherUserFullName, setOtherUserFullName] = useState("");
+    const [otherUserDetails, setOtherUserDetails] = useState<any>({});
+    const [currentUserDetails, setCurrentUserDetails] = useState<any>({});
     const [otherUserProfileImage, setOtherUserProfileImage] = useState("");
 
     const { followUserRequest, followUserLoading } = useFollowUser();
+    const { unFollowUserRequest, unFollowUserLoading } = useUnFollowUser();
     const { getFeedsList, userFeedListLoading, userFeedList } = useFeedsList();
-    const { userDetails: otherUserDetails, getUserDetail: getOtherUserDetail, getUserDetailsLoading: getOtherUserDetalsLoading }: any = useGetUserDetails();
-    const { userDetails: currentUserDetails, getUserDetail: getCurrentUserDetail, getUserDetailsLoading: getCurrentUserDetalsLoading }: any = useGetUserDetails();
+    const { getUserDetail: getOtherUserDetail, getUserDetailsLoading: getOtherUserDetalsLoading }: any = useGetUserDetails();
+    const { getUserDetail: getCurrentUserDetail, getUserDetailsLoading: getCurrentUserDetalsLoading }: any = useGetUserDetails();
 
     const screenWidth = Dimensions.get('window').width;
     const postSize = screenWidth / 3 - 2;
 
     useFocusEffect(
         React.useCallback(() => {
-            getFeedsList();
+            getFeedsList({ otherUserId });
             return () => {
             };
         }, [])
@@ -40,17 +43,36 @@ const OtherUserProfileTemplate = ({ otherUserId }: { otherUserId: string }) => {
 
     useFocusEffect(
         React.useCallback(() => {
-            if (userData?.user?._id)
-                getCurrentUserDetail({ userId: userData?.user?._id });
+            if (userData?.user?._id) {
+                const getDetail = async () => {
+                    const response = await getCurrentUserDetail({ userId: userData?.user?._id });
+                    if (response.status === 200)
+                        setCurrentUserDetails(response.data.user);
+                    else {
+                        setCurrentUserDetails({});
+                    }
+                }
+                getDetail();
+            }
+
             return () => {
             };
-        }, [userData])
+        }, [userData?.user?._id])
     );
 
     useFocusEffect(
         React.useCallback(() => {
-            if (otherUserId)
-                getOtherUserDetail({ userId: otherUserId });
+            if (otherUserId) {
+                const getDetail = async () => {
+                    const response = await getOtherUserDetail({ userId: otherUserId });
+                    if (response.status === 200)
+                        setOtherUserDetails(response.data.user);
+                    else {
+                        setOtherUserDetails({});
+                    }
+                }
+                getDetail();
+            }
             return () => {
             };
         }, [otherUserId])
@@ -58,7 +80,7 @@ const OtherUserProfileTemplate = ({ otherUserId }: { otherUserId: string }) => {
 
     useEffect(() => {
         if (otherUserDetails) {
-            const { profileImage, name, userName, bio } = otherUserDetails;
+            const { profileImage, name, userName, bio }: any = otherUserDetails;
             profileImage && setOtherUserProfileImage(profileImage);
             name && setOtherUserFullName(name);
             userName && setOtherUserName(userName);
@@ -79,18 +101,50 @@ const OtherUserProfileTemplate = ({ otherUserId }: { otherUserId: string }) => {
     }
 
     const onFollowUnfollowPress = async () => {
-        const params = {
-            "followId": otherUserId,
-            "user": {
-                "_id": currentUserDetails?._id
+        if (followed) {
+            const params = {
+                "unfollowId": otherUserId,
+                "user": {
+                    "_id": currentUserDetails?._id
+                }
             }
-        }
-        const response = await followUserRequest(params);
-        if (response === 200) {
-            getOtherUserDetail({ userId: otherUserId });
-            setFollowed(true);
+            const response = await unFollowUserRequest(params);
+            if (response === 200) {
+                const getDetail = async () => {
+                    const res = await getOtherUserDetail({ userId: otherUserId });
+                    if (res.status === 200)
+                        setOtherUserDetails(res.data.user);
+                    else {
+                        setOtherUserDetails({});
+                    }
+                }
+                getDetail();
+                setFollowed(false);
+            } else {
+                setFollowed(true);
+            }
         } else {
-            setFollowed(false);
+            const params = {
+                "followId": otherUserId,
+                "user": {
+                    "_id": currentUserDetails?._id
+                }
+            }
+            const response = await followUserRequest(params);
+            if (response === 200) {
+                const getDetail = async () => {
+                    const res = await getOtherUserDetail({ userId: otherUserId });
+                    if (res.status === 200)
+                        setOtherUserDetails(res.data.user);
+                    else {
+                        setOtherUserDetails({});
+                    }
+                }
+                getDetail();
+                setFollowed(true);
+            } else {
+                setFollowed(false);
+            }
         }
     }
 
@@ -103,7 +157,7 @@ const OtherUserProfileTemplate = ({ otherUserId }: { otherUserId: string }) => {
     const renderItem = (item: any, index: any) => {
         return (
             <TouchableHighlight
-                onPress={() => navigation.navigate("FeedsList")}
+                onPress={() => navigation.navigate("FeedsList", { otherUserId })}
                 underlayColor="white"
             >
                 <View style={{
@@ -179,9 +233,9 @@ const OtherUserProfileTemplate = ({ otherUserId }: { otherUserId: string }) => {
 
                     <TouchableOpacity style={[styles.editButton, { backgroundColor: followed ? '#D3D3D3' : '#1E90FF' }]} onPress={onFollowUnfollowPress}>
                         {
-                            followUserLoading ?
+                            (followUserLoading || unFollowUserLoading) ?
                                 <ActivityIndicator
-                                    animating={followUserLoading}
+                                    animating={followUserLoading || unFollowUserLoading}
                                     color='#999999'
                                     size="small" /> :
                                 <Text style={[styles.followUnfollowText, { color: followed ? 'black' : 'white' }]}>{followed ? "Unfollow" : "Follow"}</Text>}
