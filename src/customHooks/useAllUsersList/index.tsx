@@ -2,7 +2,7 @@ import { Alert } from "react-native";
 import { useContext, useEffect, useState } from "react";
 
 import { AppContext } from "@instagram/context";
-import usePrevious from "@instagram/customHooks/usePrevious";
+import { useUserData, usePrevious } from "@instagram/customHooks";
 
 const useAllUsersList = () => {
 
@@ -14,12 +14,15 @@ const useAllUsersList = () => {
 
     const [allUsersList, setAllUsersList] = useState([]);
 
+    const { userData } = useUserData();
+
     useEffect(() => {
         if (allUsersListLoading && AppState?.Auth?.allUsersSuccess === true && AppState?.Auth?.allUsersResponse) {
             if (previousAppState?.Auth !== AppState?.Auth) {
                 setAllUsersListLoading(false);
                 if (AppState?.Auth?.allUsersResponse?.status === "Success" || AppState?.Auth?.allUsersResponse?.status === 200) {
-                    setAllUsersList(AppState?.Auth?.allUsersResponse?.data?.usersList);
+                    const allUsers = AppState?.Auth?.allUsersResponse?.data?.usersList.filter((user: any) => user._id !== userData.user._id);
+                    setAllUsersList(allUsers);
                 } else {
                     Alert.alert(
                         "Alert",
