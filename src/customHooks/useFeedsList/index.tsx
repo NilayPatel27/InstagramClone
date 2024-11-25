@@ -1,9 +1,9 @@
 import { Alert } from "react-native";
 import { useContext, useEffect, useState } from "react";
+import { useNavigationState } from "@react-navigation/native";
 
 import { AppContext } from "@instagram/context";
 import usePrevious from "@instagram/customHooks/usePrevious";
-import { useNavigationState } from "@react-navigation/native";
 import { useGetUserDetails, useUserData } from "@instagram/customHooks";
 
 const useFeedsList = () => {
@@ -12,6 +12,7 @@ const useFeedsList = () => {
 
     const previousAppState: any = usePrevious(AppState);
 
+    const [otherUserId, setOtherUserId] = useState("");
     const [userFeedListLoading, setUserFeedListLoading] = useState(false);
     const [currentUserDetails, setCurrentUserDetails] = useState<any>({});
     const [userFeedList, setUserFeedList] = useState([]);
@@ -33,7 +34,10 @@ const useFeedsList = () => {
         getDetail();
     }, [userData?.user?._id])
 
-    const getFeedsList = () => {
+    const getFeedsList = async ({ otherUserId }: any) => {
+        if (otherUserId)
+            setOtherUserId(otherUserId);
+        getDetail();
         setUserFeedListLoading(true);
         feedListRequest();
     }
@@ -49,11 +53,14 @@ const useFeedsList = () => {
                 setUserFeedListLoading(false);
                 if (AppState?.FeedList?.feedListResponse?.status === "Success" || AppState?.FeedList?.feedListResponse?.status === 200) {
                     const isHomePage = currentScreen === "HomePage";
+                    const isOtherUserProfilePage = currentScreen === "OtherUserProfilePage";
 
                     const filteredFeedList = AppState?.FeedList?.feedListResponse?.data?.posts?.filter(
                         (item: any) => {
                             if (isHomePage) {
                                 return currentUserDetails?.following?.includes(item.userId) || item.userId === userData.user._id;
+                            } else if (isOtherUserProfilePage) {
+                                return item.userId === otherUserId;
                             } else
                                 return item.userId === userData.user._id;
                         });
