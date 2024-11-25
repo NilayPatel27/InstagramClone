@@ -58,4 +58,15 @@ const FORMDATA_PUT = async (url: any, data: any, header: any) => {
     };
 }
 
-export { GET, POST, FORMDATA_POST, DELETE, FORMDATA_PUT };
+const PUT = async (url: any, data: any, header: any) => {
+    const newHeader = { ...HEADER, ...header };
+    try {
+        const response = await axios.put(url, data, { headers: newHeader });
+        __DEV__ && console.log("Result:  ", response, "\n \n URL:", url, "\n \n PARAMS:", data, "\n \n HEADER:", newHeader);
+        return response;
+    } catch (error) {
+        console.log("Error posting data", error);
+    };
+}
+
+export { GET, POST, FORMDATA_POST, DELETE, FORMDATA_PUT, PUT };
