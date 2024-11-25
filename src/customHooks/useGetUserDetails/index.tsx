@@ -48,9 +48,9 @@ const useGetUserDetails = () => {
 
 
     const getUserDetail = ({ userId }: { userId: string }) => {
-        console.log("userId", userId);
         setGetUserDetailsLoading(true);
-        getUserDetails({ userId });
+        const response = getUserDetails({ userId });
+        return response;
     }
 
     return { userDetails, getUserDetail, getUserDetailsLoading };

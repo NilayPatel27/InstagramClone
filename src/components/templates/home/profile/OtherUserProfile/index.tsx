@@ -8,9 +8,9 @@ import { Image, StyleSheet, Text, TouchableOpacity, View, FlatList, TouchableHig
 import { Images } from '@instagram/assets';
 import { Loader } from '@instagram/components/atoms';
 import { NavigationBar } from '@instagram/components/molecules';
-import { useFeedsList, useUserData } from '@instagram/customHooks';
+import { useFeedsList, useGetUserDetails, useUserData } from '@instagram/customHooks';
 
-const OtherUserProfileTemplate = () => {
+const OtherUserProfileTemplate = ({ otherUserId }: { otherUserId: string }) => {
     const { userData } = useUserData();
     const navigation = useNavigation();
 
@@ -20,6 +20,12 @@ const OtherUserProfileTemplate = () => {
     const following = userData?.user?.following?.length || 0;
 
     const [followed, setFollowed] = useState(false);
+    const [otherUserBio, setOtherUserBio] = useState("");
+    const [otherUserName, setOtherUserName] = useState("");
+    const [otherUserFullName, setOtherUserFullName] = useState("");
+    const [otherUserProfileImage, setOtherUserProfileImage] = useState("");
+
+    const { userDetails: otherUserDetails, getUserDetail: getOtherUserDetail, getUserDetailsLoading: getOtherUserDetalsLoading }: any = useGetUserDetails();
 
     const screenWidth = Dimensions.get('window').width;
     const postSize = screenWidth / 3 - 2;
@@ -37,6 +43,25 @@ const OtherUserProfileTemplate = () => {
             };
         }, [])
     );
+
+    useFocusEffect(
+        React.useCallback(() => {
+            if (otherUserId)
+                getOtherUserDetail({ userId: otherUserId });
+            return () => {
+            };
+        }, [otherUserId])
+    );
+
+    useEffect(() => {
+        if (otherUserDetails) {
+            const { profileImage, name, userName, bio } = otherUserDetails;
+            profileImage && setOtherUserProfileImage(profileImage);
+            name && setOtherUserFullName(name);
+            userName && setOtherUserName(userName);
+            bio && setOtherUserBio(bio);
+        }
+    }, [otherUserDetails]);
 
     const onBack = () => {
         navigation.goBack();
@@ -80,12 +105,16 @@ const OtherUserProfileTemplate = () => {
     return (
         <>
             <View style={{ flex: 1, backgroundColor: "white" }}>
-                <NavigationBar rightProps={{ back: true, right: false, onBack }} navigation={navigation} userName={userData?.user?.userName} />
+                <NavigationBar rightProps={{ back: true, right: false, onBack }} navigation={navigation} userName={otherUserName} />
 
                 <View style={styles.container}>
 
                     <View style={styles.imageContainer}>
-                        <Image source={Images.User} style={styles.userImage} />
+                        {
+                            otherUserProfileImage ?
+                                <Image source={{ uri: otherUserProfileImage }} style={styles.userImage} /> :
+                                <Image source={Images.User} style={styles.userImage} />
+                        }
                     </View>
 
                     <View style={styles.countContainer}>
@@ -96,12 +125,12 @@ const OtherUserProfileTemplate = () => {
                         </View>
 
                         <View style={styles.statsContainer}>
-                            <Text style={styles.stat}>{followers}</Text>
+                            <Text style={styles.stat}>{otherUserDetails?.followers?.length}</Text>
                             <Text style={styles.statLabel}>followers</Text>
                         </View>
 
                         <View style={styles.statsContainer}>
-                            <Text style={styles.stat}>{following}</Text>
+                            <Text style={styles.stat}>{otherUserDetails?.following?.length}</Text>
                             <Text style={styles.statLabel}>following</Text>
                         </View>
 
@@ -109,10 +138,32 @@ const OtherUserProfileTemplate = () => {
 
                 </View >
 
-                <View style={styles.profileDescription}>
-                    <Text style={styles.username}>{userName}</Text>
-                    <Text style={styles.description}>{userBio}</Text>
-                </View>
+                {
+                    (otherUserFullName || otherUserBio) &&
+                    <View style={styles.profileDescription}>
+                        {
+                            otherUserFullName &&
+                            <Text style={styles.name}>{otherUserFullName}</Text>
+                        }
+                        {
+                            otherUserBio &&
+                            <Text style={styles.description}>{otherUserBio}</Text>
+                        }
+                    </View>
+                }
+                {
+                    (otherUserFullName || otherUserBio) &&
+                    <View style={styles.profileDescription}>
+                        {
+                            otherUserFullName &&
+                            <Text style={styles.name}>{otherUserFullName}</Text>
+                        }
+                        {
+                            otherUserBio &&
+                            <Text style={styles.description}>{otherUserBio}</Text>
+                        }
+                    </View>
+                }
 
                 <View style={styles.buttonContainer}>
 
@@ -182,7 +233,7 @@ const OtherUserProfileTemplate = () => {
                     </View>
                 </RBSheet>
 
-                <Loader visible={userFeedListLoading} />
+                <Loader visible={userFeedListLoading || getOtherUserDetalsLoading} />
             </View>
         </>
     )
@@ -223,7 +274,7 @@ const styles = StyleSheet.create({
         fontSize: 14,
         color: 'black'
     },
-    username: {
+    name: {
         fontSize: 18,
         fontWeight: 'bold',
         color: 'black'
