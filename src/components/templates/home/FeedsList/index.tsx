@@ -46,7 +46,8 @@ const FeedsListTemplate = () => {
             onDeletePress,
             deleteUserFeedLoading,
             userName: item?.userName || "User Name",
-            userId: item?.userId
+            userId: item?.userId,
+            profileImage: item?.profileImage
         }
 
         return (
