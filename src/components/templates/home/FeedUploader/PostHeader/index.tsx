@@ -33,8 +33,8 @@ const PostHeader = ({ userName, profileUri, onDeletePress, options }: PostHeader
             width: windowWidth, alignItems: "center", borderBottomWidth: 0.5, padding: 10
         }}>
             <View style={{ alignItems: "center", flexDirection: "row" }}>
-                {profileUri && profileUri !== null ? <Image source={{ uri: ${profileUri} }} style={{ height: 25, marginHorizontal: 10, width: 25 }} /> :
-                <Image source={Images.User} style={{ height: 25, marginHorizontal: 10, width: 25 }} />}
+                {profileUri && profileUri !== null ? <Image source={{ uri: `${profileUri}` }} style={{ height: 25, marginHorizontal: 10, width: 25 }} /> :
+                    <Image source={Images.User} style={{ height: 25, marginHorizontal: 10, width: 25 }} />}
                 <Text style={{ color: "rgb(0, 0, 0)", fontSize: 15, fontWeight: "bold" }}>{userName}</Text>
             </View>
             <TouchableOpacity
