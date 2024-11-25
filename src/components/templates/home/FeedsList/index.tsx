@@ -6,7 +6,7 @@ import { Loader } from '@instagram/components/atoms';
 import { useDeleteFeed, useFeedsList, useUserData } from '@instagram/customHooks';
 import { OneFeedTemplate, MultiFeedsTemplate } from '@instagram/components/templates/home/index.tsx';
 
-const FeedsListTemplate = () => {
+const FeedsListTemplate = ({ otherUserId }: { otherUserId: string }) => {
 
     const { deleteFeed, deleteUserFeedLoading, deletFeedSuccess } = useDeleteFeed();
 
@@ -31,7 +31,7 @@ const FeedsListTemplate = () => {
     const navigation = useNavigation();
 
     useEffect(() => {
-        getFeedsList();
+        getFeedsList({ otherUserId: otherUserId ? otherUserId : "" });
     }, [deletFeedSuccess]);
 
     useEffect(() => {
@@ -64,7 +64,7 @@ const FeedsListTemplate = () => {
     }
 
     const onRefresh = () => {
-        getFeedsList();
+        getFeedsList({ otherUserId: otherUserId ? otherUserId : "" });
     }
 
     return (

@@ -27,7 +27,7 @@ const ProfileTemplate = () => {
 
     useFocusEffect(
         React.useCallback(() => {
-            getFeedsList();
+            getFeedsList({ otherUserId: "" });
             return () => {
             };
         }, [userData])
@@ -47,7 +47,7 @@ const ProfileTemplate = () => {
     const renderItem = (item: any, index: any) => {
         return (
             <TouchableHighlight
-                onPress={() => navigation.navigate("FeedsList")}
+                onPress={() => navigation.navigate("FeedsList", { otherUserId: "" })}
                 underlayColor="white"
             >
                 <View style={{

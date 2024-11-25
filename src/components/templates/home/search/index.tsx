@@ -11,8 +11,10 @@ const SearchTemplate = () => {
 
     const navigation = useNavigation();
 
-    const onUserProfilePress = () => {
-        navigation.navigate("OtherUserProfilePage");
+    const onUserProfilePress = (item: any) => {
+        navigation.navigate("OtherUserProfilePage", {
+            otherUserId: item._id
+        });
     }
 
     const { allUsersList, getAllUsersList } = useAllUsersList();
@@ -37,9 +39,9 @@ const SearchTemplate = () => {
         }
     }, [searchText]);
 
-    const renderUserItem = (item: any) => {
+    const renderUserItem = (item: any, index: any) => {
         return (
-            <TouchableOpacity style={styles.renderItemContainer} onPress={onUserProfilePress}>
+            <TouchableOpacity style={styles.renderItemContainer} onPress={() => onUserProfilePress(item)} key={index}>
 
                 <View style={{
                     height: 55,
@@ -85,7 +87,7 @@ const SearchTemplate = () => {
 
             <FlatList
                 data={searchedUserList ? searchedUserList : []}
-                renderItem={({ item }: any) => renderUserItem(item)}
+                renderItem={({ item, index }: any) => renderUserItem(item, index)}
                 keyExtractor={(item, index) => index.toString()}
             />
         </View>
