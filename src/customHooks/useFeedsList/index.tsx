@@ -2,9 +2,9 @@ import { Alert } from "react-native";
 import { useContext, useEffect, useState } from "react";
 
 import { AppContext } from "@instagram/context";
-import { useUserData } from "@instagram/customHooks";
 import usePrevious from "@instagram/customHooks/usePrevious";
 import { useNavigationState } from "@react-navigation/native";
+import { useGetUserDetails, useUserData } from "@instagram/customHooks";
 
 const useFeedsList = () => {
 
@@ -13,9 +13,25 @@ const useFeedsList = () => {
     const previousAppState: any = usePrevious(AppState);
 
     const [userFeedListLoading, setUserFeedListLoading] = useState(false);
+    const [currentUserDetails, setCurrentUserDetails] = useState<any>({});
     const [userFeedList, setUserFeedList] = useState([]);
 
     const { userData } = useUserData();
+    const { getUserDetail: getCurrentUserDetail }: any = useGetUserDetails();
+
+    const getDetail = async () => {
+        if (userData?.user?._id) {
+            const response = await getCurrentUserDetail({ userId: userData?.user?._id });
+            if (response.status === 200)
+                setCurrentUserDetails(response.data.user);
+            else {
+                setCurrentUserDetails({});
+            }
+        }
+    }
+    useEffect(() => {
+        getDetail();
+    }, [userData?.user?._id])
 
     const getFeedsList = () => {
         setUserFeedListLoading(true);
@@ -35,11 +51,13 @@ const useFeedsList = () => {
                     const isHomePage = currentScreen === "HomePage";
 
                     const filteredFeedList = AppState?.FeedList?.feedListResponse?.data?.posts?.filter(
-                        (item: any) => isHomePage || item.userId === userData?.user?._id
-                    );
-
+                        (item: any) => {
+                            if (isHomePage) {
+                                return currentUserDetails?.following?.includes(item.userId) || item.userId === userData.user._id;
+                            } else
+                                return item.userId === userData.user._id;
+                        });
                     setUserFeedList(filteredFeedList);
-
                 } else {
                     Alert.alert(
                         "Alert",
