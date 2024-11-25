@@ -152,7 +152,8 @@ router.get('/allposts', async (req, res) => {
         let newPosts = [];
         for (let i = 0; i < posts.length; i++) {
             const user = await User.findById(posts[i].userId);
-            newPosts.push({ ...posts[i]._doc, userName: user.userName, profileImage: user.profileImage });
+            if (user)
+                newPosts.push({ ...posts[i]._doc, userName: user.userName, profileImage: user.profileImage });
         }
         res.status(200).json({ posts: newPosts });
     } catch (error) {
@@ -247,5 +248,45 @@ router.put('/updateprofile', upload.none(), async (req, res) => {
         console.error(error);
         res.status(500).json({ error: 'Failed to update profile.' });
     }
+});
+router.put('/follow', async (req, res) => {
+    const followUser = await User.findByIdAndUpdate(req.body.followId, {
+        $addToSet: { followers: req.body.user._id }
+    }, { new: true })
+
+    if (!followUser) {
+        return res.status(404).json({ error: "User to follow not found" });
+    }
+
+    const currentUser = await User.findByIdAndUpdate(
+        req.body.user._id,
+        { $addToSet: { following: req.body.followId } },
+        { new: true })
+
+    if (!currentUser) {
+        return res.status(404).json({ error: "Current user not found" });
+    }
+
+    res.status(200).json({ message: 'Followed successfully', followers: currentUser.followers, following: currentUser.following });
+});
+router.put('/unfollow', async (req, res) => {
+    const unfollowUser = await User.findByIdAndUpdate(req.body.unfollowId, {
+        $pull: { followers: req.body.user._id }
+    }, { new: true })
+
+    if (!unfollowUser) {
+        return res.status(404).json({ error: "User to unfollow not found" });
+    }
+
+    const currentUser = await User.findByIdAndUpdate(
+        req.body.user._id,
+        { $pull: { following: req.body.unfollowId } },
+        { new: true })
+
+    if (!currentUser) {
+        return res.status(404).json({ error: "Current user not found" });
+    }
+
+    res.status(200).json({ message: 'Unfollowed successfully', followers: currentUser.followers, following: currentUser.following });
 });
 module.exports = router
