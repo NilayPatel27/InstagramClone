@@ -8,9 +8,11 @@ import { Image, StyleSheet, Text, TouchableOpacity, View, FlatList, TouchableHig
 import { Images } from '@instagram/assets';
 import { Loader } from '@instagram/components/atoms';
 import { NavigationBar } from '@instagram/components/molecules';
+import useFollowUser from '@instagram/customHooks/useFollowUser';
 import { useFeedsList, useGetUserDetails, useUserData } from '@instagram/customHooks';
 
 const OtherUserProfileTemplate = ({ otherUserId }: { otherUserId: string }) => {
+
     const { userData } = useUserData();
     const navigation = useNavigation();
 
@@ -20,6 +22,7 @@ const OtherUserProfileTemplate = ({ otherUserId }: { otherUserId: string }) => {
     const [otherUserFullName, setOtherUserFullName] = useState("");
     const [otherUserProfileImage, setOtherUserProfileImage] = useState("");
 
+    const { followUserRequest, followUserLoading } = useFollowUser();
     const { getFeedsList, userFeedListLoading, userFeedList } = useFeedsList();
     const { userDetails: otherUserDetails, getUserDetail: getOtherUserDetail, getUserDetailsLoading: getOtherUserDetalsLoading }: any = useGetUserDetails();
     const { userDetails: currentUserDetails, getUserDetail: getCurrentUserDetail, getUserDetailsLoading: getCurrentUserDetalsLoading }: any = useGetUserDetails();
@@ -75,8 +78,20 @@ const OtherUserProfileTemplate = ({ otherUserId }: { otherUserId: string }) => {
         navigation.goBack();
     }
 
-    const onFollowUnfollowPress = () => {
-        setFollowed(!followed);
+    const onFollowUnfollowPress = async () => {
+        const params = {
+            "followId": otherUserId,
+            "user": {
+                "_id": currentUserDetails?._id
+            }
+        }
+        const response = await followUserRequest(params);
+        if (response === 200) {
+            getOtherUserDetail({ userId: otherUserId });
+            setFollowed(true);
+        } else {
+            setFollowed(false);
+        }
     }
 
     const refRBSheet: any = useRef();
@@ -159,24 +174,17 @@ const OtherUserProfileTemplate = ({ otherUserId }: { otherUserId: string }) => {
                         }
                     </View>
                 }
-                {
-                    (otherUserFullName || otherUserBio) &&
-                    <View style={styles.profileDescription}>
-                        {
-                            otherUserFullName &&
-                            <Text style={styles.name}>{otherUserFullName}</Text>
-                        }
-                        {
-                            otherUserBio &&
-                            <Text style={styles.description}>{otherUserBio}</Text>
-                        }
-                    </View>
-                }
 
                 <View style={styles.buttonContainer}>
 
                     <TouchableOpacity style={[styles.editButton, { backgroundColor: followed ? '#D3D3D3' : '#1E90FF' }]} onPress={onFollowUnfollowPress}>
-                        <Text style={[styles.followUnfollowText, { color: followed ? 'black' : 'white' }]}>{followed ? "Unfollow" : "Follow"}</Text>
+                        {
+                            followUserLoading ?
+                                <ActivityIndicator
+                                    animating={followUserLoading}
+                                    color='#999999'
+                                    size="small" /> :
+                                <Text style={[styles.followUnfollowText, { color: followed ? 'black' : 'white' }]}>{followed ? "Unfollow" : "Follow"}</Text>}
                     </TouchableOpacity>
 
                     <TouchableOpacity style={styles.contactButton} onPress={handleContact}>
