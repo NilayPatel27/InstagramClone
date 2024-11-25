@@ -3,7 +3,7 @@ import RBSheet from 'react-native-raw-bottom-sheet';
 import React, { useEffect, useRef, useState } from 'react';
 import Foundation from 'react-native-vector-icons/Foundation';
 import { useFocusEffect, useNavigation } from '@react-navigation/native';
-import { Image, StyleSheet, Text, TouchableOpacity, View, FlatList, TouchableHighlight, Dimensions } from 'react-native';
+import { Image, StyleSheet, Text, TouchableOpacity, View, FlatList, TouchableHighlight, Dimensions, ActivityIndicator } from 'react-native';
 
 import { Images } from '@instagram/assets';
 import { Loader } from '@instagram/components/atoms';
@@ -14,27 +14,18 @@ const OtherUserProfileTemplate = ({ otherUserId }: { otherUserId: string }) => {
     const { userData } = useUserData();
     const navigation = useNavigation();
 
-    const userName = userData?.user?.name || "User Name";
-    const userBio = userData?.user?.bio || "User Bio";
-    const followers = userData?.user?.followers?.length || 0;
-    const following = userData?.user?.following?.length || 0;
-
     const [followed, setFollowed] = useState(false);
     const [otherUserBio, setOtherUserBio] = useState("");
     const [otherUserName, setOtherUserName] = useState("");
     const [otherUserFullName, setOtherUserFullName] = useState("");
     const [otherUserProfileImage, setOtherUserProfileImage] = useState("");
 
+    const { getFeedsList, userFeedListLoading, userFeedList } = useFeedsList();
     const { userDetails: otherUserDetails, getUserDetail: getOtherUserDetail, getUserDetailsLoading: getOtherUserDetalsLoading }: any = useGetUserDetails();
+    const { userDetails: currentUserDetails, getUserDetail: getCurrentUserDetail, getUserDetailsLoading: getCurrentUserDetalsLoading }: any = useGetUserDetails();
 
     const screenWidth = Dimensions.get('window').width;
     const postSize = screenWidth / 3 - 2;
-
-    const { getFeedsList, userFeedListLoading, userFeedList } = useFeedsList();
-
-    useEffect(() => {
-        getFeedsList();
-    }, []);
 
     useFocusEffect(
         React.useCallback(() => {
@@ -42,6 +33,15 @@ const OtherUserProfileTemplate = ({ otherUserId }: { otherUserId: string }) => {
             return () => {
             };
         }, [])
+    );
+
+    useFocusEffect(
+        React.useCallback(() => {
+            if (userData?.user?._id)
+                getCurrentUserDetail({ userId: userData?.user?._id });
+            return () => {
+            };
+        }, [userData])
     );
 
     useFocusEffect(
@@ -62,6 +62,14 @@ const OtherUserProfileTemplate = ({ otherUserId }: { otherUserId: string }) => {
             bio && setOtherUserBio(bio);
         }
     }, [otherUserDetails]);
+
+    useEffect(() => {
+        if (currentUserDetails?.following?.includes(otherUserId)) {
+            setFollowed(true);
+        } else {
+            setFollowed(false);
+        }
+    }, [currentUserDetails]);
 
     const onBack = () => {
         navigation.goBack();
@@ -233,7 +241,7 @@ const OtherUserProfileTemplate = ({ otherUserId }: { otherUserId: string }) => {
                     </View>
                 </RBSheet>
 
-                <Loader visible={userFeedListLoading || getOtherUserDetalsLoading} />
+                <Loader visible={userFeedListLoading || getCurrentUserDetalsLoading || getOtherUserDetalsLoading} />
             </View>
         </>
     )
