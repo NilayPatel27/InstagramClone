@@ -3,8 +3,7 @@ import { useContext, useEffect, useState } from "react";
 import { useNavigationState } from "@react-navigation/native";
 
 import { AppContext } from "@instagram/context";
-import usePrevious from "@instagram/customHooks/usePrevious";
-import { useGetUserDetails, useUserData } from "@instagram/customHooks";
+import { useGetUserDetails, usePrevious, useUserData } from "@instagram/customHooks";
 
 const useFeedsList = () => {
 
@@ -52,8 +51,10 @@ const useFeedsList = () => {
             if (previousAppState?.FeedList !== AppState?.FeedList) {
                 setUserFeedListLoading(false);
                 if (AppState?.FeedList?.feedListResponse?.status === "Success" || AppState?.FeedList?.feedListResponse?.status === 200) {
+
                     const isHomePage = currentScreen === "HomePage";
                     const isOtherUserProfilePage = currentScreen === "OtherUserProfilePage";
+                    const isProfilePage = currentScreen === "ProfilePage";
 
                     const filteredFeedList = AppState?.FeedList?.feedListResponse?.data?.posts?.filter(
                         (item: any) => {
@@ -61,6 +62,8 @@ const useFeedsList = () => {
                                 return currentUserDetails?.following?.includes(item.userId) || item.userId === userData.user._id;
                             } else if (isOtherUserProfilePage) {
                                 return item.userId === otherUserId;
+                            } else if (isProfilePage) {
+                                return item.userId === userData.user._id;
                             } else
                                 return item.userId === userData.user._id;
                         });
