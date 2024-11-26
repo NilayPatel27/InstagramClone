@@ -1,6 +1,6 @@
 import { Divider } from '@rneui/base';
-import React, { useEffect, useRef } from 'react';
 import RBSheet from 'react-native-raw-bottom-sheet';
+import React, { useEffect, useRef, useState } from 'react';
 import Foundation from 'react-native-vector-icons/Foundation';
 import { useFocusEffect, useNavigation } from '@react-navigation/native';
 import { Dimensions, FlatList, Image, StyleSheet, Text, TouchableHighlight, TouchableOpacity, View } from 'react-native';
@@ -17,6 +17,11 @@ const ProfileTemplate = () => {
     const { userDetails, getUserDetail, getUserDetailsLoading }: any = useGetUserDetails();
 
     const { getFeedsList, userFeedListLoading, userFeedList } = useFeedsList();
+
+    const [userProfileImage, setUserProfileImage] = useState("");
+    const [userFullName, setUserFullName] = useState("");
+    const [userName, setUserName] = useState("");
+    const [userBio, setUserBio] = useState("");
 
     const onPress = () => {
         navigation.navigate("SettingPage");
@@ -41,6 +46,16 @@ const ProfileTemplate = () => {
             };
         }, [userData])
     );
+
+    useEffect(() => {
+        if (userDetails) {
+            const { profileImage, name, userName, bio } = userDetails;
+            profileImage && setUserProfileImage(profileImage);
+            name && setUserFullName(name);
+            userName && setUserName(userName);
+            bio && setUserBio(bio);
+        }
+    }, [userDetails]);
 
     const refRBSheet: any = useRef();
 
@@ -79,48 +94,56 @@ const ProfileTemplate = () => {
 
     return (
         <>
-            <NavigationBar rightProps={{ onPress, back: false, right: true, onBack: false, postButton: true, menuButton: true }} navigation={navigation} userName={userDetails?.userName} />
+            <NavigationBar rightProps={{ onPress, back: false, right: true, onBack: false, postButton: true, menuButton: true }} navigation={navigation} userName={userName} />
 
-            {/* profile header section */}
             <View style={styles.container}>
-                <View style={styles.imageContainer}>
-                    <Image source={Images.User} style={styles.userImage} />
-                </View>
+                {
+                    userProfileImage ?
+                        <Image source={{ uri: userProfileImage }} style={styles.userImage} /> :
+                        <Image source={Images.User} style={styles.userImage} />
+                }
                 <View style={styles.countContainer}>
+
                     <View style={styles.statsContainer}>
                         <Text style={styles.stat}>{userFeedList ? userFeedList?.length : 0}</Text>
                         <Text style={styles.statLabel}>posts</Text>
                     </View>
+
                     <View style={styles.statsContainer}>
                         <Text style={styles.stat}>{userDetails ? userDetails?.followers?.length : 0}</Text>
                         <Text style={styles.statLabel}>followers</Text>
                     </View>
+
                     <View style={styles.statsContainer}>
                         <Text style={styles.stat}>{userDetails ? userDetails?.following?.length : 0}</Text>
                         <Text style={styles.statLabel}>following</Text>
                     </View>
+
                 </View>
             </View >
             {
-                (userDetails?.name || userDetails?.bio) &&
+                (userFullName || userBio) &&
                 <View style={styles.profileDescription}>
                     {
-                        userDetails?.name &&
-                        <Text style={styles.name}>{userDetails?.name}</Text>
+                        userFullName &&
+                        <Text style={styles.name}>{userFullName}</Text>
                     }
                     {
-                        userDetails?.bio &&
-                        <Text style={styles.description}>{userDetails?.bio}</Text>
+                        userBio &&
+                        <Text style={styles.description}>{userBio}</Text>
                     }
                 </View>
             }
             <View style={styles.buttonContainer}>
+
                 <TouchableOpacity style={styles.editButton} onPress={handleEditProfile}>
                     <Text style={styles.buttonText}>Edit profile</Text>
                 </TouchableOpacity>
+
                 <TouchableOpacity style={styles.contactButton} onPress={handleContact}>
                     <Text style={styles.buttonText}>Contact</Text>
                 </TouchableOpacity>
+
             </View>
             <Divider />
             {
