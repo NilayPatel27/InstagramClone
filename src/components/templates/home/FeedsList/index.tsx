@@ -6,6 +6,7 @@ import { Images } from '@instagram/assets';
 import { Loader } from '@instagram/components/atoms';
 import { useDeleteFeed, useFeedsList, useUserData } from '@instagram/customHooks';
 import { OneFeedTemplate, MultiFeedsTemplate } from '@instagram/components/templates/home/index.tsx';
+import { NavigationBar } from '@instagram/components/molecules';
 
 const FeedsListTemplate = ({ otherUserId }: { otherUserId: string }) => {
 
@@ -70,9 +71,13 @@ const FeedsListTemplate = ({ otherUserId }: { otherUserId: string }) => {
 
     return (
         <>
-            <View style={styles.imageContainer}>
-                <Image source={Images.InstagramLogo} style={styles.logoStyle} />
-            </View>
+            {
+                isHomePage ?
+                    <View style={styles.imageContainer}>
+                        <Image source={Images.InstagramLogo} style={styles.logoStyle} />
+                    </View> :
+                    <NavigationBar rightProps={{ onBack: () => navigation.goBack(), back: true, right: false, text: "Posts" }} navigation={navigation} />
+            }
             <View style={{ flex: 1, backgroundColor: "white" }} >
                 <FlatList
                     data={userFeedsList ? userFeedsList : []}
