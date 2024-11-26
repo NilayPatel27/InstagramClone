@@ -45,7 +45,6 @@ const FeedUploaderTemplate = () => {
 
     const imagePicker = async () => {
         if (permission === 'never_ask_again') {
-            console.log("Image Picker");
             const file = await DocumentPicker.pick({
                 allowMultiSelection: true,
                 type: [DocumentPicker.types.images],
@@ -118,7 +117,6 @@ const FeedUploaderTemplate = () => {
             ]);
         }
         else {
-            console.log("Go back");
             navigation.goBack();
         }
     };

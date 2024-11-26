@@ -15,7 +15,6 @@ const GET = async (url: any, header: any) => {
 const POST = async (url: any, data: any, header: any) => {
     const newHeader = { ...HEADER, ...header };
     try {
-        console.log(url, data, { headers: newHeader });
         // const response = await axios.post(url, data, { headers: newHeader });
         const response = await axios.post(url, data, newHeader);
         __DEV__ && console.log("Result:  ", response, "\n \n URL:", url, "\n \n PARAMS:", data, "\n \n HEADER:", newHeader);

@@ -70,7 +70,6 @@ const LoginTemplate = () => {
   };
 
   const handleSignUp = () => {
-    console.log('handleSignUp');
     navigation.navigate('SignUpPage');
   };
 

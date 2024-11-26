@@ -13,7 +13,6 @@ const CreatePassword = ({ username }: any) => {
     }
 
     const handleNextPress = () => {
-        console.log('password', { username, password });
         navigation.navigate('AddEmailPage', { username, password });
     }
 

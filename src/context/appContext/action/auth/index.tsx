@@ -7,7 +7,6 @@ const LOGINURL = 'http://localhost:5000/login';
 export const loginRequest = (dispatch: any) => async (params: any) => {
     try {
         const loginResponse = await POST('http://10.0.0.105:5000/login', params, {});
-        console.log("Login", loginResponse);
         await setAccess("userToken", JSON.stringify(loginResponse?.data?.token));
         await setAccess("user", JSON.stringify(loginResponse?.data));
         dispatch({ type: TYPES.LOGIN_SUCCESS, payload: loginResponse });
@@ -29,14 +28,11 @@ export const logOutRequest = (dispatch: any) => async () => {
 };
 
 export const userNameExistRequest = (dispatch: any) => async (params: any) => {
-    console.log("userNameExist", params);
     try {
         const response = await POST('http://10.0.0.105:5000/usernameexist', params, {});
-        console.log("userNameExist", response);
         dispatch({ type: TYPES.USERNAMEEXIST_SUCCESS, payload: response });
         return response;
     } catch (error) {
-        console.log("userNameExist", error);
         dispatch({ type: TYPES.USERNAMEEXIST_FAILURE, payload: error });
     }
 }
@@ -44,11 +40,9 @@ export const userNameExistRequest = (dispatch: any) => async (params: any) => {
 export const userEmailExistRequest = (dispatch: any) => async (params: any) => {
     try {
         const response = await POST('http://10.0.0.105:5000/useremailexist', params, {});
-        console.log("userEmailExist", response);
         dispatch({ type: TYPES.USEREMAILEXIST_SUCCESS, payload: response });
         return response;
     } catch (error) {
-        console.log("userEmailExist", error);
         dispatch({ type: TYPES.USEREMAILEXIST_FAILURE, payload: error });
     }
 }
@@ -56,13 +50,11 @@ export const userEmailExistRequest = (dispatch: any) => async (params: any) => {
 export const signUpRequest = (dispatch: any) => async (params: any) => {
     try {
         const signupResponse = await POST('http://10.0.0.105:5000/signup', params, {});
-        console.log("signUp", signupResponse);
         await setAccess("userToken", JSON.stringify(signupResponse?.data?.token));
         await setAccess("user", JSON.stringify(signupResponse?.data));
         dispatch({ type: TYPES.SIGNUP_SUCCESS, payload: signupResponse });
         return signupResponse;
     } catch (error) {
-        console.log("signUp", error);
         dispatch({ type: TYPES.SIGNUP_FAILURE, payload: error });
     }
 }
@@ -70,9 +62,7 @@ export const signUpRequest = (dispatch: any) => async (params: any) => {
 //#region ImageUpload
 export const documentUploadRequest = (dispatch: any) => async (params: any) => {
     try {
-        console.log("paramsparams", params);
         const response = await FORMDATA_POST('http://10.0.0.105:5000/addposts', params, {});
-        console.log("response", response);
         dispatch({ type: TYPES.DOCUMENT_UPLOAD_SUCCESS, payload: response });
         return response;
     }
@@ -86,11 +76,9 @@ export const documentUploadRequest = (dispatch: any) => async (params: any) => {
 export const feedListRequest = (dispatch: any) => async () => {
     try {
         const response = await GET('http://10.0.0.105:5000/allposts', {});
-        console.log("feedList", response);
         dispatch({ type: TYPES.FEEDLIST_SUCCESS, payload: response });
         return response;
     } catch (error) {
-        console.log("feedList", error);
         dispatch({ type: TYPES.FEEDLIST_FAILURE, payload: error });
     }
 }
@@ -99,13 +87,10 @@ export const feedListRequest = (dispatch: any) => async () => {
 //#region deleteUserAccount
 export const deleteUserAccountRequest = (dispatch: any) => async (params: any) => {
     try {
-        console.log("deleteUserAccount", params);
         const response = await DELETE(`http://10.0.0.105:5000/deleteaccount/${params}`);
-        console.log("deleteUserAccount", response);
         dispatch({ type: TYPES.DELETEUSERACCOUNT_SUCCESS, payload: response });
         return response;
     } catch (error) {
-        console.log("deleteUserAccount", error);
         dispatch({ type: TYPES.DELETEUSERACCOUNT_FAILURE, payload: error });
     }
 }
@@ -114,13 +99,10 @@ export const deleteUserAccountRequest = (dispatch: any) => async (params: any) =
 //#region deleteUserFeed
 export const deleteUserFeedRequest = (dispatch: any) => async ({ feedId, userId }: any) => {
     try {
-        console.log("deleteUserFeed", feedId, userId);
         const response = await DELETE(`http://10.0.0.105:5000/deletepost/${feedId}`, { userId: userId });
-        console.log("deleteUserFeed", response);
         dispatch({ type: TYPES.DELETEUSERFEED_SUCCESS, payload: response });
         return response;
     } catch (error) {
-        console.log("deleteUserFeed", error);
         dispatch({ type: TYPES.DELETEUSERFEED_FAILURE, payload: error });
     }
 }
@@ -130,11 +112,9 @@ export const deleteUserFeedRequest = (dispatch: any) => async ({ feedId, userId 
 export const allUsersRequest = (dispatch: any) => async () => {
     try {
         const response = await GET('http://10.0.0.105:5000/alluserslist', {});
-        console.log("allUsers", response);
         dispatch({ type: TYPES.ALLUSERS_SUCCESS, payload: response });
         return response;
     } catch (error) {
-        console.log("allUsers", error);
         dispatch({ type: TYPES.ALLUSERS_FAILURE, payload: error });
     }
 }
@@ -144,11 +124,9 @@ export const allUsersRequest = (dispatch: any) => async () => {
 export const getUserDetails = (dispatch: any) => async (params: any) => {
     try {
         const response = await GET(`http://10.0.0.105:5000/user/${params.userId}`, {});
-        console.log("getUserDetails", response);
         dispatch({ type: TYPES.GETUSERDETAILS_SUCCESS, payload: response });
         return response;
     } catch (error) {
-        console.log("getUserDetails", error);
         dispatch({ type: TYPES.GETUSERDETAILS_FAILURE, payload: error });
     }
 }
@@ -158,11 +136,9 @@ export const getUserDetails = (dispatch: any) => async (params: any) => {
 export const updateUserDetails = (dispatch: any) => async (params: any) => {
     try {
         const response = await FORMDATA_PUT('http://10.0.0.105:5000/updateprofile', params, {});
-        console.log("updateUserDetails", response);
         dispatch({ type: TYPES.UPDATEUSERDETAILS_SUCCESS, payload: response });
         return response;
     } catch (error) {
-        console.log("updateUserDetails", error);
         dispatch({ type: TYPES.UPDATEUSERDETAILS_FAILURE, payload: error });
     }
 }
@@ -172,11 +148,9 @@ export const updateUserDetails = (dispatch: any) => async (params: any) => {
 export const followUser = (dispatch: any) => async (params: any) => {
     try {
         const response = await PUT('http://10.0.0.105:5000/follow', params, {});
-        console.log("followUser", response);
         dispatch({ type: TYPES.FOLLOWUSER_SUCCESS, payload: response });
         return response;
     } catch (error) {
-        console.log("followUser", error);
         dispatch({ type: TYPES.FOLLOWUSER_FAILURE, payload: error });
     }
 }
@@ -186,11 +160,9 @@ export const followUser = (dispatch: any) => async (params: any) => {
 export const unFollowUser = (dispatch: any) => async (params: any) => {
     try {
         const response = await PUT('http://10.0.0.105:5000/unfollow', params, {});
-        console.log("unFollowUser", response);
         dispatch({ type: TYPES.UNFOLLOWUSER_SUCCESS, payload: response });
         return response;
     } catch (error) {
-        console.log("unFollowUser", error);
         dispatch({ type: TYPES.UNFOLLOWUSER_FAILURE, payload: error });
     }
 }

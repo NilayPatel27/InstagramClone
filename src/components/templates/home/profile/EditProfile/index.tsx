@@ -33,7 +33,6 @@ const EditPorfileTemplate = () => {
     const onEditPicturePress = async () => {
 
         if (permission === 'never_ask_again') {
-            console.log("Image Picker");
             const file: any = await DocumentPicker.pick({
                 allowMultiSelection: false,
                 type: [DocumentPicker.types.images],
