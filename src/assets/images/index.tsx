@@ -9,4 +9,5 @@ const Remove = require("./PostImages/remove.png");
 const Report = require("./PostImages/report.png");
 const HideAll = require("./PostImages/hideAll.png");
 const WhitePlus = require("./PostImages/whitePlus.png");
-export { Back, Remove, Edit, Image, Plus, WhitePlus, Delete, Hide, HideAll, Report, User };
+const InstagramLogo = require("./Instagram_logo.png");
+export { Back, Remove, Edit, Image, Plus, WhitePlus, Delete, Hide, HideAll, Report, User, InstagramLogo };

@@ -27,20 +27,23 @@ const RootNavigation = () => {
     }
   };
 
+  const checkLoginStatus = async () => {
+    const allKeys = await AsyncStorage.getAllKeys();
+    if (allKeys.includes("userToken")) {
+      await getAccess("userToken").then((token) => {
+        setUserToken(token);
+      }).catch((e) => {
+        setAccess("userToken", null);
+        setAccess("user", null);
+      }).finally(() => {
+        setIsLoading(false);
+      });
+    } else {
+      setIsLoading(false);
+    }
+  };
+
   useEffect(() => {
-    const checkLoginStatus = async () => {
-      const allKeys = await AsyncStorage.getAllKeys();
-      if (allKeys.includes("userToken")) {
-        await getAccess("userToken").then((token) => {
-          setUserToken(token);
-        }).catch((e) => {
-          setAccess("userToken", null);
-          setAccess("user", null);
-        }).finally(() => {
-          setIsLoading(false);
-        });
-      }
-    };
     if (isLoading) checkLoginStatus();
   }, [isLoading]);
 

@@ -1,7 +1,8 @@
-import { View, FlatList } from 'react-native';
 import React, { useEffect, useState } from 'react';
+import { View, FlatList, Image, StyleSheet } from 'react-native';
 import { useNavigation, useNavigationState } from '@react-navigation/native';
 
+import { Images } from '@instagram/assets';
 import { Loader } from '@instagram/components/atoms';
 import { useDeleteFeed, useFeedsList, useUserData } from '@instagram/customHooks';
 import { OneFeedTemplate, MultiFeedsTemplate } from '@instagram/components/templates/home/index.tsx';
@@ -68,17 +69,39 @@ const FeedsListTemplate = ({ otherUserId }: { otherUserId: string }) => {
     }
 
     return (
-        <View style={{ flex: 1, backgroundColor: "white" }} >
-            <FlatList
-                data={userFeedsList ? userFeedsList : []}
-                renderItem={({ item, index }) => renderFeeds(item, index)}
-                keyExtractor={(_, index) => index.toString()}
-                onRefresh={onRefresh}
-                refreshing={userFeedListLoading}
-            />
-            <Loader visible={userFeedListLoading || deleteUserFeedLoading} />
-        </View>
+        <>
+            <View style={styles.imageContainer}>
+                <Image source={Images.InstagramLogo} style={styles.logoStyle} />
+            </View>
+            <View style={{ flex: 1, backgroundColor: "white" }} >
+                <FlatList
+                    data={userFeedsList ? userFeedsList : []}
+                    renderItem={({ item, index }) => renderFeeds(item, index)}
+                    keyExtractor={(_, index) => index.toString()}
+                    onRefresh={onRefresh}
+                    refreshing={userFeedListLoading}
+                />
+                <Loader visible={userFeedListLoading || deleteUserFeedLoading} />
+            </View>
+        </>
     )
 }
+
+const styles = StyleSheet.create({
+    imageContainer: {
+        flexDirection: "row",
+        backgroundColor: "white",
+        height: 50,
+        justifyContent: "flex-start",
+        alignItems: "center",
+        width: "100%"
+    },
+    logoStyle: {
+        width: '50%',
+        height: 50,
+        resizeMode: "contain",
+        marginLeft: -15
+    }
+});
 
 export default FeedsListTemplate;
