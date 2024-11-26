@@ -2,6 +2,7 @@ import React from 'react'
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
+import Splash from '@instagram/screens/splash';
 import AuthStack from '@instagram/navigation/authNavigation';
 import HomeStack from '@instagram/navigation/homeNavigation';
 
@@ -24,6 +25,9 @@ const RootNavigation = () => {
   return (
     <NavigationContainer>
       <Stack.Navigator screenOptions={screenOptions}>
+
+        <Stack.Screen name="SPLASH" component={Splash} />
+
         <Stack.Screen name="HomeStack" component={HomeStack} />
         <Stack.Screen name="AuthStack" component={AuthStack} />
 
