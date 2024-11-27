@@ -1,3 +1,6 @@
+import * as yup from "yup";
+import { useForm, Controller } from "react-hook-form";
+import { yupResolver } from "@hookform/resolvers/yup";
 import { useNavigation } from '@react-navigation/native';
 import React, { useContext, useEffect, useState } from 'react';
 import { Alert, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
@@ -55,22 +58,51 @@ const SignUpTemplate = () => {
     }
   }, [userNameExistLoading, AppState?.Auth?.userNameExistSuccess, AppState?.Auth?.userNameExistResponse, AppState?.Auth?.error]);
 
+  const addValidationSchema = yup.object().shape({
+    username: yup
+      .string()
+      .required("Username is required")
+      .min(3, "Username should be minimum 3 characters")
+      .max(20, "Username should be maximum 20 characters")
+      .matches(/^[a-zA-Z0-9._]*$/, 'Only alphanumeric characters and underscore are allowed')
+  });
+
+  const { handleSubmit, control, formState: { errors } } = useForm({
+    resolver: yupResolver(addValidationSchema),
+    reValidateMode: "onChange"
+  });
 
   return (
     <>
       <View style={styles.container}>
         <Text style={styles.text1}>Choose username</Text>
         <Text style={styles.text2}>You can always change it later.</Text>
-        <TextInput
-          style={styles.userNameInput}
-          placeholder="Username"
-          placeholderTextColor="#888"
-          value={username}
-          onChangeText={handleUserNameChange}
-          keyboardType="name-phone-pad"
+        <Controller
+          control={control}
+          defaultValue={username}
+          name={"username"}
+          render={({ field: { onChange, value } }) => (
+            <>
+              <TextInput
+                style={styles.userNameInput}
+                placeholder="Username"
+                placeholderTextColor="#888"
+                value={value}
+                onChangeText={(text) => {
+                  onChange(text);
+                  handleUserNameChange(text);
+                }}
+                keyboardType="default"
+              />
+              {errors && errors["username"] && errors["username"]?.message &&
+                <Text style={{ color: 'red' }}>{errors["username"]?.message}</Text>
+              }
+            </>
+
+          )}
         />
         <TouchableOpacity
-          onPress={handleNextPress}
+          onPress={handleSubmit(handleNextPress)}
           style={styles.nextButtonContainer}
           disabled={username.length < 1}>
           <Text style={[styles.nextButtonText, { color: username.length < 1 ? '#99b7f3' : '#fff', }]}>Next</Text>
