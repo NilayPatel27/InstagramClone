@@ -10,7 +10,7 @@ const upload = multer();
 
 router.post('/signup', (req, res) => {
     const { name, email, password, profileImage, userName } = req.body
-    if (!email || !password || !name) {
+    if (!email || !password || !userName) {
         return res.status(422).json({ error: "Please add all the fields" })
     }
     User.findOne({ email: email })
