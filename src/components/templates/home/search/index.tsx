@@ -1,13 +1,21 @@
 import React, { useEffect, useState } from 'react';
 import { useFocusEffect, useNavigation } from '@react-navigation/native';
-import { View, TextInput, StyleSheet, Text, TouchableOpacity, FlatList, Image } from 'react-native';
+import { View, TextInput, StyleSheet, Text, TouchableOpacity, FlatList, Image, Dimensions } from 'react-native';
 
 import { Images } from '@instagram/assets';
 import { useAllUsersList } from '@instagram/customHooks';
+import { useBottomTabBarHeight } from '@react-navigation/bottom-tabs';
 
 const SearchTemplate = () => {
 
+    const screenWidth = Dimensions.get('window').width;
+    const screenHeight = Dimensions.get('window').height;
+
+    const tabBarHeight = useBottomTabBarHeight();
+
     const [searchText, setSearchText] = useState("");
+    const [headerHeight, setHeaderHeight] = useState(0);
+    const [hightMeasured, setHeightMeasured] = useState(false);
 
     const navigation = useNavigation();
 
@@ -17,7 +25,7 @@ const SearchTemplate = () => {
         });
     }
 
-    const { allUsersList, getAllUsersList } = useAllUsersList();
+    const { allUsersList, getAllUsersList, allUsersListLoading } = useAllUsersList();
 
     const [searchedUserList, setSearchedUserList] = useState([]);
 
@@ -67,19 +75,42 @@ const SearchTemplate = () => {
 
                 <View style={{ paddingLeft: 10 }}>
                     <Text style={{ color: "black", paddingHorizontal: 10 }}>{item.userName}</Text>
-                    <Text style={{ color: "black", paddingHorizontal: 10 }}>{item.name}</Text>
+                    {item.name && <Text style={{ color: "black", paddingHorizontal: 10 }}>{item.name}</Text>}
                 </View>
 
             </TouchableOpacity>
         )
     }
 
+    const ListEmptyComponent = () => {
+        const remainingHeight = screenHeight - headerHeight - tabBarHeight;
+        return (
+            <>
+                <View style={{ flex: 1, justifyContent: "center", alignItems: "center", backgroundColor: "white" }}>
+                    {
+                        searchText && !allUsersListLoading ?
+                            <>
+                                <Image source={Images.NoPostsImage} style={{ width: screenWidth, flex: 1, height: remainingHeight, resizeMode: "contain", backgroundColor: "white" }} />
+                                <Text style={{ fontSize: 20, fontWeight: "bold", color: "black", position: 'absolute', bottom: 100, textAlign: 'center' }}>No User Found</Text>
+                            </>
+                            : <Image source={Images.SearchPage} style={{ width: screenWidth, height: screenHeight - tabBarHeight, resizeMode: "cover", backgroundColor: "white" }} />}
+                </View>
+            </>
+        )
+    }
+
     return (
-        <View style={{ height: '100%', width: "100%", backgroundColor: "white" }}>
-            <View style={styles.searchBarContainer}>
+        <View style={{ flex: 1, backgroundColor: "white" }}>
+            <View style={styles.searchBarContainer}
+                onLayout={(event) => {
+                    const { height } = event.nativeEvent.layout;
+                    setHeaderHeight(height);
+                    setHeightMeasured(true);
+                }} >
                 <TextInput
                     placeholder="Search"
-                    style={{ padding: 5, marginLeft: 10, color: "black" }}
+                    placeholderTextColor={"black"}
+                    style={{ padding: 5, paddingLeft: 10, color: "black", width: "100%", borderRadius: 30 }}
                     value={searchText}
                     onChangeText={(text) => setSearchText(text)}
                 />
@@ -88,7 +119,10 @@ const SearchTemplate = () => {
             <FlatList
                 data={searchedUserList ? searchedUserList : []}
                 renderItem={({ item, index }: any) => renderUserItem(item, index)}
-                keyExtractor={(item, index) => index.toString()}
+                keyExtractor={(_, index) => index.toString()}
+                ListEmptyComponent={() => hightMeasured && <ListEmptyComponent />}
+                scrollEnabled={searchText && !searchedUserList ? true : false}
+                ListHeaderComponent={() => searchText && <View style={{ height: headerHeight + 20 }} />}
             />
         </View>
     )
