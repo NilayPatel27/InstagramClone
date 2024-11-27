@@ -19,8 +19,11 @@ const POST = async (url: any, data: any, header: any) => {
         const response = await axios.post(url, data, newHeader);
         __DEV__ && console.log("Result:  ", response, "\n \n URL:", url, "\n \n PARAMS:", data, "\n \n HEADER:", newHeader);
         return response;
-    } catch (error) {
-        console.log("Error posting data", error);
+    } catch (error: any) {
+        const errorResponse = error?.response?.data;
+        const errorStatus = error?.response?.status;
+        const errorMessage = error?.response?.data?.message;
+        return { data: errorResponse, status: errorStatus, message: errorMessage, error: error?.response?.data?.error };
     };
 }
 

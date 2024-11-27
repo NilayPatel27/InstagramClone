@@ -6,10 +6,14 @@ const LOGINURL = 'http://localhost:5000/login';
 
 export const loginRequest = (dispatch: any) => async (params: any) => {
     try {
-        const loginResponse = await POST('http://10.0.0.105:5000/login', params, {});
-        await setAccess("userToken", JSON.stringify(loginResponse?.data?.token));
-        await setAccess("user", JSON.stringify(loginResponse?.data));
-        dispatch({ type: TYPES.LOGIN_SUCCESS, payload: loginResponse });
+        const loginResponse: any = await POST('http://10.0.0.105:5000/login', params, {});
+        if (loginResponse && loginResponse?.status === 200) {
+            await setAccess("userToken", JSON.stringify(loginResponse?.data?.token));
+            await setAccess("user", JSON.stringify(loginResponse?.data));
+            dispatch({ type: TYPES.LOGIN_SUCCESS, payload: loginResponse });
+        } else {
+            dispatch({ type: TYPES.LOGIN_FAILURE, payload: loginResponse });
+        }
     } catch (error) {
         dispatch({ type: TYPES.LOGIN_FAILURE, payload: error });
     }
