@@ -134,9 +134,17 @@ const styles = StyleSheet.create({
         justifyContent: 'space-between',
         alignItems: 'center',
         padding: 5,
-        backgroundColor: 'lightgray',
+        backgroundColor: 'white',
         borderRadius: 30,
-        margin: 10
+        margin: 10,
+        position: 'absolute',
+        width: '95%',
+        zIndex: 1,
+        shadowColor: '#000',
+        shadowOffset: { width: 0, height: 2 },
+        shadowOpacity: 0.8,
+        shadowRadius: 2,
+        elevation: 5
     },
     userImage: {
         width: 55,
