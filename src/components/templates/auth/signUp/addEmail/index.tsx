@@ -3,8 +3,8 @@ import { CommonActions, useNavigation } from '@react-navigation/native';
 import { Alert, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
 
 import { Loader } from '@instagram/components/atoms';
-import { AppContext } from '@instagram/context/index.tsx';
-import { usePrevious } from '@instagram/customHooks/index.tsx';
+import { AppContext } from '@instagram/context';
+import { usePrevious } from '@instagram/customHooks';
 
 const AddEmail = ({ username, password }: any) => {
     const navigation = useNavigation();
@@ -28,7 +28,7 @@ const AddEmail = ({ username, password }: any) => {
 
     const handleSignUp = async () => {
         setSignUpLoading(true);
-        await signUpRequest({ email, name: "User Name", password, userName: username, profileImage: "" });
+        await signUpRequest({ email, name: "", password, userName: username, profileImage: "" });
     }
 
     useEffect(() => {
