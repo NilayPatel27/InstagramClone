@@ -1,3 +1,6 @@
+import * as yup from "yup";
+import { useForm, Controller } from "react-hook-form";
+import { yupResolver } from "@hookform/resolvers/yup";
 import React, { useContext, useEffect, useState } from 'react';
 import { CommonActions, useNavigation } from '@react-navigation/native';
 import { Alert, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
@@ -105,19 +108,49 @@ const AddEmail = ({ username, password }: any) => {
         }
     }, [firstTimeSignUp, AppState?.Loader?.loaderVisible]);
 
+    const addValidationSchema = yup.object().shape({
+        email: yup
+            .string()
+            .required('Email is required')
+            .email('Invalid email')
+            .test('is-gmail', 'Email must end with @gmail.com', (value) => {
+                return value ? value.endsWith('@gmail.com') : false;
+            })
+    });
+
+    const { handleSubmit, control, formState: { errors } } = useForm({
+        resolver: yupResolver(addValidationSchema),
+        reValidateMode: "onChange"
+    });
+
     return (
         <View style={styles.container}>
             <Text style={styles.text1}>Add an Email</Text>
-            <TextInput
-                style={styles.emailInput}
-                placeholder="Email"
-                placeholderTextColor="#888"
-                value={email}
-                onChangeText={handleEmailChange}
-                keyboardType="email-address"
+            <Controller
+                control={control}
+                defaultValue={email}
+                name={"email"}
+                render={({ field: { onChange, value } }) => (
+                    <>
+                        <TextInput
+                            style={styles.emailInput}
+                            placeholder="Email"
+                            placeholderTextColor="#888"
+                            value={value}
+                            onChangeText={(text) => {
+                                onChange(text);
+                                handleEmailChange(text);
+                            }}
+                            keyboardType="email-address"
+                        />
+                        {errors && errors["email"] && errors["email"]?.message &&
+                            <Text style={{ color: 'red' }}>{errors["email"]?.message}</Text>
+                        }
+                    </>
+                )}
             />
             <TouchableOpacity
-                onPress={handleNextPress}
+                onPress={handleSubmit(handleNextPress)}
                 style={styles.nextButtonContainer}
                 disabled={email.length < 1}>
                 <Text style={[styles.nextButtonText, { color: email.length < 1 ? '#99b7f3' : '#fff', }]}>Sign Up</Text>
