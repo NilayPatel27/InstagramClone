@@ -11,4 +11,6 @@ const HideAll = require("./PostImages/hideAll.png");
 const WhitePlus = require("./PostImages/whitePlus.png");
 const InstagramLogo = require("./Instagram_logo.png");
 const SplashScreen = require("./SplashScreen.png");
-export { Back, Remove, Edit, Image, Plus, WhitePlus, Delete, Hide, HideAll, Report, User, InstagramLogo, SplashScreen };
+const NoPostsImage = require("./NoPostsImage.png");
+
+export { Back, Remove, Edit, Image, Plus, WhitePlus, Delete, Hide, HideAll, Report, User, InstagramLogo, SplashScreen, NoPostsImage };
