@@ -44,9 +44,10 @@ const useUpdateUserDetails = () => {
     }, [updateUserDetailsLoading, AppState?.Auth?.updateUserDetailsSuccess, AppState?.Auth?.updateUserDetailsResponse, AppState?.Auth?.error]);
 
 
-    const updateUserDetail = (params: any) => {
+    const updateUserDetail = async (params: any) => {
         setUpdateUserDetailsLoading(true);
-        updateUserDetails(params);
+        const res = await updateUserDetails(params);
+        return res.status;
     }
 
     return { updateUserDetail, updateUserDetailsLoading };

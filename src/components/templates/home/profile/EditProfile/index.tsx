@@ -123,7 +123,14 @@ const EditPorfileTemplate = () => {
         data.append("userId", userDetails?._id);
         data.append("profileImage", profileImage);
 
-        updateUserDetail(data);
+        const response = await updateUserDetail(data);
+        if (response === 200) {
+            navigation.goBack();
+        } else {
+            Alert.alert("", "Something went wrong", [
+                { text: "OK", onPress: () => navigation.goBack() }
+            ]);
+        }
     }
 
     return (
