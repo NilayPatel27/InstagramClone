@@ -15,7 +15,7 @@ import PostHeader from '@instagram/components/templates/home/FeedUploader/PostHe
 import { getAccess } from '@instagram/customHooks/useAccess';
 import { Loader } from "@instagram/components/atoms";
 import { AppContext } from "@instagram/context";
-
+import FontAwesome from 'react-native-vector-icons/FontAwesome';
 
 const FeedUploaderTemplate = () => {
     const navigation = useNavigation();
@@ -280,9 +280,7 @@ const FeedUploaderTemplate = () => {
                                 alignItems: "center"
                             }}>
                                 <TouchableOpacity onPress={() => imagePicker()}>
-                                    <Image
-                                        source={Images.Image}
-                                        style={{ width: 25, height: 25, marginRight: 10 }} />
+                                    <FontAwesome name="plus-square-o" size={25} color={"orange"} style={{ marginHorizontal: 10 }} />
                                 </TouchableOpacity>
                                 <FlatList
                                     data={images}
