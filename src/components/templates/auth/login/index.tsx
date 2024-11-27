@@ -10,7 +10,7 @@ import { usePrevious } from '@instagram/customHooks/index.tsx';
 const LoginTemplate = () => {
   const navigation = useNavigation();
 
-  const [email, setEmail] = useState('');
+  const [emailOrUserName, setEmailorUserName] = useState('');
   const [password, setPassword] = useState('');
   const [firstTimeLogin, setFirstTimeLogin] = useState(false);
 
@@ -47,7 +47,10 @@ const LoginTemplate = () => {
         if (AppState?.Auth?.error && AppState?.Auth?.error?.code && AppState?.Auth?.error?.code === 401) {
           Alert.alert("", AppState?.Auth?.error?.error?.toString());
         } else {
-          Alert.alert(AppState?.Auth?.error?.error)
+          Alert.alert("", AppState?.Auth?.error?.error, [
+            { text: 'OK', onPress: () => console.log('OK Pressed') }, // Optional button
+          ],
+            { cancelable: true })
         }
       }
     }
@@ -66,7 +69,7 @@ const LoginTemplate = () => {
 
   const handleLogin = async () => {
     setLoginLoading(true);
-    await loginRequest({ email, password });
+    await loginRequest({ emailOrUserName, password });
   };
 
   const handleSignUp = () => {
@@ -80,18 +83,17 @@ const LoginTemplate = () => {
         <AntDesign
           name="instagram"
           size={100}
-          // style={styles.logo}
           color={'#C13584'}
         />
 
-        {/* Email Input */}
+        {/* Email or UserName Input */}
         <TextInput
           style={styles.input}
           placeholder="Username or email"
           placeholderTextColor="#888"
-          value={email}
-          onChangeText={setEmail}
-          keyboardType="email-address"
+          value={emailOrUserName}
+          onChangeText={setEmailorUserName}
+          keyboardType="default"
           autoCapitalize="none"
         />
 
@@ -107,8 +109,8 @@ const LoginTemplate = () => {
         />
 
         {/* Login Button */}
-        <TouchableOpacity style={styles.loginButton} onPress={() => handleLogin()}>
-          <Text style={styles.loginText}>Log In</Text>
+        <TouchableOpacity style={styles.loginButton} onPress={() => handleLogin()} disabled={loginLoading || !emailOrUserName || !password}>
+          <Text style={[styles.loginText, { color: loginLoading || !emailOrUserName || !password ? '#99b7f3' : '#fff' }]}>Log In</Text>
         </TouchableOpacity>
 
         {/* Divider */}
@@ -167,7 +169,6 @@ const styles = StyleSheet.create({
     marginTop: 10,
   },
   loginText: {
-    color: '#fff',
     fontWeight: 'bold',
     fontSize: 16,
   },
