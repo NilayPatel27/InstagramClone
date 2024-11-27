@@ -2,6 +2,7 @@ import { Divider } from '@rneui/base';
 import RBSheet from 'react-native-raw-bottom-sheet';
 import React, { useEffect, useRef, useState } from 'react';
 import Foundation from 'react-native-vector-icons/Foundation';
+import { useBottomTabBarHeight } from '@react-navigation/bottom-tabs';
 import { useFocusEffect, useNavigation } from '@react-navigation/native';
 import { Image, StyleSheet, Text, TouchableOpacity, View, FlatList, TouchableHighlight, Dimensions, ActivityIndicator } from 'react-native';
 
@@ -17,8 +18,10 @@ const OtherUserProfileTemplate = ({ otherUserId }: { otherUserId: string }) => {
     const navigation = useNavigation();
 
     const [followed, setFollowed] = useState(false);
+    const [headerHeight, setHeaderHeight] = useState(0);
     const [otherUserBio, setOtherUserBio] = useState("");
     const [otherUserName, setOtherUserName] = useState("");
+    const [hightMeasured, setHeightMeasured] = useState(false);
     const [otherUserFullName, setOtherUserFullName] = useState("");
     const [otherUserDetails, setOtherUserDetails] = useState<any>({});
     const [currentUserDetails, setCurrentUserDetails] = useState<any>({});
@@ -31,6 +34,9 @@ const OtherUserProfileTemplate = ({ otherUserId }: { otherUserId: string }) => {
     const { getUserDetail: getCurrentUserDetail, getUserDetailsLoading: getCurrentUserDetalsLoading }: any = useGetUserDetails();
 
     const screenWidth = Dimensions.get('window').width;
+    const screenHeight = Dimensions.get('window').height;
+    const tabBarHeight = useBottomTabBarHeight();
+
     const postSize = screenWidth / 3 - 2;
 
     useFocusEffect(
@@ -179,96 +185,122 @@ const OtherUserProfileTemplate = ({ otherUserId }: { otherUserId: string }) => {
         );
     };
 
+    const ListEmptyComponent = () => {
+        const remainingHeight = screenHeight - headerHeight - tabBarHeight;
+        return (
+            <>
+                <View style={{ flex: 1, justifyContent: "center", alignItems: "center", backgroundColor: "white" }}>
+                    <Image source={Images.NoPostsImage} style={{ width: screenWidth, flex: 1, height: remainingHeight, resizeMode: "contain", backgroundColor: "white" }} />
+                    <Text style={{
+                        fontSize: 20, fontWeight: "bold", color: "black", position: 'absolute',
+                        bottom: 40, textAlign: 'center'
+                    }}>No Posts Found</Text>
+                </View>
+            </>
+        )
+    }
+
+    const ListHeaderComponent = () => {
+        return (
+            <>
+                <View onLayout={(event) => {
+                    const { height } = event.nativeEvent.layout;
+                    setHeaderHeight(height);
+                    setHeightMeasured(true);
+                }}>
+                    <NavigationBar rightProps={{ back: true, right: false, onBack }} navigation={navigation} userName={otherUserName} />
+
+                    <View style={styles.container}>
+
+                        <View style={styles.imageContainer}>
+                            {
+                                otherUserProfileImage ?
+                                    <Image source={{ uri: otherUserProfileImage }} style={styles.userImage} /> :
+                                    <Image source={Images.User} style={styles.userImage} />
+                            }
+                        </View>
+
+                        <View style={styles.countContainer}>
+
+                            <View style={styles.statsContainer}>
+                                <Text style={styles.stat}>{userFeedList ? userFeedList.length : 0}</Text>
+                                <Text style={styles.statLabel}>posts</Text>
+                            </View>
+
+                            <View style={styles.statsContainer}>
+                                <Text style={styles.stat}>{otherUserDetails?.followers?.length}</Text>
+                                <Text style={styles.statLabel}>followers</Text>
+                            </View>
+
+                            <View style={styles.statsContainer}>
+                                <Text style={styles.stat}>{otherUserDetails?.following?.length}</Text>
+                                <Text style={styles.statLabel}>following</Text>
+                            </View>
+
+                        </View>
+
+                    </View >
+
+                    {
+                        (otherUserFullName || otherUserBio) &&
+                        <View style={styles.profileDescription}>
+                            {
+                                otherUserFullName &&
+                                <Text style={styles.name}>{otherUserFullName}</Text>
+                            }
+                            {
+                                otherUserBio &&
+                                <Text style={styles.description}>{otherUserBio}</Text>
+                            }
+                        </View>
+                    }
+
+                    <View style={styles.buttonContainer}>
+
+                        <TouchableOpacity style={[styles.editButton, { backgroundColor: followed ? '#D3D3D3' : '#1E90FF' }]} onPress={onFollowUnfollowPress}>
+                            {
+                                (followUserLoading || unFollowUserLoading) ?
+                                    <ActivityIndicator
+                                        animating={followUserLoading || unFollowUserLoading}
+                                        color='#999999'
+                                        size="small" /> :
+                                    <Text style={[styles.followUnfollowText, { color: followed ? 'black' : 'white' }]}>{followed ? "Unfollow" : "Follow"}</Text>}
+                        </TouchableOpacity>
+
+                        <TouchableOpacity style={styles.contactButton} onPress={handleContact}>
+                            <Text style={styles.buttonText}>Contact</Text>
+                        </TouchableOpacity>
+
+                    </View>
+                    <Divider />
+                </View>
+            </>
+        )
+    }
+
+
     return (
         <>
             <View style={{ flex: 1, backgroundColor: "white" }}>
-                <NavigationBar rightProps={{ back: true, right: false, onBack }} navigation={navigation} userName={otherUserName} />
 
-                <View style={styles.container}>
-
-                    <View style={styles.imageContainer}>
-                        {
-                            otherUserProfileImage ?
-                                <Image source={{ uri: otherUserProfileImage }} style={styles.userImage} /> :
-                                <Image source={Images.User} style={styles.userImage} />
-                        }
-                    </View>
-
-                    <View style={styles.countContainer}>
-
-                        <View style={styles.statsContainer}>
-                            <Text style={styles.stat}>{userFeedList ? userFeedList.length : 0}</Text>
-                            <Text style={styles.statLabel}>posts</Text>
-                        </View>
-
-                        <View style={styles.statsContainer}>
-                            <Text style={styles.stat}>{otherUserDetails?.followers?.length}</Text>
-                            <Text style={styles.statLabel}>followers</Text>
-                        </View>
-
-                        <View style={styles.statsContainer}>
-                            <Text style={styles.stat}>{otherUserDetails?.following?.length}</Text>
-                            <Text style={styles.statLabel}>following</Text>
-                        </View>
-
-                    </View>
-
-                </View >
-
-                {
-                    (otherUserFullName || otherUserBio) &&
-                    <View style={styles.profileDescription}>
-                        {
-                            otherUserFullName &&
-                            <Text style={styles.name}>{otherUserFullName}</Text>
-                        }
-                        {
-                            otherUserBio &&
-                            <Text style={styles.description}>{otherUserBio}</Text>
-                        }
-                    </View>
-                }
-
-                <View style={styles.buttonContainer}>
-
-                    <TouchableOpacity style={[styles.editButton, { backgroundColor: followed ? '#D3D3D3' : '#1E90FF' }]} onPress={onFollowUnfollowPress}>
-                        {
-                            (followUserLoading || unFollowUserLoading) ?
-                                <ActivityIndicator
-                                    animating={followUserLoading || unFollowUserLoading}
-                                    color='#999999'
-                                    size="small" /> :
-                                <Text style={[styles.followUnfollowText, { color: followed ? 'black' : 'white' }]}>{followed ? "Unfollow" : "Follow"}</Text>}
-                    </TouchableOpacity>
-
-                    <TouchableOpacity style={styles.contactButton} onPress={handleContact}>
-                        <Text style={styles.buttonText}>Contact</Text>
-                    </TouchableOpacity>
-
+                <View style={{
+                    flex: 1,
+                    flexDirection: 'row',
+                    flexWrap: 'wrap',
+                    justifyContent: 'space-between',
+                    backgroundColor: 'white',
+                }}>
+                    <FlatList
+                        data={userFeedList.length > 0 ? userFeedList : []}
+                        keyExtractor={(_, index) => index.toString()}
+                        renderItem={({ item, index }) => renderItem(item, index)}
+                        numColumns={3}
+                        showsVerticalScrollIndicator={false}
+                        contentContainerStyle={{ backgroundColor: 'white' }}
+                        ListHeaderComponent={() => <ListHeaderComponent />}
+                        ListEmptyComponent={() => hightMeasured && !(userFeedListLoading || getCurrentUserDetalsLoading || getOtherUserDetalsLoading) && <ListEmptyComponent />}
+                    />
                 </View>
-                <Divider />
-
-                {
-                    userFeedList.length > 0 &&
-
-                    <View style={{
-                        flex: 1,
-                        flexDirection: 'row',
-                        flexWrap: 'wrap',
-                        justifyContent: 'space-between',
-                        backgroundColor: 'white',
-                    }}>
-                        <FlatList
-                            data={userFeedList}
-                            keyExtractor={(_, index) => index.toString()}
-                            renderItem={({ item, index }) => renderItem(item, index)}
-                            numColumns={3}
-                            showsVerticalScrollIndicator={false}
-                            contentContainerStyle={{ backgroundColor: 'white' }}
-                        />
-                    </View>
-                }
-
                 <RBSheet
                     ref={refRBSheet}
                     draggable={true}
