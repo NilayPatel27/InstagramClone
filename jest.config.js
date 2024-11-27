@@ -11,7 +11,7 @@ module.exports = {
     'react-native-image-crop-picker': '<rootDir>/__mocks__/react-native-image-crop-picker.js'
   },
   transformIgnorePatterns: [
-    "node_modules/(?!(react-native|@react-native|@react-navigation|react-native-vector-icons|@rneui|react-native-ratings|react-native-size-matters|react-native-fs|react-native-image-crop-picker|react-native-raw-bottom-sheet)/)"
+    "node_modules/(?!(react-native|@react-native|@react-navigation|react-native-vector-icons|@rneui|react-native-ratings|react-native-size-matters|react-native-fs|react-native-image-crop-picker|react-native-raw-bottom-sheet|react-native-keyboard-aware-scroll-view)/)"
   ],
   setupFiles: ["<rootDir>/jestSetupFile.js"]
 };

@@ -2,6 +2,7 @@ import RNFS from "react-native-fs";
 import React, { useEffect, useState } from 'react';
 import { useNavigation } from '@react-navigation/native';
 import DocumentPicker from "react-native-document-picker";
+import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 import { Alert, Image, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
 
 import { Images } from '@instagram/assets';
@@ -129,49 +130,51 @@ const EditPorfileTemplate = () => {
         <>
             <View style={{ flex: 1, backgroundColor: "white" }}>
                 <NavigationBar rightProps={{ back: true, right: true, onBack, text: "Edit profile", onPress: onUploadButtonPress, uploadButton: true }} navigation={navigation} />
-                <View style={styles.imageContainer}>
-                    {
-                        userProfileImage ?
-                            <Image source={{ uri: userProfileImage }} style={styles.userImage} /> :
-                            <Image source={Images.User} style={styles.userImage} />
-                    }
-                </View>
+                <KeyboardAwareScrollView style={{ flex: 1 }}>
+                    <View style={styles.imageContainer}>
+                        {
+                            userProfileImage ?
+                                <Image source={{ uri: userProfileImage }} style={styles.userImage} /> :
+                                <Image source={Images.User} style={styles.userImage} />
+                        }
+                    </View>
 
-                <TouchableOpacity style={styles.editPictureContainer} onPress={onEditPicturePress}>
-                    <Text style={{ color: 'blue' }}>Edit Picture</Text>
-                </TouchableOpacity>
+                    <TouchableOpacity style={styles.editPictureContainer} onPress={onEditPicturePress}>
+                        <Text style={{ color: 'blue' }}>Edit Picture</Text>
+                    </TouchableOpacity>
 
-                <View style={{ justifyContent: "center", borderWidth: 1, borderColor: "gray", marginHorizontal: 20, marginBottom: 15, borderRadius: 10, }}>
-                    <Text style={{ color: "black", padding: 5, paddingHorizontal: 10 }}>Name</Text>
-                    <TextInput
-                        style={{ padding: 5, paddingHorizontal: 10, color: "gray", fontWeight: 'bold' }}
-                        value={userFullName}
-                        onChangeText={(text) => setUserFullName(text)}
-                        placeholder="Enter your full name"
-                        placeholderTextColor={"gray"}
-                    />
-                </View>
+                    <View style={{ justifyContent: "center", borderWidth: 1, borderColor: "gray", marginHorizontal: 20, marginBottom: 15, borderRadius: 10, }}>
+                        <Text style={{ color: "black", padding: 5, paddingHorizontal: 10 }}>Name</Text>
+                        <TextInput
+                            style={{ padding: 5, paddingHorizontal: 10, color: "gray", fontWeight: 'bold' }}
+                            value={userFullName}
+                            onChangeText={(text) => setUserFullName(text)}
+                            placeholder="Enter your full name"
+                            placeholderTextColor={"gray"}
+                        />
+                    </View>
 
-                <View style={{ justifyContent: "center", borderWidth: 1, borderColor: "gray", marginHorizontal: 20, marginBottom: 15, borderRadius: 10, }}>
-                    <Text style={{ color: "black", padding: 5, paddingHorizontal: 10 }}>Username</Text>
-                    <TextInput
-                        style={{ padding: 5, paddingHorizontal: 10, color: "gray", fontWeight: 'bold' }}
-                        value={userName}
-                        editable={false}
-                    />
-                </View>
+                    <View style={{ justifyContent: "center", borderWidth: 1, borderColor: "gray", marginHorizontal: 20, marginBottom: 15, borderRadius: 10, }}>
+                        <Text style={{ color: "black", padding: 5, paddingHorizontal: 10 }}>Username</Text>
+                        <TextInput
+                            style={{ padding: 5, paddingHorizontal: 10, color: "gray", fontWeight: 'bold' }}
+                            value={userName}
+                            editable={false}
+                        />
+                    </View>
 
-                <View style={{ justifyContent: "center", borderWidth: 1, borderColor: "gray", marginHorizontal: 20, marginBottom: 15, borderRadius: 10, }}>
-                    <Text style={{ color: "black", padding: 5, paddingHorizontal: 10 }}>Bio</Text>
-                    <TextInput
-                        style={{ padding: 5, paddingHorizontal: 10, color: "gray", fontWeight: 'bold' }}
-                        value={userBio}
-                        onChangeText={(text) => setUserBio(text)}
-                        maxLength={100}
-                        placeholder="Enter your bio"
-                        placeholderTextColor={"gray"}
-                    />
-                </View>
+                    <View style={{ justifyContent: "center", borderWidth: 1, borderColor: "gray", marginHorizontal: 20, marginBottom: 15, borderRadius: 10, }}>
+                        <Text style={{ color: "black", padding: 5, paddingHorizontal: 10 }}>Bio</Text>
+                        <TextInput
+                            style={{ padding: 5, paddingHorizontal: 10, color: "gray", fontWeight: 'bold' }}
+                            value={userBio}
+                            onChangeText={(text) => setUserBio(text)}
+                            maxLength={100}
+                            placeholder="Enter your bio"
+                            placeholderTextColor={"gray"}
+                        />
+                    </View>
+                </KeyboardAwareScrollView>
 
             </View>
             <Loader visible={getUserDetailsLoading || updateUserDetailsLoading} />
