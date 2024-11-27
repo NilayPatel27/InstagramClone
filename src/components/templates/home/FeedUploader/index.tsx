@@ -75,7 +75,9 @@ const FeedUploaderTemplate = () => {
             }
             else {
                 Alert.alert("", "Upload .jpeg, .jpg, .png or .gif images only and size should be less than 150 kb", [
-                    { text: "OK", onPress: () => { } }
+                    {
+                        text: "OK", onPress: () => { imagePicker(); }
+                    }
                 ]);
             }
 
