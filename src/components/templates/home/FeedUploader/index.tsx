@@ -114,6 +114,7 @@ const FeedUploaderTemplate = () => {
                 {
                     text: "Yes", onPress: () => {
                         setImages([]);
+                        navigation.goBack();
                     }
                 },
             ]);
