@@ -2,6 +2,7 @@ import { Divider } from '@rneui/base';
 import RBSheet from 'react-native-raw-bottom-sheet';
 import React, { useEffect, useRef, useState } from 'react';
 import Foundation from 'react-native-vector-icons/Foundation';
+import { useBottomTabBarHeight } from '@react-navigation/bottom-tabs';
 import { useFocusEffect, useNavigation } from '@react-navigation/native';
 import { Dimensions, FlatList, Image, StyleSheet, Text, TouchableHighlight, TouchableOpacity, View } from 'react-native';
 
@@ -23,11 +24,17 @@ const ProfileTemplate = () => {
     const [userName, setUserName] = useState("");
     const [userBio, setUserBio] = useState("");
 
+    const [headerHeight, setHeaderHeight] = useState(0);
+    const [hightMeasured, setHeightMeasured] = useState(false);
+
     const onPress = () => {
         navigation.navigate("SettingPage");
     }
 
     const screenWidth = Dimensions.get('window').width;
+    const screenHeight = Dimensions.get('window').height;
+
+    const tabBarHeight = useBottomTabBarHeight();
     const postSize = screenWidth / 3 - 2;
 
     useFocusEffect(
@@ -92,80 +99,103 @@ const ProfileTemplate = () => {
         refRBSheet?.current?.open();
     };
 
+    const ListEmptyComponent = () => {
+        const remainingHeight = screenHeight - headerHeight - tabBarHeight;
+        return (
+            <>
+                <View style={{ flex: 1, justifyContent: "center", alignItems: "center", backgroundColor: "white" }}>
+                    <Image source={Images.NoPostsImage} style={{ width: screenWidth, flex: 1, height: remainingHeight, resizeMode: "contain", backgroundColor: "white" }} />
+                    <Text style={{
+                        fontSize: 20, fontWeight: "bold", color: "black", position: 'absolute',
+                        bottom: 40, textAlign: 'center'
+                    }}>No Posts Found</Text>
+                </View>
+            </>
+        )
+    }
+
+    const ListHeaderComponent = () => {
+        return (
+            <>
+                <View onLayout={(event) => {
+                    const { height } = event.nativeEvent.layout;
+                    setHeaderHeight(height);
+                    setHeightMeasured(true);
+                }}>
+                    <NavigationBar rightProps={{ onPress, back: false, right: true, onBack: false, postButton: true, menuButton: true }} navigation={navigation} userName={userName} />
+
+                    <View style={styles.container}>
+                        {
+                            userProfileImage ?
+                                <Image source={{ uri: userProfileImage }} style={styles.userImage} /> :
+                                <Image source={Images.User} style={styles.userImage} />
+                        }
+                        <View style={styles.countContainer}>
+
+                            <View style={styles.statsContainer}>
+                                <Text style={styles.stat}>{userFeedList ? userFeedList?.length : 0}</Text>
+                                <Text style={styles.statLabel}>posts</Text>
+                            </View>
+
+                            <View style={styles.statsContainer}>
+                                <Text style={styles.stat}>{userDetails ? userDetails?.followers?.length : 0}</Text>
+                                <Text style={styles.statLabel}>followers</Text>
+                            </View>
+
+                            <View style={styles.statsContainer}>
+                                <Text style={styles.stat}>{userDetails ? userDetails?.following?.length : 0}</Text>
+                                <Text style={styles.statLabel}>following</Text>
+                            </View>
+
+                        </View>
+                    </View >
+                    {
+                        (userFullName || userBio) &&
+                        <View style={styles.profileDescription}>
+                            {
+                                userFullName &&
+                                <Text style={styles.name}>{userFullName}</Text>
+                            }
+                            {
+                                userBio &&
+                                <Text style={styles.description}>{userBio}</Text>
+                            }
+                        </View>
+                    }
+                    <View style={styles.buttonContainer}>
+
+                        <TouchableOpacity style={styles.editButton} onPress={handleEditProfile}>
+                            <Text style={styles.buttonText}>Edit profile</Text>
+                        </TouchableOpacity>
+
+                        <TouchableOpacity style={styles.contactButton} onPress={handleContact}>
+                            <Text style={styles.buttonText}>Contact</Text>
+                        </TouchableOpacity>
+
+                    </View>
+                    <Divider />
+                </View>
+            </>
+        )
+    }
+
     return (
         <>
-            <NavigationBar rightProps={{ onPress, back: false, right: true, onBack: false, postButton: true, menuButton: true }} navigation={navigation} userName={userName} />
-
-            <View style={styles.container}>
-                {
-                    userProfileImage ?
-                        <Image source={{ uri: userProfileImage }} style={styles.userImage} /> :
-                        <Image source={Images.User} style={styles.userImage} />
-                }
-                <View style={styles.countContainer}>
-
-                    <View style={styles.statsContainer}>
-                        <Text style={styles.stat}>{userFeedList ? userFeedList?.length : 0}</Text>
-                        <Text style={styles.statLabel}>posts</Text>
-                    </View>
-
-                    <View style={styles.statsContainer}>
-                        <Text style={styles.stat}>{userDetails ? userDetails?.followers?.length : 0}</Text>
-                        <Text style={styles.statLabel}>followers</Text>
-                    </View>
-
-                    <View style={styles.statsContainer}>
-                        <Text style={styles.stat}>{userDetails ? userDetails?.following?.length : 0}</Text>
-                        <Text style={styles.statLabel}>following</Text>
-                    </View>
-
-                </View>
-            </View >
-            {
-                (userFullName || userBio) &&
-                <View style={styles.profileDescription}>
-                    {
-                        userFullName &&
-                        <Text style={styles.name}>{userFullName}</Text>
-                    }
-                    {
-                        userBio &&
-                        <Text style={styles.description}>{userBio}</Text>
-                    }
-                </View>
-            }
-            <View style={styles.buttonContainer}>
-
-                <TouchableOpacity style={styles.editButton} onPress={handleEditProfile}>
-                    <Text style={styles.buttonText}>Edit profile</Text>
-                </TouchableOpacity>
-
-                <TouchableOpacity style={styles.contactButton} onPress={handleContact}>
-                    <Text style={styles.buttonText}>Contact</Text>
-                </TouchableOpacity>
-
+            <View style={{
+                flex: 1,
+                backgroundColor: 'white',
+            }}>
+                <FlatList
+                    data={userFeedList.length > 0 ? userFeedList : []}
+                    keyExtractor={(_, index) => index.toString()}
+                    renderItem={({ item, index }) => renderItem(item, index)}
+                    numColumns={3}
+                    showsVerticalScrollIndicator={false}
+                    contentContainerStyle={{ backgroundColor: 'white' }}
+                    ListHeaderComponent={() => <ListHeaderComponent />}
+                    ListEmptyComponent={() => hightMeasured && !(userFeedListLoading || getUserDetailsLoading) && <ListEmptyComponent />}
+                />
             </View>
-            <Divider />
-            {
-                userFeedList.length > 0 &&
-
-                <View style={{
-                    flex: 1,
-                    flexDirection: 'row',
-                    flexWrap: 'wrap',
-                    justifyContent: 'space-between',
-                    backgroundColor: 'white',
-                }}>
-                    <FlatList
-                        data={userFeedList}
-                        keyExtractor={(_, index) => index.toString()}
-                        renderItem={({ item, index }) => renderItem(item, index)}
-                        numColumns={3}
-                        showsVerticalScrollIndicator={false}
-                        contentContainerStyle={{ backgroundColor: 'white' }}
-                    />
-                </View>
-            }
             <RBSheet
                 ref={refRBSheet}
                 draggable={true}
