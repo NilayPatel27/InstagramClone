@@ -85,34 +85,35 @@ router.post('/useremailexist', (req, res) => {
 })
 
 router.post('/login', (req, res) => {
-    const { email, password } = req.body
-    console.log({ email, password })
-    if (!email || !password) {
+    const { emailOrUserName, password } = req.body
+    if (!emailOrUserName || !password) {
         return res.status(422).json({ error: "Please add email or password" })
     }
-    User.findOne({ email: email })
-        .then(savedUser => {
-            if (!savedUser) {
-                return res.status(422).json({ error: "Invalid Email or password" })
-            }
-            console.log({ savedUser })
-            bcrypt.compare(password, savedUser.password)
-                .then(doMatch => {
-                    if (doMatch) {
-                        const token = jwt.sign(
-                            { userId: savedUser._id.toString() },
-                            'Instagram@123'
-                        )
-                        const { _id, name, email, profileImage, userName, bio, followers, following } = savedUser;
-                        res.json({ token, user: { _id, name, email, profileImage, userName, bio, followers, following }, message: "Successfully signed in" });
-                    } else {
-                        return res.status(422).json({ error: "Invalid Email or password" })
-                    }
-                })
-                .catch(err => {
-                    console.log(err)
-                })
-        })
+    User.findOne({
+        $or: [{ email: emailOrUserName }, { userName: emailOrUserName }]
+    }).then(savedUser => {
+        const errorMessage = "Invalid Email or Password"
+        const errorMessage2 = "Invalid Credentials"
+        if (!savedUser) {
+            return res.status(422).json({ error: errorMessage, message: errorMessage })
+        }
+        bcrypt.compare(password, savedUser.password)
+            .then(doMatch => {
+                if (doMatch) {
+                    const token = jwt.sign(
+                        { userId: savedUser._id.toString() },
+                        'Instagram@123'
+                    )
+                    const { _id, name, email, profileImage, userName, bio, followers, following } = savedUser;
+                    res.json({ token, user: { _id, name, email, profileImage, userName, bio, followers, following }, message: "Successfully signed in" });
+                } else {
+                    return res.status(422).json({ error: errorMessage2 })
+                }
+            })
+            .catch(err => {
+                console.log(err)
+            })
+    })
 });
 
 router.post('/addposts', upload.none(), async (req, res) => {
