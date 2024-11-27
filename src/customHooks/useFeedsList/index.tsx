@@ -60,16 +60,16 @@ const useFeedsList = () => {
                     const filteredFeedList = AppState?.FeedList?.feedListResponse?.data?.posts?.filter(
                         (item: any) => {
                             if (isHomePage) {
-                                return currentUserDetails?.following?.includes(item.userId) || item.userId === userData.user._id;
+                                return currentUserDetails?.following?.includes(item.userId) || item.userId === userData?.user?._id;
                             } else if (isOtherUserProfilePage) {
                                 return item.userId === otherUserId;
                             } else if (isProfilePage) {
-                                return item.userId === userData.user._id;
+                                return item.userId === userData?.user?._id;
                             } else if (isFeedsListPage) {
                                 if (otherUserId)
                                     return item.userId === otherUserId;
                                 else
-                                    return item.userId === userData.user._id;
+                                    return item.userId === userData?.user?._id;
                             }
                         }
                     );
