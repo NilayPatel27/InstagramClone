@@ -4,7 +4,7 @@ import { View, Text, TouchableOpacity, StyleSheet, Alert } from 'react-native';
 
 import { usePrevious } from '@instagram/customHooks';
 import { Loader } from '@instagram/components/atoms';
-import { AppContext } from '@instagram/context/index.tsx';
+import { AppContext } from '@instagram/context';
 import { getAccess } from '@instagram/customHooks/useAccess';
 import { NavigationBar } from '@instagram/components/molecules';
 
@@ -48,9 +48,27 @@ const SettingTemplate = () => {
         getUserData();
     }, []);
 
-    const onDeletePress = () => {
+    const deleteUserAccount = () => {
         setDeleteUserAccountLoading(true);
         deleteUserAccountRequest(userData?.user?._id);
+    }
+
+    const onDeletePress = () => {
+        Alert.alert(
+            "Delete Account",
+            "Are you sure you want to delete your account?",
+            [
+                {
+                    text: "Yes",
+                    onPress: () => deleteUserAccount()
+                },
+                {
+                    text: "No",
+                    onPress: () => { }
+                }
+            ],
+            { cancelable: false }
+        );
     }
 
     useEffect(() => {
@@ -92,16 +110,18 @@ const SettingTemplate = () => {
 
     return (
         <>
-            <NavigationBar rightProps={{ onPress: false, back: true, right: false, onBack, text: 'Settings' }} navigation={navigation} />
-            <View style={styles.container}>
-                <TouchableOpacity style={styles.logoutButton} onPress={onLogoutPress}>
-                    <Text style={styles.buttonText}>Logout</Text>
-                </TouchableOpacity>
-                <TouchableOpacity style={styles.deleteButton} onPress={onDeletePress}>
-                    <Text style={styles.buttonText}>Delete Account</Text>
-                </TouchableOpacity>
+            <View style={{ flex: 1, backgroundColor: "white" }}>
+                <NavigationBar rightProps={{ onPress: false, back: true, right: false, onBack, text: 'Settings' }} navigation={navigation} />
+                <View style={styles.container}>
+                    <TouchableOpacity style={styles.logoutButton} onPress={onLogoutPress}>
+                        <Text style={styles.buttonText}>Logout</Text>
+                    </TouchableOpacity>
+                    <TouchableOpacity style={styles.deleteButton} onPress={onDeletePress}>
+                        <Text style={styles.buttonText}>Delete Account</Text>
+                    </TouchableOpacity>
+                </View>
+                <Loader visible={deleteUserAccountLoading} />
             </View>
-            <Loader visible={deleteUserAccountLoading} />
         </>
     )
 }
