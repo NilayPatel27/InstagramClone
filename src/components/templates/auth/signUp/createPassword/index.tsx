@@ -1,5 +1,8 @@
+import * as yup from "yup";
 import React, { useState } from 'react';
-import { useNavigation, useRoute } from '@react-navigation/native';
+import { useForm, Controller } from "react-hook-form";
+import { yupResolver } from "@hookform/resolvers/yup";
+import { useNavigation } from '@react-navigation/native';
 import { StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
 
 const CreatePassword = ({ username }: any) => {
@@ -16,20 +19,48 @@ const CreatePassword = ({ username }: any) => {
         navigation.navigate('AddEmailPage', { username, password });
     }
 
+    const addValidationSchema = yup.object().shape({
+        password: yup
+            .string()
+            .required('Password is required')
+            .min(6, 'Password must be at least 6 characters')
+            .matches(/^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{6,}$/, 'Password must contain at least one letter, one number and one special character')
+    });
+
+    const { handleSubmit, control, formState: { errors } } = useForm({
+        resolver: yupResolver(addValidationSchema),
+        reValidateMode: "onChange"
+    });
+
     return (
         <View style={styles.container}>
             <Text style={styles.text1}>Create a password</Text>
             <Text style={styles.text2}>For security, your password must be 6 characters or more.</Text>
-            <TextInput
-                style={styles.passwordInput}
-                placeholder="Password"
-                placeholderTextColor="#888"
-                value={password}
-                onChangeText={handlePasswordChange}
-                keyboardType="name-phone-pad"
+            <Controller
+                control={control}
+                defaultValue={password}
+                name={"password"}
+                render={({ field: { onChange, value } }) => (
+                    <>
+                        <TextInput
+                            style={styles.passwordInput}
+                            placeholder="Password"
+                            placeholderTextColor="#888"
+                            value={value}
+                            onChangeText={(text) => {
+                                onChange(text);
+                                handlePasswordChange(text);
+                            }}
+                            keyboardType="default"
+                        />
+                        {errors && errors["password"] && errors["password"]?.message &&
+                            <Text style={{ color: 'red' }}>{errors["password"]?.message}</Text>
+                        }
+                    </>
+                )}
             />
             <TouchableOpacity
-                onPress={handleNextPress}
+                onPress={handleSubmit(handleNextPress)}
                 style={styles.nextButtonContainer}
                 disabled={password.length < 1}>
                 <Text style={[styles.nextButtonText, { color: password.length < 1 ? '#99b7f3' : '#fff', }]}>Next</Text>
