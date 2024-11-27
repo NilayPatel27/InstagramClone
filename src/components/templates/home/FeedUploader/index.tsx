@@ -1,6 +1,6 @@
 import RNFS from "react-native-fs";
 import React, { useCallback, useContext, useEffect, useRef, useState } from 'react';
-import { CommonActions, useFocusEffect, useNavigation } from '@react-navigation/native';
+import { useFocusEffect, useNavigation } from '@react-navigation/native';
 import {
     View, Text, Animated, Alert, ScrollView, BackHandler,
     Image, FlatList, SafeAreaView, useWindowDimensions, TouchableOpacity
@@ -10,7 +10,7 @@ import DocumentPicker from "react-native-document-picker";
 import ImageCropPicker from 'react-native-image-crop-picker';
 
 import { Images } from "@instagram/assets/index.tsx";
-import { usePrevious, useStoragePermission } from '@instagram/customHooks/index.tsx';
+import { useGetUserDetails, usePrevious, useStoragePermission, useUserData } from '@instagram/customHooks';
 import PostHeader from '@instagram/components/templates/home/FeedUploader/PostHeader/index';
 import { getAccess } from '@instagram/customHooks/useAccess';
 import { Loader } from "@instagram/components/atoms";
@@ -20,6 +20,8 @@ import FontAwesome from 'react-native-vector-icons/FontAwesome';
 const FeedUploaderTemplate = () => {
     const navigation = useNavigation();
     let { width: windowWidth } = useWindowDimensions();
+    const { userDetails, getUserDetail, getUserDetailsLoading }: any = useGetUserDetails();
+    const { userData } = useUserData();
 
     const [images, setImages] = useState<any>([]);
 
@@ -28,7 +30,6 @@ const FeedUploaderTemplate = () => {
     const [feedUploadLoading, setFeedUploadLoading] = useState(false);
     const [postUploading, setPostUploading] = useState(false);
 
-
     const scrollX = useRef<any>(new Animated.Value(0)).current;
     const viewConfigRef = useRef({ viewAreaCoveragePercentThreshold: 50 });
 
@@ -36,10 +37,8 @@ const FeedUploaderTemplate = () => {
         setIndexOfPost(viewableItems?.viewableItems[0]?.index);
     });
 
-
     const { state: AppState, documentUploadRequest } = useContext(AppContext);
     const previousAppState: any = usePrevious(AppState);
-
 
     const { permission, requestStoragePermission } = useStoragePermission();
 
@@ -91,6 +90,26 @@ const FeedUploaderTemplate = () => {
     useEffect(() => {
         requestStoragePermission();
     }, []);
+
+    useFocusEffect(
+        React.useCallback(() => {
+            if (userData?.user?._id)
+                getUserDetail({ userId: userData?.user?._id });
+            return () => {
+            };
+        }, [userData])
+    );
+
+    const [userProfileImage, setUserProfileImage] = useState("");
+    const [userName, setUserName] = useState("");
+
+    useEffect(() => {
+        if (userDetails) {
+            const { profileImage, userName, bio } = userDetails;
+            profileImage && setUserProfileImage(profileImage);
+            userName && setUserName(userName);
+        }
+    }, [userDetails]);
 
     useEffect(() => {
         if (permission === "never_ask_again")
@@ -293,7 +312,7 @@ const FeedUploaderTemplate = () => {
                             </View>
                             <Text style={{ color: 'black', padding: 10, textAlign: "center" }}>-: Preview :-</Text>
                             <View style={{ width: windowWidth, backgroundColor: '#fff' }}>
-                                <PostHeader userName={"Nilay Patel"} profileUri={""} options={false} />
+                                <PostHeader userName={userName} profileUri={userProfileImage} options={false} />
                             </View>
                             <View style={{ backgroundColor: '#fff', justifyContent: "flex-start", alignItems: "center" }}>
                                 <Animated.FlatList
@@ -331,7 +350,6 @@ const FeedUploaderTemplate = () => {
                                     </TouchableOpacity>
                                 </View>
                                 {images?.length > 1 &&
-
                                     <View style={{
                                         flexDirection: "row",
                                         justifyContent: "center",
@@ -377,7 +395,7 @@ const FeedUploaderTemplate = () => {
                         }}>Upload</Text>
                 </TouchableOpacity>
             </View>
-            <Loader visible={feedUploadLoading} />
+            <Loader visible={feedUploadLoading || getUserDetailsLoading} />
 
         </SafeAreaView>
 
