@@ -329,7 +329,7 @@ const OtherUserProfileTemplate = ({ otherUserId }: { otherUserId: string }) => {
 
                         <View style={{ justifyContent: 'space-between', padding: 15 }}>
                             <Text style={{ fontSize: 16, color: 'black', fontWeight: "bold" }}>Email</Text>
-                            <Text style={{ fontSize: 16, color: 'black' }}>{userData?.user?.email}</Text>
+                            <Text style={{ fontSize: 16, color: 'black' }}>{otherUserDetails?.email}</Text>
                         </View>
 
                     </View>
