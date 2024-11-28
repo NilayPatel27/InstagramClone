@@ -5,7 +5,7 @@ import { Loader } from '@instagram/components/atoms';
 import { useUserData } from '@instagram/customHooks';
 import PostHeader from '@instagram/components/templates/home/FeedUploader/PostHeader/index';
 
-const MultiFeedTemplate = ({ imageList, feedId, onDeletePress, deleteUserFeedLoading, userName, userId }: any) => {
+const MultiFeedTemplate = ({ imageList, feedId, onDeletePress, deleteUserFeedLoading, userName, userId, profileImage }: any) => {
     const { width: windowWidth } = useWindowDimensions();
 
     const [indexOfPost, setIndexOfPost] = useState(0);
@@ -47,7 +47,7 @@ const MultiFeedTemplate = ({ imageList, feedId, onDeletePress, deleteUserFeedLoa
     }
     return (
         <>
-            <PostHeader userName={userName} profileUri={""} options={options} onDeletePress={() => onDeletePress({ feedId })} />
+            <PostHeader userName={userName} profileUri={profileImage} options={options} onDeletePress={() => onDeletePress({ feedId })} />
             <View>
                 <Animated.FlatList
                     ref={scrollX}
