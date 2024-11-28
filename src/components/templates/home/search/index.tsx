@@ -121,7 +121,7 @@ const SearchTemplate = () => {
                 renderItem={({ item, index }: any) => renderUserItem(item, index)}
                 keyExtractor={(_, index) => index.toString()}
                 ListEmptyComponent={() => hightMeasured && <ListEmptyComponent />}
-                scrollEnabled={searchText && !searchedUserList ? true : false}
+                scrollEnabled={searchText && searchedUserList?.length !== 0 ? true : false}
                 ListHeaderComponent={() => searchText && <View style={{ height: headerHeight + 20 }} />}
             />
         </View>
