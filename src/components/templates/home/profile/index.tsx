@@ -114,6 +114,13 @@ const ProfileTemplate = () => {
         )
     }
 
+    const onFriendsListPress = (keyword: string) => {
+        if ((keyword === "followers" && !userDetails?.followers?.length) || (keyword === "following" && !userDetails?.following?.length)) {
+            return;
+        }
+        navigation.navigate("FriendsListPage", { keyword, userId: userData?.user?._id });
+    }
+
     const ListHeaderComponent = () => {
         return (
             <>
@@ -137,15 +144,15 @@ const ProfileTemplate = () => {
                                 <Text style={styles.statLabel}>posts</Text>
                             </View>
 
-                            <View style={styles.statsContainer}>
+                            <TouchableOpacity style={styles.statsContainer} onPress={() => onFriendsListPress("followers")}>
                                 <Text style={styles.stat}>{userDetails ? userDetails?.followers?.length : 0}</Text>
                                 <Text style={styles.statLabel}>followers</Text>
-                            </View>
+                            </TouchableOpacity>
 
-                            <View style={styles.statsContainer}>
+                            <TouchableOpacity style={styles.statsContainer} onPress={() => onFriendsListPress("following")}>
                                 <Text style={styles.stat}>{userDetails ? userDetails?.following?.length : 0}</Text>
                                 <Text style={styles.statLabel}>following</Text>
-                            </View>
+                            </TouchableOpacity>
 
                         </View>
                     </View >

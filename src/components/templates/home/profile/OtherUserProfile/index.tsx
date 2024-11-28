@@ -3,7 +3,7 @@ import RBSheet from 'react-native-raw-bottom-sheet';
 import React, { useEffect, useRef, useState } from 'react';
 import Foundation from 'react-native-vector-icons/Foundation';
 import { useBottomTabBarHeight } from '@react-navigation/bottom-tabs';
-import { useFocusEffect, useNavigation } from '@react-navigation/native';
+import { StackActions, useFocusEffect, useNavigation } from '@react-navigation/native';
 import { Image, StyleSheet, Text, TouchableOpacity, View, FlatList, TouchableHighlight, Dimensions, ActivityIndicator } from 'react-native';
 
 import { Images } from '@instagram/assets';
@@ -200,6 +200,14 @@ const OtherUserProfileTemplate = ({ otherUserId }: { otherUserId: string }) => {
         )
     }
 
+    const onFriendsListPress = (keyword: string) => {
+        if ((keyword === "followers" && !otherUserDetails?.followers?.length) || (keyword === "following" && !otherUserDetails?.following?.length)) {
+            return;
+        }
+
+        navigation.dispatch(StackActions.push("FriendsListPage", { keyword, userId: otherUserId }));
+    }
+
     const ListHeaderComponent = () => {
         return (
             <>
@@ -227,15 +235,15 @@ const OtherUserProfileTemplate = ({ otherUserId }: { otherUserId: string }) => {
                                 <Text style={styles.statLabel}>posts</Text>
                             </View>
 
-                            <View style={styles.statsContainer}>
-                                <Text style={styles.stat}>{otherUserDetails?.followers?.length}</Text>
+                            <TouchableOpacity style={styles.statsContainer} onPress={() => onFriendsListPress("followers")}>
+                                <Text style={styles.stat}>{otherUserDetails ? otherUserDetails?.followers?.length : 0}</Text>
                                 <Text style={styles.statLabel}>followers</Text>
-                            </View>
+                            </TouchableOpacity>
 
-                            <View style={styles.statsContainer}>
-                                <Text style={styles.stat}>{otherUserDetails?.following?.length}</Text>
+                            <TouchableOpacity style={styles.statsContainer} onPress={() => onFriendsListPress("following")}>
+                                <Text style={styles.stat}>{otherUserDetails ? otherUserDetails?.following?.length : 0}</Text>
                                 <Text style={styles.statLabel}>following</Text>
-                            </View>
+                            </TouchableOpacity>
 
                         </View>
 
