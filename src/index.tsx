@@ -14,5 +14,6 @@ import OneFeedPage from '@instagram/screens/homeModule/FeedsList/OneFeed/index';
 import EditProfile from '@instagram/screens/homeModule/profile/EditProfile/index';
 import MultiFeedsPage from '@instagram/screens/homeModule/FeedsList/MultiFeeds/index';
 import OtherUserProfile from '@instagram/screens/homeModule/profile/OtherUserProfile/index';
+import FriendsListPage from '@instagram/screens/homeModule/profile/FriendsList/index';
 
-export { LoginPage, SignUpPage, CreatePasswordPage, HomePage, ProfilePage, SearchPage, SettingPage, FeedUploaderPage, AddEmailPage, FeedsListPage, OneFeedPage, MultiFeedsPage, EditProfile, OtherUserProfile, SplashScreen };
+export { LoginPage, SignUpPage, CreatePasswordPage, HomePage, ProfilePage, SearchPage, SettingPage, FeedUploaderPage, AddEmailPage, FeedsListPage, OneFeedPage, MultiFeedsPage, EditProfile, OtherUserProfile, SplashScreen, FriendsListPage };
