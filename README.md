@@ -1,12 +1,6 @@
-# ENGR5520G-SoftwareDevMethodsandTools
+# Instagran Clone Aplication
 
-Kindly join in with this below link:
-https://app.getpostman.com/join-team?invite_code=6b045591dfcddeddcf06813ffa2d3716
-
-
-# Social Media App
-
-Social media where users can share posts and interact through likes, comments and share options and saves an infinite scroll with an enhanced user security system for user’s privacy.
+This Instagram Clone application allows users to create and manage posts, explore an engaging feed with infinite scrolling, and connect with other users through search and follow features, all while ensuring secure and seamless authentication.
 
 ---
 
@@ -23,21 +17,18 @@ Social media where users can share posts and interact through likes, comments an
 ## Features
 
 ### Functional Requirements
-- **Infinite Scrolling**: User feeds support infinite scrolling with paginated data loading.
+- **Follow/Unfollow**: Users can follow or unfollow other users to personalize their feed and stay connected.
+- **Infinite Scrolling**: User feeds support infinite scrolling.
 - **Post Management**: Users can:
-  - Add posts (images with captions).
-  - Update posts.
+  - Add posts.
   - Delete posts.
-- **Engagement Features**:
-  - Like and share posts.
-  - Add comments to posts.
 - **Authentication**:
   - Sign up, login, and logout functionalities.
 - **Account Deletion**: Users can delete their accounts, with all associated data securely removed.
 
 ### Non-Functional Requirements
 - **Security**: Secure user authentication and data protection.
-- **Maintenance**: Easily maintainable and updatable app structure.
+- **Maintenance**: Easily maintainable and updatable app structure(Atomic Structure).
 - **Scalability**: Scalable architecture to handle increasing numbers of users and posts.
 
 ---
@@ -45,13 +36,12 @@ Social media where users can share posts and interact through likes, comments an
 ## Requirements
 
 ### Functional
-- Support for infinite scrolling with efficient data pagination.
+- Support for infinite scrolling.
 - RESTful APIs for post management, user engagement, and authentication.
-- Full CRUD operations for user posts.
 
 ### Non-Functional
-- Secure user authentication mechanisms, such as OAuth or JWT.
-- Database design supporting scalability (e.g., NoSQL or relational database).
+- Secure user authentication mechanisms using JWT.
+- Database design supporting scalability (e.g., NoSQL).
 - Codebase structured for easy bug fixing and feature updates.
 
 ---
@@ -59,11 +49,16 @@ Social media where users can share posts and interact through likes, comments an
 ## Installation
 
 ### Prerequisites
-- Node.js v14 or above
-- MongoDB or a similar database
+- Node.js v20 or above
+- MongoDB database
 - Git (for cloning the repository)
+- React Native Latest Version
 
-### Steps
+### Steps to Setup the Project Environment
+Follow [this](https://reactnative.dev/docs/getting-started-without-a-framework) link to Setup the Project Environment.
+
+
+### Steps to Start the Project
 1. Clone the repository:
    ```bash
    git clone https://github.com/NilayPatel27/instagramClone
@@ -76,9 +71,13 @@ Social media where users can share posts and interact through likes, comments an
    ```bash
    npm install
 
-4. Run the development server:
+4. Run the Backend server:
    ```bash
-   npm start
+   cd server && node app.js
+
+5. Run the Frontend server:
+   ```bash
+   npx react-native run-android(for Android)
    
 ## Technologies
 
@@ -105,26 +104,22 @@ The project utilizes the following stack:
 - **Logout**: Securely log out of the app.
 
 ### Post Management
-- **Create**: Add a new post with an image and a caption.
-- **Edit**: Modify an existing post.
+- **Create**: Add a new post with a single or multiple images.
 - **Delete**: Remove unwanted posts.
 
 ### Feed Navigation
 - Scroll through posts with infinite scrolling.
-- Posts are loaded dynamically using pagination for performance.
 
-### Engagement Features
-- **Like**: Express appreciation for posts.
-- **Shar**e: Share posts with other users or platforms.
-- **Commen**t: Add comments to interact with posts.
+### User Engagement
+- Search other users, Follow/Unfollow them, and see their Feeds.
 
 ### Account Management
-- **Update Details**: Modify user account settings.
+- **Update Details**: Modify user account details.
 - **Delete Account**: Permanently remove your account and associated data.
 
 
 ## Contributing
-We welcome contributions to improve the app. Follow the steps below to contribute:
+We welcome contributors to improve the app. Follow the steps below to contribute:
 
 ### How to Contribute
 ### Steps
