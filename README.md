@@ -1,4 +1,4 @@
-# Instagran Clone Aplication
+# Instagram Clone Application
 
 This Instagram Clone application allows users to create and manage posts, explore an engaging feed with infinite scrolling, and connect with other users through search and follow features, all while ensuring secure and seamless authentication.
 
