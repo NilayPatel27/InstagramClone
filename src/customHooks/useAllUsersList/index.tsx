@@ -50,9 +50,10 @@ const useAllUsersList = () => {
     }, [allUsersListLoading, AppState?.Auth?.allUsersSuccess, AppState?.Auth?.allUsersResponse, AppState?.Auth?.error]);
 
 
-    const getAllUsersList = () => {
+    const getAllUsersList = async () => {
         setAllUsersListLoading(true);
-        allUsersRequest();
+        const res = await allUsersRequest();
+        return res?.data?.usersList;
     }
 
     return { allUsersList, getAllUsersList, allUsersListLoading };
