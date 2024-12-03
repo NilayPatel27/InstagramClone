@@ -8,5 +8,6 @@ import useUnFollowUser from './useUnFollowUser';
 import useGetUserDetails from './useGetUserDetails';
 import useUpdateUserDetails from './useUpdateUserDetails';
 import useStoragePermission from './useStoragePermission';
+import useUserNameExist from './useUserNameExist';
 
-export { useStoragePermission, usePrevious, useUserData, useDeleteFeed, useFeedsList, useAllUsersList, useGetUserDetails, useUpdateUserDetails, useFollowUser, useUnFollowUser };
+export { useStoragePermission, usePrevious, useUserData, useDeleteFeed, useFeedsList, useAllUsersList, useGetUserDetails, useUpdateUserDetails, useFollowUser, useUnFollowUser, useUserNameExist };
