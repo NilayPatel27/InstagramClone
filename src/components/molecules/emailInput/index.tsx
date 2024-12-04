@@ -2,7 +2,14 @@ import React from 'react';
 import { Controller } from "react-hook-form";
 import { StyleSheet, Text, TextInput } from 'react-native';
 
-const EmailInput = ({ control, errors, handleEmailChange, email }: any) => (
+interface EmailInputProps {
+    control: any;
+    errors: any;
+    handleEmailChange: (text: string) => void;
+    email: string;
+}
+
+const EmailInput: React.FC<EmailInputProps> = ({ control, errors, handleEmailChange, email }) => (
     <Controller
         control={control}
         defaultValue={email}
@@ -21,7 +28,7 @@ const EmailInput = ({ control, errors, handleEmailChange, email }: any) => (
                     keyboardType="email-address"
                 />
                 {errors && errors["email"] && errors["email"]?.message &&
-                    <Text style={{ color: 'red' }}>{errors["email"]?.message}</Text>
+                    <Text style={styles.error}>{errors["email"]?.message}</Text>
                 }
             </>
         )}
@@ -41,5 +48,9 @@ const styles = StyleSheet.create({
         marginVertical: 10,
         backgroundColor: '#fafafa',
         color: '#333',
+    },
+    error: {
+        color: 'red',
+        marginTop: 5,
     }
 })
