@@ -51,7 +51,7 @@ const useUserNameExist = () => {
     const userNameExist = async (params: any) => {
         setUserName(params.name);
         setUserNameExistLoading(true);
-        userNameExistRequest(params);
+        await userNameExistRequest(params);
     }
 
     return { userNameExist, userNameExistLoading };
