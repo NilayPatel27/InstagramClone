@@ -8,8 +8,8 @@ import { EmailInput } from "@instagram/components/molecules";
 import { EmailValidationSchema } from "@instagram/validations";
 import { useSignUp, useUserEmailExist } from '@instagram/customHooks';
 
-import { styles } from "@instagram/components/templates/auth/signUp/addEmail/styles.tsx";
-import { AddEmailProps, FormValues } from "@instagram/components/templates/auth/signUp/addEmail/types.tsx";
+import { styles } from "@instagram/components/templates/auth/signUp/addEmail/styles.ts";
+import { AddEmailProps, FormValues } from "@instagram/components/templates/auth/signUp/addEmail/types.ts";
 
 const AddEmail: React.FC<AddEmailProps> = ({ username, password }) => {
 
