@@ -1,4 +1,3 @@
-import * as yup from "yup";
 import React, { useState } from 'react';
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
@@ -6,14 +5,20 @@ import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 
 import { Loader } from '@instagram/components/atoms';
 import { EmailInput } from "@instagram/components/molecules";
+import { EmailValidationSchema } from "@instagram/validations";
 import { useSignUp, useUserEmailExist } from '@instagram/customHooks';
 
-const AddEmail = ({ username, password }: any) => {
+interface AddEmailProps {
+    username: string;
+    password: string;
+}
 
-    const [email, setEmail] = useState('');
+const AddEmail: React.FC<AddEmailProps> = ({ username, password }) => {
+
+    const [email, setEmail] = useState<string>('');
 
     const handleEmailChange = (text: string) => {
-        setEmail(text.toLowerCase());
+        setEmail(text?.toLowerCase());
     }
 
     const handleSignUp = async () => {
@@ -28,18 +33,8 @@ const AddEmail = ({ username, password }: any) => {
         await userEmailExist({ email });
     }
 
-    const addValidationSchema = yup.object().shape({
-        email: yup
-            .string()
-            .required('Email is required')
-            .email('Invalid email')
-            .test('is-gmail', 'Email must end with @gmail.com', (value) => {
-                return value ? value.endsWith('@gmail.com') : false;
-            })
-    });
-
     const { handleSubmit, control, formState: { errors } } = useForm({
-        resolver: yupResolver(addValidationSchema),
+        resolver: yupResolver(EmailValidationSchema),
         reValidateMode: "onChange"
     });
 
@@ -50,7 +45,7 @@ const AddEmail = ({ username, password }: any) => {
             <TouchableOpacity
                 onPress={handleSubmit(handleNextPress)}
                 style={styles.nextButtonContainer}
-                disabled={email.length < 1}>
+                disabled={email?.length < 1}>
                 <Text style={[styles.nextButtonText, { color: email.length < 1 ? '#99b7f3' : '#fff', }]}>Sign Up</Text>
             </TouchableOpacity>
             <Loader visible={validateEmailLoading || signUpLoading} />
