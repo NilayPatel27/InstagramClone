@@ -1,10 +1,11 @@
 import * as yup from "yup";
 import React, { useState } from 'react';
-import { useForm, Controller } from "react-hook-form";
+import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
+import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 
 import { Loader } from '@instagram/components/atoms';
+import { EmailInput } from "@instagram/components/molecules";
 import { useSignUp, useUserEmailExist } from '@instagram/customHooks';
 
 const AddEmail = ({ username, password }: any) => {
@@ -45,29 +46,7 @@ const AddEmail = ({ username, password }: any) => {
     return (
         <View style={styles.container}>
             <Text style={styles.text1}>Add an Email</Text>
-            <Controller
-                control={control}
-                defaultValue={email}
-                name={"email"}
-                render={({ field: { onChange, value } }) => (
-                    <>
-                        <TextInput
-                            style={styles.emailInput}
-                            placeholder="Email"
-                            placeholderTextColor="#888"
-                            value={value}
-                            onChangeText={(text) => {
-                                onChange(text);
-                                handleEmailChange(text);
-                            }}
-                            keyboardType="email-address"
-                        />
-                        {errors && errors["email"] && errors["email"]?.message &&
-                            <Text style={{ color: 'red' }}>{errors["email"]?.message}</Text>
-                        }
-                    </>
-                )}
-            />
+            <EmailInput control={control} errors={errors} handleEmailChange={handleEmailChange} email={email} />
             <TouchableOpacity
                 onPress={handleSubmit(handleNextPress)}
                 style={styles.nextButtonContainer}

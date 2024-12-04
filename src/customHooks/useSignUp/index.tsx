@@ -13,8 +13,8 @@ const useSignUp = () => {
 
     const previousAppState: any = usePrevious(AppState);
 
-    const [signUpLoading, setSignUpLoading] = useState(false);
-    const [firstTimeSignUp, setFirstTimeSignUp] = useState(false);
+    const [signUpLoading, setSignUpLoading] = useState<boolean>(false);
+    const [firstTimeSignUp, setFirstTimeSignUp] = useState<boolean>(false);
 
     useEffect(() => {
         if (firstTimeSignUp && !AppState?.Loader?.loaderVisible) {

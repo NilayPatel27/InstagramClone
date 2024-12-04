@@ -10,7 +10,7 @@ const useUserEmailExist = ({ handleSignUp }: { handleSignUp: () => Promise<any> 
 
     const previousAppState: any = usePrevious(AppState);
 
-    const [validateEmailLoading, setValidateEmailLoading] = useState(false);
+    const [validateEmailLoading, setValidateEmailLoading] = useState<boolean>(false);
 
     useEffect(() => {
         if (validateEmailLoading && AppState?.Auth && AppState?.Auth?.userEmailExistSuccess === true && AppState?.Auth?.userEmailExistResponse) {
