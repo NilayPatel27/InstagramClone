@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
 import { useForm } from "react-hook-form";
+import React, { useCallback, useState } from 'react';
 import { yupResolver } from "@hookform/resolvers/yup";
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 
@@ -8,18 +8,16 @@ import { EmailInput } from "@instagram/components/molecules";
 import { EmailValidationSchema } from "@instagram/validations";
 import { useSignUp, useUserEmailExist } from '@instagram/customHooks';
 
-interface AddEmailProps {
-    username: string;
-    password: string;
-}
+import { styles } from "@instagram/components/templates/auth/signUp/addEmail/styles.tsx";
+import { AddEmailProps, FormValues } from "@instagram/components/templates/auth/signUp/addEmail/types.tsx";
 
 const AddEmail: React.FC<AddEmailProps> = ({ username, password }) => {
 
     const [email, setEmail] = useState<string>('');
 
-    const handleEmailChange = (text: string) => {
+    const handleEmailChange = useCallback((text: string) => {
         setEmail(text?.toLowerCase());
-    }
+    }, []);
 
     const handleSignUp = async () => {
         await signUp({ email, name: "", password, userName: username, profileImage: "" });
@@ -33,10 +31,12 @@ const AddEmail: React.FC<AddEmailProps> = ({ username, password }) => {
         await userEmailExist({ email });
     }
 
-    const { handleSubmit, control, formState: { errors } } = useForm({
+    const { handleSubmit, control, formState: { errors } } = useForm<FormValues>({
         resolver: yupResolver(EmailValidationSchema),
         reValidateMode: "onChange"
     });
+
+    const isDisabled = email?.length < 1;
 
     return (
         <View style={styles.container}>
@@ -45,57 +45,12 @@ const AddEmail: React.FC<AddEmailProps> = ({ username, password }) => {
             <TouchableOpacity
                 onPress={handleSubmit(handleNextPress)}
                 style={styles.nextButtonContainer}
-                disabled={email?.length < 1}>
-                <Text style={[styles.nextButtonText, { color: email.length < 1 ? '#99b7f3' : '#fff', }]}>Sign Up</Text>
+                disabled={isDisabled}>
+                <Text style={[styles.nextButtonText, { color: isDisabled ? '#99b7f3' : '#fff', }]}>Sign Up</Text>
             </TouchableOpacity>
             <Loader visible={validateEmailLoading || signUpLoading} />
         </View >
     )
 }
 
-export default AddEmail
-
-const styles = StyleSheet.create({
-    container: {
-        alignItems: 'center',
-        backgroundColor: '#fff',
-        padding: 20,
-        flex: 1,
-        paddingTop: 30,
-    },
-    text1: {
-        fontSize: 27,
-        color: '#333',
-        marginBottom: 10,
-    },
-    text2: {
-        fontSize: 16,
-        color: '#666',
-        textAlign: 'center',
-    },
-    emailInput: {
-        width: '90%',
-        height: 50,
-        borderWidth: 1,
-        borderColor: '#ddd',
-        borderRadius: 5,
-        paddingHorizontal: 10,
-        marginVertical: 10,
-        backgroundColor: '#fafafa',
-        color: '#333',
-    },
-    nextButtonContainer: {
-        backgroundColor: '#0095f6',
-        padding: 10,
-        borderRadius: 5,
-        alignItems: 'center',
-        justifyContent: 'center',
-        marginTop: 10,
-        width: '90%',
-        height: 50,
-    },
-    nextButtonText: {
-        fontWeight: 'bold',
-        fontSize: 16,
-    },
-})
+export default AddEmail;
