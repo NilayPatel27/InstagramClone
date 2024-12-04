@@ -1,112 +1,31 @@
 import * as yup from "yup";
+import React, { useState } from 'react';
 import { useForm, Controller } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
-import React, { useContext, useEffect, useState } from 'react';
-import { CommonActions, useNavigation } from '@react-navigation/native';
-import { Alert, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
+import { StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
 
 import { Loader } from '@instagram/components/atoms';
-import { AppContext } from '@instagram/context';
-import { usePrevious } from '@instagram/customHooks';
+import { useSignUp, useUserEmailExist } from '@instagram/customHooks';
 
 const AddEmail = ({ username, password }: any) => {
-    const navigation = useNavigation();
 
     const [email, setEmail] = useState('');
-    const [validateEmailLoading, setValidateEmailLoading] = useState(false);
-    const [signUpLoading, setSignUpLoading] = useState(false);
-    const [firstTimeSignUp, setFirstTimeSignUp] = useState(false);
-
-    const { state: AppState, userEmailExistRequest, signUpRequest } = useContext(AppContext);
-    const previousAppState: any = usePrevious(AppState);
 
     const handleEmailChange = (text: string) => {
         setEmail(text.toLowerCase());
     }
 
-    const handleNextPress = async () => {
-        setValidateEmailLoading(true);
-        await userEmailExistRequest({ email });
-    }
-
     const handleSignUp = async () => {
-        setSignUpLoading(true);
-        await signUpRequest({ email, name: "", password, userName: username, profileImage: "" });
+        await signUp({ email, name: "", password, userName: username, profileImage: "" });
     }
 
-    useEffect(() => {
-        if (validateEmailLoading && AppState?.Auth && AppState?.Auth?.userEmailExistSuccess === true && AppState?.Auth?.userEmailExistResponse) {
-            if (previousAppState?.Auth !== AppState?.Auth) {
-                setValidateEmailLoading(false);
-                if (AppState?.Auth?.userEmailExistResponse?.data?.message === "User not exist" && AppState?.Auth?.userEmailExistResponse?.status === 200) {
-                    handleSignUp();
-                } else {
-                    Alert.alert(
-                        "Alert",
-                        AppState?.Auth?.userEmailExistResponse?.data?.message ? AppState?.Auth?.userEmailExistResponse?.data?.message : "Something went wrong",
-                        [
-                            {
-                                text: "OK",
-                                onPress: () => { }
-                            }
-                        ],
-                        { cancelable: false }
-                    );
-                }
-            }
-        } else if (validateEmailLoading && AppState?.Auth && AppState?.Auth?.userEmailExistSuccess === false && AppState?.Auth?.error) {
-            if (previousAppState?.Auth !== AppState?.Auth) {
-                setValidateEmailLoading(false);
-                if (AppState?.Auth?.error && AppState?.Auth?.error?.code && AppState?.Auth?.error?.code === 401) {
-                    Alert.alert("", AppState?.Auth?.error?.error?.toString());
-                } else {
-                    Alert.alert(AppState?.Auth?.error?.error)
-                }
-            }
-        }
-    }, [validateEmailLoading, AppState?.Auth?.userEmailExistSuccess, AppState?.Auth?.userEmailExistResponse, AppState?.Auth?.error]);
+    const { signUp, signUpLoading } = useSignUp();
 
-    useEffect(() => {
-        if (signUpLoading && AppState?.Auth && AppState?.Auth?.signUpSuccess === true && AppState?.Auth?.signUpResponse) {
-            if (previousAppState?.Auth !== AppState?.Auth) {
-                setSignUpLoading(false);
-                if (AppState?.Auth?.signUpResponse?.status === "Success" || AppState?.Auth?.signUpResponse?.status === 200) {
-                    setFirstTimeSignUp(true);
-                } else {
-                    Alert.alert(
-                        "Alert",
-                        AppState?.Auth?.signUpResponse?.message ? AppState?.Auth?.signUpResponse?.message : "Something went wrong",
-                        [
-                            {
-                                text: "OK",
-                                onPress: () => { }
-                            }
-                        ],
-                        { cancelable: false }
-                    );
-                }
-            }
-        } else if (signUpLoading && AppState?.Auth && AppState?.Auth?.signUpSuccess === false && AppState?.Auth?.error) {
-            if (previousAppState?.Auth !== AppState?.Auth) {
-                setSignUpLoading(false);
-                if (AppState?.Auth?.error && AppState?.Auth?.error?.code && AppState?.Auth?.error?.code === 401) {
-                    Alert.alert("", AppState?.Auth?.error?.error?.toString());
-                } else {
-                    Alert.alert(AppState?.Auth?.error?.error)
-                }
-            }
-        }
-    }, [signUpLoading, AppState?.Auth?.signUpSuccess, AppState?.Auth?.signUpResponse, AppState?.Auth?.error]);
+    const { userEmailExist, validateEmailLoading } = useUserEmailExist({ handleSignUp });
 
-    useEffect(() => {
-        if (firstTimeSignUp && !AppState?.Loader?.loaderVisible) {
-            navigation.dispatch(
-                CommonActions.reset({
-                    index: 0,
-                    routes: [{ name: "HomeStack" }]
-                }));
-        }
-    }, [firstTimeSignUp, AppState?.Loader?.loaderVisible]);
+    const handleNextPress = async () => {
+        await userEmailExist({ email });
+    }
 
     const addValidationSchema = yup.object().shape({
         email: yup
