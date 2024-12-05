@@ -6,7 +6,7 @@ import usePrevious from "@instagram/customHooks/usePrevious";
 
 const useUserEmailExist = ({ handleSignUp }: { handleSignUp: () => Promise<any> }) => {
 
-    const { state: AppState, userNameExistRequest } = useContext(AppContext);
+    const { state: AppState, userEmailExistRequest } = useContext(AppContext);
 
     const previousAppState: any = usePrevious(AppState);
 
@@ -46,7 +46,7 @@ const useUserEmailExist = ({ handleSignUp }: { handleSignUp: () => Promise<any> 
 
     const userEmailExist = async (params: any) => {
         setValidateEmailLoading(true);
-        await userNameExistRequest(params);
+        await userEmailExistRequest(params);
     }
 
     return { userEmailExist, validateEmailLoading };
