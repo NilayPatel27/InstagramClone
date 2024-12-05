@@ -1,7 +1,7 @@
 import { useForm } from "react-hook-form";
 import React, { useCallback, useState } from 'react';
 import { yupResolver } from "@hookform/resolvers/yup";
-import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { Text, TouchableOpacity, View } from 'react-native';
 
 import { Loader } from '@instagram/components/atoms';
 import { EmailInput } from "@instagram/components/molecules";

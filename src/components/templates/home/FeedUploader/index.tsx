@@ -6,18 +6,18 @@ import {
     Image, FlatList, SafeAreaView, useWindowDimensions, TouchableOpacity
 } from 'react-native';
 
-import DocumentPicker from "react-native-document-picker";
 import ImageCropPicker from 'react-native-image-crop-picker';
 
 import { Images } from "@instagram/assets/index.tsx";
-import { useGetUserDetails, usePrevious, useStoragePermission, useUserData } from '@instagram/customHooks';
+import { useGetUserDetails, usePrevious, useUserData } from '@instagram/customHooks';
 import PostHeader from '@instagram/components/templates/home/FeedUploader/PostHeader/index';
 import { getAccess } from '@instagram/customHooks/useAccess';
 import { Loader } from "@instagram/components/atoms";
 import { AppContext } from "@instagram/context";
-import FontAwesome from 'react-native-vector-icons/FontAwesome';
+import ImagePicker from "@instagram/components/templates/home/FeedUploader/ImagePicker/index.tsx";
 
 const FeedUploaderTemplate = () => {
+
     const navigation = useNavigation();
     let { width: windowWidth } = useWindowDimensions();
     const { userDetails, getUserDetail, getUserDetailsLoading }: any = useGetUserDetails();
@@ -40,57 +40,6 @@ const FeedUploaderTemplate = () => {
     const { state: AppState, documentUploadRequest } = useContext(AppContext);
     const previousAppState: any = usePrevious(AppState);
 
-    const { permission, requestStoragePermission } = useStoragePermission();
-
-    const imagePicker = async () => {
-        if (permission === 'never_ask_again') {
-            const file = await DocumentPicker.pick({
-                allowMultiSelection: true,
-                type: [DocumentPicker.types.images],
-                presentationStyle: "fullScreen"
-            }).catch(() => {
-                goBack();
-            });
-
-            let valid = true;
-            file?.map((item: any) => {
-                if (["jpeg", "jpg", "png", "gif"].indexOf(item?.name?.split(".").pop()?.toLowerCase()) === -1 || item?.size > 150000) {
-                    return valid = false;
-                }
-            });
-
-            if (valid) {
-                if (file?.length + images?.length > 10) {
-                    Alert.alert("", "Maximum 10 images can be uploaded at a time", [
-                        { text: "OK", onPress: () => { } }
-                    ]);
-
-                    images?.length > 0 && scrollX?.current?.scrollToIndex({ animated: true, index: 0 });
-                    scrollX?.removeAllListeners();
-                }
-                else {
-                    setImages([...images, ...file]);
-                }
-            }
-            else {
-                Alert.alert("", "Upload .jpeg, .jpg, .png or .gif images only and size should be less than 150 kb", [
-                    {
-                        text: "OK", onPress: () => { imagePicker(); }
-                    }
-                ]);
-            }
-
-        } else {
-            Alert.alert("", "Please allow access to storage in app settings", [
-                { text: "OK", onPress: () => { } }
-            ]);
-        }
-    }
-
-    useEffect(() => {
-        requestStoragePermission();
-    }, []);
-
     useFocusEffect(
         React.useCallback(() => {
             if (userData?.user?._id)
@@ -110,11 +59,6 @@ const FeedUploaderTemplate = () => {
             userName && setUserName(userName);
         }
     }, [userDetails]);
-
-    useEffect(() => {
-        if (permission === "never_ask_again")
-            imagePicker();
-    }, [permission]);
 
     useEffect(() => {
         return () => {
@@ -288,28 +232,27 @@ const FeedUploaderTemplate = () => {
             <View style={{ flex: 1, backgroundColor: '#fff' }}>
 
                 <ScrollView style={{ flex: 1 }} showsVerticalScrollIndicator={false} nestedScrollEnabled>
+
+                    <View style={{
+                        backgroundColor: '#eff1ff',
+                        paddingHorizontal: 10, paddingVertical: 5, borderRadius: 10,
+                        marginHorizontal: 10, marginTop: 10,
+                        marginBottom: 5, flexDirection: "row",
+                        justifyContent: "flex-start",
+                        alignItems: "center"
+                    }}>
+                        <ImagePicker images={images} setImages={setImages} scrollX={scrollX} />
+                        <FlatList
+                            data={images}
+                            renderItem={({ item, index }) => renderItems({ item, index })}
+                            horizontal={true}
+                            showsHorizontalScrollIndicator={false}
+                            keyExtractor={keyExtractor}
+                        />
+                    </View>
+
                     {images?.length > 0 &&
                         <>
-                            <View style={{
-                                backgroundColor: '#eff1ff',
-                                paddingHorizontal: 10, paddingVertical: 5, borderRadius: 10,
-                                marginHorizontal: 10, marginTop: 10,
-                                marginBottom: 5, flexDirection: "row",
-                                justifyContent: "flex-start",
-                                alignItems: "center"
-                            }}>
-                                <TouchableOpacity onPress={() => imagePicker()}>
-                                    <FontAwesome name="plus-square-o" size={25} color={"orange"} style={{ marginHorizontal: 10 }} />
-                                </TouchableOpacity>
-                                <FlatList
-                                    data={images}
-                                    renderItem={({ item, index }) => renderItems({ item, index })}
-                                    horizontal={true}
-                                    showsHorizontalScrollIndicator={false}
-                                    keyExtractor={keyExtractor}
-                                />
-
-                            </View>
                             <Text style={{ color: 'black', padding: 10, textAlign: "center" }}>-: Preview :-</Text>
                             <View style={{ width: windowWidth, backgroundColor: '#fff' }}>
                                 <PostHeader userName={userName} profileUri={userProfileImage} options={false} />

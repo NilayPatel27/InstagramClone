@@ -6,12 +6,12 @@ export const styles = StyleSheet.create({
         backgroundColor: '#fff',
         padding: 20,
         flex: 1,
-        paddingTop: 30,
+        paddingTop: 30
     },
     text1: {
         fontSize: 27,
         color: '#333',
-        marginBottom: 10,
+        marginBottom: 10
     },
     nextButtonContainer: {
         backgroundColor: '#0095f6',
@@ -21,10 +21,10 @@ export const styles = StyleSheet.create({
         justifyContent: 'center',
         marginTop: 10,
         width: '90%',
-        height: 50,
+        height: 50
     },
     nextButtonText: {
         fontWeight: 'bold',
-        fontSize: 16,
+        fontSize: 16
     }
 })
