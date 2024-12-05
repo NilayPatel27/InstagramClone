@@ -1,22 +1,26 @@
 import RNFS from "react-native-fs";
-import { useNavigation } from "@react-navigation/native";
-import React, { useContext, useEffect, useState } from 'react';
-import { View, Text, TouchableOpacity, Alert } from 'react-native';
+import React, { useContext, useEffect } from 'react';
+import { useNavigation } from '@react-navigation/native';
+import { View, Text, TouchableOpacity } from 'react-native';
 
+import { AppContext } from '@instagram/context';
 import { Loader } from '@instagram/components/atoms';
-import { AppContext } from '@instagram/context/index.tsx';
-import { usePrevious, useUserData } from '@instagram/customHooks';
+import { useFeedUpload, useUserData } from '@instagram/customHooks';
 
 const UploadButton = ({ images }: any) => {
 
     const navigation = useNavigation();
+
     const { userData } = useUserData();
+    const { feedUpload, feedUploadLoading, postUploading } = useFeedUpload();
 
-    const { state: AppState, documentUploadRequest } = useContext(AppContext);
-    const previousAppState: any = usePrevious(AppState);
+    const { state: AppState } = useContext(AppContext);
 
-    const [postUploading, setPostUploading] = useState(false);
-    const [feedUploadLoading, setFeedUploadLoading] = useState(false);
+    useEffect(() => {
+        if (postUploading && !AppState?.Loader?.loaderVisible) {
+            navigation.goBack();
+        }
+    }, [postUploading, AppState?.Loader?.loaderVisible]);
 
     const onPostUploadPress = async () => {
         let array: any = [];
@@ -34,49 +38,9 @@ const UploadButton = ({ images }: any) => {
             let data = new FormData();
             data.append("userId", userData.user._id);
             data.append("feeds", array);
-
-            setFeedUploadLoading(true);
-            documentUploadRequest(data);
+            feedUpload(data);
         }
     }
-
-    useEffect(() => {
-        if (feedUploadLoading && AppState?.DocumentUpload && AppState?.DocumentUpload?.documentUploadSuccess === true && AppState?.DocumentUpload?.documentUploadResponse) {
-            if (previousAppState?.DocumentUpload !== AppState?.DocumentUpload) {
-                setFeedUploadLoading(false);
-                if (AppState?.DocumentUpload?.documentUploadResponse?.status === "Success" || AppState?.DocumentUpload?.documentUploadResponse?.status === 200) {
-                    setPostUploading(true);
-                } else {
-                    Alert.alert(
-                        "Alert",
-                        AppState?.DocumentUpload?.documentUploadResponse?.message ? AppState?.DocumentUpload?.documentUploadResponse?.message : "Something went wrong",
-                        [
-                            {
-                                text: "OK",
-                                onPress: () => { }
-                            }
-                        ],
-                        { cancelable: false }
-                    );
-                }
-            }
-        } else if (feedUploadLoading && AppState?.DocumentUpload && AppState?.DocumentUpload?.documentUploadSuccess === false && AppState?.DocumentUpload?.error) {
-            if (previousAppState?.DocumentUpload !== AppState?.DocumentUpload) {
-                setFeedUploadLoading(false);
-                if (AppState?.DocumentUpload?.error && AppState?.DocumentUpload?.error?.code && AppState?.DocumentUpload?.error?.code === 401) {
-                    Alert.alert("", AppState?.DocumentUpload?.error?.error?.toString());
-                } else {
-                    Alert.alert(AppState?.DocumentUpload?.error?.error)
-                }
-            }
-        }
-    }, [feedUploadLoading, AppState?.DocumentUpload?.documentUploadSuccess, AppState?.DocumentUpload?.documentUploadResponse, AppState?.DocumentUpload?.error]);
-
-    useEffect(() => {
-        if (postUploading && !AppState?.Loader?.loaderVisible) {
-            navigation.goBack();
-        }
-    }, [postUploading, AppState?.Loader?.loaderVisible]);
 
     return (
         <View style={{ backgroundColor: '#fff', padding: 10, alignItems: 'center', justifyContent: 'center' }}>
