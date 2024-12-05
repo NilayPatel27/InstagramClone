@@ -12,5 +12,6 @@ import useUserNameExist from './useUserNameExist';
 import useUserEmailExist from './useUserEmailExist';
 import useSignUp from './useSignUp';
 import useFeedUpload from './useFeedUpload';
+import useDeleteUser from './useDeleteUser';
 
-export { useStoragePermission, usePrevious, useUserData, useDeleteFeed, useFeedsList, useAllUsersList, useGetUserDetails, useUpdateUserDetails, useFollowUser, useUnFollowUser, useUserNameExist, useUserEmailExist, useSignUp, useFeedUpload };
+export { useStoragePermission, usePrevious, useUserData, useDeleteFeed, useFeedsList, useAllUsersList, useGetUserDetails, useUpdateUserDetails, useFollowUser, useUnFollowUser, useUserNameExist, useUserEmailExist, useSignUp, useFeedUpload, useDeleteUser };

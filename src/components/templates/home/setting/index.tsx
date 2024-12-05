@@ -1,31 +1,17 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useContext } from 'react';
 import { CommonActions, useNavigation } from '@react-navigation/native';
 import { View, Text, TouchableOpacity, StyleSheet, Alert } from 'react-native';
 
-import { usePrevious } from '@instagram/customHooks';
-import { Loader } from '@instagram/components/atoms';
 import { AppContext } from '@instagram/context';
-import { getAccess } from '@instagram/customHooks/useAccess';
+import { Loader } from '@instagram/components/atoms';
+import { useDeleteUser } from '@instagram/customHooks';
 import { NavigationBar } from '@instagram/components/molecules';
 
 const SettingTemplate = () => {
     const navigation = useNavigation();
 
-    const { state: AppState, logOutRequest, deleteUserAccountRequest } = useContext(AppContext);
-    const previousAppState: any = usePrevious(AppState);
-
-    interface UserData {
-        token: string;
-        user: {
-            _id: string;
-            name: string;
-            email: string;
-            message: string;
-        }
-    }
-
-    const [userData, setUserData] = useState<UserData>({});
-    const [deleteUserAccountLoading, setDeleteUserAccountLoading] = useState(false);
+    const { logOutRequest } = useContext(AppContext);
+    const { deleteUserAccount, deleteUserAccountLoading } = useDeleteUser();
 
     const onBack = () => {
         navigation.goBack();
@@ -38,19 +24,6 @@ const SettingTemplate = () => {
                 index: 0,
                 routes: [{ name: "AuthStack" }]
             }));
-    }
-    const getUserData = async () => {
-        const userData: any = await getAccess("user");
-        setUserData(JSON.parse(userData));
-    }
-
-    useEffect(() => {
-        getUserData();
-    }, []);
-
-    const deleteUserAccount = () => {
-        setDeleteUserAccountLoading(true);
-        deleteUserAccountRequest(userData?.user?._id);
     }
 
     const onDeletePress = () => {
@@ -70,43 +43,6 @@ const SettingTemplate = () => {
             { cancelable: false }
         );
     }
-
-    useEffect(() => {
-        if (deleteUserAccountLoading && AppState?.Auth && AppState?.Auth?.deleteUserAccountSuccess === true && AppState?.Auth?.deleteUserAccountResponse) {
-            if (previousAppState?.Auth !== AppState?.Auth) {
-                setDeleteUserAccountLoading(false);
-                if (AppState?.Auth?.deleteUserAccountResponse?.status === "Success" || AppState?.Auth?.deleteUserAccountResponse?.status === 200) {
-                    logOutRequest();
-                    navigation.dispatch(
-                        CommonActions.reset({
-                            index: 0,
-                            routes: [{ name: "AuthStack" }]
-                        }));
-                } else {
-                    Alert.alert(
-                        "Alert",
-                        AppState?.Auth?.deleteUserAccountResponse?.message ? AppState?.Auth?.deleteUserAccountResponse?.message : "Something went wrong",
-                        [
-                            {
-                                text: "OK",
-                                onPress: () => { }
-                            }
-                        ],
-                        { cancelable: false }
-                    );
-                }
-            }
-        } else if (deleteUserAccountLoading && AppState?.Auth && AppState?.Auth?.deleteUserAccountSuccess === false && AppState?.Auth?.error) {
-            if (previousAppState?.Auth !== AppState?.Auth) {
-                setDeleteUserAccountLoading(false);
-                if (AppState?.Auth?.error && AppState?.Auth?.error?.code && AppState?.Auth?.error?.code === 401) {
-                    Alert.alert("", AppState?.Auth?.error?.error?.toString());
-                } else {
-                    Alert.alert(AppState?.Auth?.error?.error)
-                }
-            }
-        }
-    }, [deleteUserAccountLoading, AppState?.Auth?.deleteUserAccountSuccess, AppState?.Auth?.deleteUserAccountResponse, AppState?.Auth?.error]);
 
     return (
         <>
