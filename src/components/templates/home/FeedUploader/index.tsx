@@ -1,15 +1,8 @@
 import React, { useRef, useState } from 'react';
 import { useFocusEffect, useNavigation } from '@react-navigation/native';
-import {
-    View, Animated, Alert, ScrollView, BackHandler,
-    SafeAreaView
-} from 'react-native';
+import { View, Animated, Alert, ScrollView, BackHandler, SafeAreaView, StyleSheet } from 'react-native';
 
-import ImagePicker from "@instagram/components/templates/home/FeedUploader/ImagePicker/index.tsx";
-import PreviewImages from "@instagram/components/templates/home/FeedUploader/PreviewImages/index.tsx";
-import PreviewPostsHeader from "@instagram/components/templates/home/FeedUploader/PreviewPostsHeader/index.tsx";
-import PreviewPosts from "@instagram/components/templates/home/FeedUploader/PreviewPosts/index.tsx";
-import UploadButton from "@instagram/components/templates/home/FeedUploader/PostUploadButton/index.tsx";
+import { ImagePicker, PreviewImages, PreviewPostsHeader, PreviewPosts, UploadButton } from "@instagram/components/templates/home/FeedUploader/feedUploaderPages.ts";
 
 const FeedUploaderTemplate = () => {
 
@@ -59,20 +52,13 @@ const FeedUploaderTemplate = () => {
     );
 
     return (
-        <SafeAreaView style={{ flex: 1 }}>
+        <SafeAreaView style={styles.safeAreaViewContainer}>
 
-            <View style={{ flex: 1, backgroundColor: '#fff' }}>
+            <View style={styles.mainContainer}>
 
-                <ScrollView style={{ flex: 1 }} showsVerticalScrollIndicator={false} nestedScrollEnabled>
+                <ScrollView style={styles.safeAreaViewContainer} showsVerticalScrollIndicator={false} nestedScrollEnabled>
 
-                    <View style={{
-                        backgroundColor: '#eff1ff',
-                        paddingHorizontal: 10, paddingVertical: 5, borderRadius: 10,
-                        marginHorizontal: 10, marginTop: 10,
-                        marginBottom: 5, flexDirection: "row",
-                        justifyContent: "flex-start",
-                        alignItems: "center"
-                    }}>
+                    <View style={styles.previewSmallImagesContainer}>
                         <ImagePicker images={images} setImages={setImages} scrollX={scrollX} />
                         <PreviewImages images={images} setImages={setImages} index={index} setIndex={setIndex} />
                     </View>
@@ -93,5 +79,27 @@ const FeedUploaderTemplate = () => {
 
     )
 }
+
+const styles = StyleSheet.create({
+    safeAreaViewContainer: {
+        flex: 1
+    },
+    mainContainer: {
+        flex: 1,
+        backgroundColor: '#fff'
+    },
+    previewSmallImagesContainer: {
+        backgroundColor: '#eff1ff',
+        paddingHorizontal: 10,
+        paddingVertical: 5,
+        borderRadius: 10,
+        marginHorizontal: 10,
+        marginTop: 10,
+        marginBottom: 5,
+        flexDirection: "row",
+        justifyContent: "flex-start",
+        alignItems: "center"
+    }
+});
 
 export default FeedUploaderTemplate;
