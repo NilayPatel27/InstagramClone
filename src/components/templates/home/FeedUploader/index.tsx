@@ -3,26 +3,24 @@ import React, { useCallback, useContext, useEffect, useRef, useState } from 'rea
 import { useFocusEffect, useNavigation } from '@react-navigation/native';
 import {
     View, Text, Animated, Alert, ScrollView, BackHandler,
-    Image, FlatList, SafeAreaView, useWindowDimensions, TouchableOpacity
+    Image, SafeAreaView, useWindowDimensions, TouchableOpacity
 } from 'react-native';
 
 import ImageCropPicker from 'react-native-image-crop-picker';
 
 import { Images } from "@instagram/assets/index.tsx";
-import { useGetUserDetails, usePrevious, useUserData } from '@instagram/customHooks';
-import PostHeader from '@instagram/components/templates/home/FeedUploader/PostHeader/index';
+import { usePrevious } from '@instagram/customHooks';
 import { getAccess } from '@instagram/customHooks/useAccess';
 import { Loader } from "@instagram/components/atoms";
 import { AppContext } from "@instagram/context";
 import ImagePicker from "@instagram/components/templates/home/FeedUploader/ImagePicker/index.tsx";
 import PreviewImages from "@instagram/components/templates/home/FeedUploader/PreviewImages/index.tsx";
+import PreviewPostsHeader from "@instagram/components/templates/home/FeedUploader/PreviewPostsHeader/index.tsx";
 
 const FeedUploaderTemplate = () => {
 
     const navigation = useNavigation();
     let { width: windowWidth } = useWindowDimensions();
-    const { userDetails, getUserDetail, getUserDetailsLoading }: any = useGetUserDetails();
-    const { userData } = useUserData();
 
     const [images, setImages] = useState<any>([]);
 
@@ -40,26 +38,6 @@ const FeedUploaderTemplate = () => {
 
     const { state: AppState, documentUploadRequest } = useContext(AppContext);
     const previousAppState: any = usePrevious(AppState);
-
-    useFocusEffect(
-        React.useCallback(() => {
-            if (userData?.user?._id)
-                getUserDetail({ userId: userData?.user?._id });
-            return () => {
-            };
-        }, [userData])
-    );
-
-    const [userProfileImage, setUserProfileImage] = useState("");
-    const [userName, setUserName] = useState("");
-
-    useEffect(() => {
-        if (userDetails) {
-            const { profileImage, userName, bio } = userDetails;
-            profileImage && setUserProfileImage(profileImage);
-            userName && setUserName(userName);
-        }
-    }, [userDetails]);
 
     useEffect(() => {
         return () => {
@@ -223,10 +201,7 @@ const FeedUploaderTemplate = () => {
 
                     {images?.length > 0 &&
                         <>
-                            <Text style={{ color: 'black', padding: 10, textAlign: "center" }}>-: Preview :-</Text>
-                            <View style={{ width: windowWidth, backgroundColor: '#fff' }}>
-                                <PostHeader userName={userName} profileUri={userProfileImage} options={false} />
-                            </View>
+                            <PreviewPostsHeader />
                             <View style={{ backgroundColor: '#fff', justifyContent: "flex-start", alignItems: "center" }}>
                                 <Animated.FlatList
                                     ref={scrollX}
@@ -308,7 +283,7 @@ const FeedUploaderTemplate = () => {
                         }}>Upload</Text>
                 </TouchableOpacity>
             </View>
-            <Loader visible={feedUploadLoading || getUserDetailsLoading} />
+            <Loader visible={feedUploadLoading} />
 
         </SafeAreaView>
 
