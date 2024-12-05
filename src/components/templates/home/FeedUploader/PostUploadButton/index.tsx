@@ -1,10 +1,10 @@
 import RNFS from "react-native-fs";
 import React, { useContext, useEffect } from 'react';
 import { useNavigation } from '@react-navigation/native';
-import { View, Text, TouchableOpacity } from 'react-native';
+import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
 
-import { AppContext } from '@instagram/context';
 import { Loader } from '@instagram/components/atoms';
+import { AppContext } from '@instagram/context/index.tsx';
 import { useFeedUpload, useUserData } from '@instagram/customHooks';
 
 const UploadButton = ({ images }: any) => {
@@ -43,9 +43,9 @@ const UploadButton = ({ images }: any) => {
     }
 
     return (
-        <View style={{ backgroundColor: '#fff', padding: 10, alignItems: 'center', justifyContent: 'center' }}>
+        <View style={styles.container}>
             <TouchableOpacity
-                style={{ backgroundColor: '#0095f6', padding: 10, borderRadius: 5, width: '95%', alignItems: 'center', justifyContent: 'center' }}
+                style={styles.buttonContainer}
                 disabled={images?.length < 1}
                 onPress={onPostUploadPress}
             >
@@ -61,5 +61,22 @@ const UploadButton = ({ images }: any) => {
         </View>
     )
 }
+
+const styles = StyleSheet.create({
+    container: {
+        backgroundColor: '#fff',
+        padding: 10,
+        alignItems: 'center',
+        justifyContent: 'center'
+    },
+    buttonContainer: {
+        backgroundColor: '#0095f6',
+        padding: 10,
+        borderRadius: 5,
+        width: '95%',
+        alignItems: 'center',
+        justifyContent: 'center'
+    }
+});
 
 export default UploadButton
