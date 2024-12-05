@@ -3,6 +3,7 @@ import { useNavigation } from '@react-navigation/native';
 import DocumentPicker from "react-native-document-picker";
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import { Alert, StyleSheet, TouchableOpacity } from 'react-native';
+import { DocumentPickerResponse } from 'react-native-document-picker';
 
 import { useStoragePermission } from '@instagram/customHooks';
 
@@ -35,13 +36,16 @@ const ImagePicker = ({ images, setImages, scrollX }: any) => {
 
     const imagePicker = async () => {
         if (permission === 'never_ask_again') {
-            const file = await DocumentPicker.pick({
-                allowMultiSelection: true,
-                type: [DocumentPicker.types.images],
-                presentationStyle: "fullScreen"
-            }).catch(() => {
+            let file: DocumentPickerResponse[] = [];
+            try {
+                file = await DocumentPicker.pick({
+                    allowMultiSelection: true,
+                    type: [DocumentPicker.types.images],
+                    presentationStyle: "fullScreen"
+                });
+            } catch (error) {
                 goBack();
-            });
+            }
 
             let valid = true;
             file?.map((item: any) => {
@@ -79,7 +83,6 @@ const ImagePicker = ({ images, setImages, scrollX }: any) => {
     }
 
     useEffect(() => {
-        console.log({ permission });
         if (permission === "never_ask_again")
             imagePicker();
     }, [permission]);
