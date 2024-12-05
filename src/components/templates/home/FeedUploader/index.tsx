@@ -15,6 +15,7 @@ import { getAccess } from '@instagram/customHooks/useAccess';
 import { Loader } from "@instagram/components/atoms";
 import { AppContext } from "@instagram/context";
 import ImagePicker from "@instagram/components/templates/home/FeedUploader/ImagePicker/index.tsx";
+import PreviewImages from "@instagram/components/templates/home/FeedUploader/PreviewImages/index.tsx";
 
 const FeedUploaderTemplate = () => {
 
@@ -108,31 +109,6 @@ const FeedUploaderTemplate = () => {
     );
 
     const keyExtractor = useCallback((_: any, index: any) => index.toString(), []);
-
-    const removeImage = (indexx: any) => {
-        let newData = images;
-        newData.splice(indexx, 1);
-        setImages(newData);
-        setIndex(!index);
-        if (newData.length === 0 || newData === undefined || newData === null) {
-            navigation.goBack();
-        }
-    };
-
-    const renderItems = ({ item, index }: any) => {
-        return (
-            <View style={{ justifyContent: "center", alignItems: "center", backgroundColor: '#FFF', height: 50, width: 40, margin: 10, borderRadius: 5 }}>
-                <Image source={{ uri: `${item?.uri ? item?.uri : item?.path}` }} style={{ width: 40, height: 50, borderRadius: 5 }} />
-                <View style={{ borderRadius: 50, position: "absolute", right: -8, top: -8 }}>
-                    <TouchableOpacity onPress={() => removeImage(index)}>
-                        <Image
-                            source={Images.Remove}
-                            style={{ width: 16, height: 16, borderRadius: 50, backgroundColor: '#FFF' }} />
-                    </TouchableOpacity>
-                </View>
-            </View>
-        );
-    };
 
     const previewImages = ({ item, index }: any) => {
         return (
@@ -242,13 +218,7 @@ const FeedUploaderTemplate = () => {
                         alignItems: "center"
                     }}>
                         <ImagePicker images={images} setImages={setImages} scrollX={scrollX} />
-                        <FlatList
-                            data={images}
-                            renderItem={({ item, index }) => renderItems({ item, index })}
-                            horizontal={true}
-                            showsHorizontalScrollIndicator={false}
-                            keyExtractor={keyExtractor}
-                        />
+                        <PreviewImages images={images} setImages={setImages} index={index} setIndex={setIndex} />
                     </View>
 
                     {images?.length > 0 &&
