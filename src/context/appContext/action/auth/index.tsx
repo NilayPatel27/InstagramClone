@@ -64,7 +64,7 @@ export const signUpRequest = (dispatch: any) => async (params: any) => {
 }
 
 //#region ImageUpload
-export const documentUploadRequest = (dispatch: any) => async (params: any) => {
+export const feedUploadRequest = (dispatch: any) => async (params: any) => {
     try {
         const response = await FORMDATA_POST('http://10.0.0.105:5000/addposts', params, {});
         dispatch({ type: TYPES.DOCUMENT_UPLOAD_SUCCESS, payload: response });
