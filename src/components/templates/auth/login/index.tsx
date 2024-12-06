@@ -1,60 +1,21 @@
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import React, { useContext, useEffect, useState } from 'react';
 import { CommonActions, useNavigation } from "@react-navigation/native";
-import { View, Text, TextInput, TouchableOpacity, StyleSheet, Alert } from 'react-native';
+import { View, Text, TextInput, TouchableOpacity, StyleSheet } from 'react-native';
 
 import { Loader } from '@instagram/components/atoms';
 import { AppContext } from '@instagram/context/index.tsx';
-import { usePrevious } from '@instagram/customHooks/index.tsx';
+import { useUserLogin } from '@instagram/customHooks/index.tsx';
 
 const LoginTemplate = () => {
   const navigation = useNavigation();
 
-  const [emailOrUserName, setEmailorUserName] = useState('');
   const [password, setPassword] = useState('');
-  const [firstTimeLogin, setFirstTimeLogin] = useState(false);
+  const [emailOrUserName, setEmailorUserName] = useState('');
 
-  const [loginLoading, setLoginLoading] = useState(false);
+  const { userLogin, loginLoading, firstTimeLogin } = useUserLogin();
 
-  const AppContextState = useContext(AppContext);
-
-  const { state: AppState, loginRequest } = AppContextState;
-  const previousAppState: any = usePrevious(AppState);
-
-  useEffect(() => {
-    if (loginLoading && AppState?.Auth && AppState?.Auth?.loginSuccess === true && AppState?.Auth?.loginResponse) {
-      if (previousAppState?.Auth !== AppState?.Auth) {
-        setLoginLoading(false);
-        if (AppState?.Auth?.loginResponse?.status === "Success" || AppState?.Auth?.loginResponse?.status === 200) {
-          setFirstTimeLogin(true);
-        } else {
-          Alert.alert(
-            "Alert",
-            AppState?.Auth?.loginResponse?.message ? AppState?.Auth?.loginResponse?.message : "Something went wrong",
-            [
-              {
-                text: "OK",
-                onPress: () => { }
-              }
-            ],
-            { cancelable: false }
-          );
-        }
-      }
-    } else if (loginLoading && AppState?.Auth && AppState?.Auth?.loginSuccess === false && AppState?.Auth?.error) {
-      if (previousAppState?.Auth !== AppState?.Auth) {
-        setLoginLoading(false);
-        if (AppState?.Auth?.error && AppState?.Auth?.error?.code && AppState?.Auth?.error?.code === 401) {
-          Alert.alert("", AppState?.Auth?.error?.error?.toString());
-        } else {
-          Alert.alert("", AppState?.Auth?.error?.error, [
-            { text: 'OK', onPress: () => console.log('OK Pressed') }, // Optional button
-          ],
-            { cancelable: true })
-        }
-      }
-    }
-  }, [loginLoading, AppState?.Auth?.loginSuccess, AppState?.Auth?.loginResponse, AppState?.Auth?.error]);
+  const { state: AppState } = useContext(AppContext);
 
   useEffect(() => {
     if (firstTimeLogin && !AppState?.Loader?.loaderVisible) {
@@ -68,8 +29,7 @@ const LoginTemplate = () => {
 
 
   const handleLogin = async () => {
-    setLoginLoading(true);
-    await loginRequest({ emailOrUserName, password });
+    await userLogin({ emailOrUserName, password });
   };
 
   const handleSignUp = () => {
