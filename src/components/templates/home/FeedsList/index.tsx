@@ -6,10 +6,10 @@ import { useNavigation, useNavigationState } from '@react-navigation/native';
 import { Images } from '@instagram/assets';
 import { Loader } from '@instagram/components/atoms';
 import { NavigationBar } from '@instagram/components/molecules';
+import { FeedItem } from '@instagram/components/templates/home/FeedsList/types';
 import { createStyles } from '@instagram/components/templates/home/FeedsList/styles';
 import { useCustomTheme, useDeleteFeed, useFeedsList, useUserData } from '@instagram/customHooks';
 import { OneFeedTemplate, MultiFeedsTemplate } from '@instagram/components/templates/home/index.tsx';
-import { FeedItem } from '@instagram/components/templates/home/FeedsList/types';
 
 const FeedsListTemplate = ({ otherUserId }: { otherUserId: string }) => {
     const { theme } = useCustomTheme();

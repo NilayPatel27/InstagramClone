@@ -1,62 +1,61 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { View, Text, Animated, Image, useWindowDimensions } from 'react-native';
 
 import { Loader } from '@instagram/components/atoms';
-import { useUserData } from '@instagram/customHooks';
+import { useCustomTheme, useUserData } from '@instagram/customHooks';
 import PostHeader from '@instagram/components/templates/home/FeedUploader/PostHeader/index';
+import { createStyles } from '@instagram/components/templates/home/FeedsList/MultiFeeds/styles';
+import { MultiFeedTemplateProps } from '@instagram/components/templates/home/FeedsList/MultiFeeds/types';
 
-const MultiFeedTemplate = ({ imageList, feedId, onDeletePress, deleteUserFeedLoading, userName, userId, profileImage }: any) => {
+const MultiFeedTemplate = ({ imageList = [], feedId, onDeletePress, deleteUserFeedLoading, userName, userId, profileImage }: MultiFeedTemplateProps) => {
+
     const { width: windowWidth } = useWindowDimensions();
+
+    const { theme } = useCustomTheme();
+    const styles = createStyles(theme, windowWidth);
+
+    const { userData } = useUserData();
 
     const [indexOfPost, setIndexOfPost] = useState(0);
 
-    const scrollX: any = useRef(new Animated.Value(0)).current;
+    const scrollX = useRef(new Animated.Value(0)).current;
+    const flatListRef = useRef<Animated.FlatList<string>>(null);
 
-    const onViewRef = useRef((viewableItems: any) => {
-        setIndexOfPost(viewableItems?.viewableItems[0]?.index);
+    const onViewRef = useRef(({ viewableItems }: { viewableItems: any[] }) => {
+        setIndexOfPost(viewableItems[0]?.index || 0);
     });
-
-    const { userData } = useUserData();
 
     const options = userData?.user?._id === userId;
 
     const viewConfigRef = useRef({ viewAreaCoveragePercentThreshold: 50 });
 
-    useEffect(() => {
-        return () => {
-            scrollX?.current?.scrollToIndex({ animated: true, index: 0 });
-            scrollX?.removeAllListeners();
-        };
-    }, []);
+    const RenderImage = ({ item }: { item: string }) => (
+        <View style={styles.imageContainer}>
+            <Image
+                source={{ uri: item }}
+                resizeMode="contain"
+                style={styles.image}
+            />
+        </View>
+    );
 
-    const renderItem = (item: any, index: any) => {
-        return (
-            <>
+    const onScroll = useCallback(
+        Animated.event(
+            [{ nativeEvent: { contentOffset: { x: scrollX } } }],
+            { useNativeDriver: false }
+        ),
+        [scrollX]
+    );
 
-                <View style={{
-                    aspectRatio: 1, width: windowWidth, backgroundColor: "white", marginBottom: 10
-                }}>
-                    <Image
-                        source={{ uri: item }}
-                        resizeMode="contain"
-                        style={{ width: windowWidth, aspectRatio: 1, marginVertical: 5 }}
-                    />
-                </View>
-            </>
-        );
-    }
     return (
         <>
             <PostHeader userName={userName} profileUri={profileImage} options={options} onDeletePress={() => onDeletePress({ feedId })} />
             <View>
                 <Animated.FlatList
-                    ref={scrollX}
-                    data={imageList ? imageList : []}
-                    onScroll={Animated.event(
-                        [{ nativeEvent: { contentOffset: { x: scrollX } } }],
-                        { useNativeDriver: false }
-                    )}
-                    renderItem={({ item: image, index }: any) => renderItem(image, index)}
+                    ref={flatListRef}
+                    data={imageList}
+                    onScroll={onScroll}
+                    renderItem={({ item }) => <RenderImage item={item} />}
                     keyExtractor={(_, index) => index.toString()}
                     horizontal={true}
                     showsHorizontalScrollIndicator={false}
@@ -66,10 +65,8 @@ const MultiFeedTemplate = ({ imageList, feedId, onDeletePress, deleteUserFeedLoa
                     getItemLayout={(_, index) => ({ length: windowWidth, offset: windowWidth * index, index })}
 
                 />
-                <View style={{
-                    position: "absolute", backgroundColor: "#2d333aCC", borderRadius: 10, padding: 5, top: 10, right: 10
-                }}>
-                    <Text style={{ color: "white", fontWeight: 'bold' }}>{indexOfPost + 1}/{imageList?.length}</Text>
+                <View style={styles.counterContainer}>
+                    <Text style={styles.counterText}>{indexOfPost + 1}/{imageList?.length}</Text>
                 </View>
             </View>
             <Loader visible={deleteUserFeedLoading} />

@@ -1,6 +1,6 @@
 import React, { useContext, useEffect } from "react";
-import { AppContext } from "@instagram/context/index.tsx";
 
+import { AppContext } from "@instagram/context/index.tsx";
 
 const Loader = ({ visible }: any) => {
 
