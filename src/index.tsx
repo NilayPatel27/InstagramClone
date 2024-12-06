@@ -10,10 +10,13 @@ import SettingPage from '@instagram/screens/homeModule/setting/index';
 import ProfilePage from '@instagram/screens/homeModule/profile/index';
 import FeedsListPage from '@instagram/screens/homeModule/FeedsList/index';
 import FeedUploaderPage from '@instagram/screens/homeModule/FeedUploader/index';
-import OneFeedPage from '@instagram/screens/homeModule/FeedsList/OneFeed/index';
 import EditProfile from '@instagram/screens/homeModule/profile/EditProfile/index';
-import MultiFeedsPage from '@instagram/screens/homeModule/FeedsList/MultiFeeds/index';
-import OtherUserProfile from '@instagram/screens/homeModule/profile/OtherUserProfile/index';
 import FriendsListPage from '@instagram/screens/homeModule/profile/FriendsList/index';
+import OneFeedPage from '@instagram/components/templates/home/FeedsList/OneFeed/index';
+import OtherUserProfile from '@instagram/screens/homeModule/profile/OtherUserProfile/index';
+import MultiFeedsPage from '@instagram/components/templates/home/FeedsList/MultiFeeds/index.tsx';
 
-export { LoginPage, SignUpPage, CreatePasswordPage, HomePage, ProfilePage, SearchPage, SettingPage, FeedUploaderPage, AddEmailPage, FeedsListPage, OneFeedPage, MultiFeedsPage, EditProfile, OtherUserProfile, SplashScreen, FriendsListPage };
+export {
+    LoginPage, SignUpPage, CreatePasswordPage, HomePage, ProfilePage, SearchPage, SettingPage,
+    FeedUploaderPage, AddEmailPage, FeedsListPage, OneFeedPage, MultiFeedsPage, EditProfile, OtherUserProfile, SplashScreen, FriendsListPage
+};
