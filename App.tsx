@@ -1,13 +1,21 @@
 import React from 'react';
+import { ThemeProvider } from '@rneui/themed';
 
-import { AppProvider } from '@instagram/context/index.tsx';
+import { useCustomTheme } from '@instagram/customHooks';
 import RootNavigation from '@instagram/navigation/rootNavigation';
+import { AppProvider, PreferencesProvider } from '@instagram/context/index.tsx';
 
 const App = () => {
+  const { theme }: any = useCustomTheme();
+
   return (
     <>
       <AppProvider>
-        <RootNavigation />
+        <PreferencesProvider>
+          <ThemeProvider theme={theme}>
+            <RootNavigation />
+          </ThemeProvider>
+        </PreferencesProvider>
       </AppProvider>
     </>
   )

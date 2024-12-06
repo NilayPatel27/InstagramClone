@@ -13,5 +13,6 @@ import useUserEmailExist from './useUserEmailExist';
 import useSignUp from './useSignUp';
 import useFeedUpload from './useFeedUpload';
 import useDeleteUser from './useDeleteUser';
+import useCustomTheme from './useCustomTheme';
 
-export { useStoragePermission, usePrevious, useUserData, useDeleteFeed, useFeedsList, useAllUsersList, useGetUserDetails, useUpdateUserDetails, useFollowUser, useUnFollowUser, useUserNameExist, useUserEmailExist, useSignUp, useFeedUpload, useDeleteUser };
+export { useStoragePermission, usePrevious, useUserData, useDeleteFeed, useFeedsList, useAllUsersList, useGetUserDetails, useUpdateUserDetails, useFollowUser, useUnFollowUser, useUserNameExist, useUserEmailExist, useSignUp, useFeedUpload, useDeleteUser, useCustomTheme };
