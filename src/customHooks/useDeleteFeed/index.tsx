@@ -11,14 +11,14 @@ const useDeleteFeed = () => {
     const previousAppState: any = usePrevious(AppState);
 
     const [deleteUserFeedLoading, setDeleteUserFeedLoading] = useState(false);
-    const [deletFeedSuccess, setDeletFeedSuccess] = useState(false);
+    const [deleteFeedSuccess, setDeletFeedSuccess] = useState(false);
 
     useEffect(() => {
         if (deleteUserFeedLoading && AppState?.Auth?.deleteUserFeedSuccess === true && AppState?.Auth?.deleteUserFeedResponse) {
             if (previousAppState?.Auth !== AppState?.Auth) {
                 setDeleteUserFeedLoading(false);
                 if (AppState?.Auth?.deleteUserFeedResponse?.status === "Success" || AppState?.Auth?.deleteUserFeedResponse?.status === 200) {
-                    setDeletFeedSuccess(!deletFeedSuccess);
+                    setDeletFeedSuccess(!deleteFeedSuccess);
                 } else {
                     Alert.alert(
                         "Alert",
@@ -31,13 +31,13 @@ const useDeleteFeed = () => {
                         ],
                         { cancelable: false }
                     );
-                    setDeletFeedSuccess(!deletFeedSuccess);
+                    setDeletFeedSuccess(!deleteFeedSuccess);
                 }
             }
         } else if (deleteUserFeedLoading && AppState?.Auth && AppState?.Auth?.deleteUserFeedSuccess === false && AppState?.Auth?.error) {
             if (previousAppState?.Auth !== AppState?.Auth) {
                 setDeleteUserFeedLoading(false);
-                setDeletFeedSuccess(!deletFeedSuccess);
+                setDeletFeedSuccess(!deleteFeedSuccess);
                 if (AppState?.Auth?.error && AppState?.Auth?.error?.code && AppState?.Auth?.error?.code === 401) {
                     Alert.alert("", AppState?.Auth?.error?.error?.toString());
                 } else {
@@ -53,7 +53,7 @@ const useDeleteFeed = () => {
         deleteUserFeedRequest({ feedId, userId });
     }
 
-    return { deleteFeed, deleteUserFeedLoading, deletFeedSuccess };
+    return { deleteFeed, deleteUserFeedLoading, deleteFeedSuccess };
 };
 
 export default useDeleteFeed;
