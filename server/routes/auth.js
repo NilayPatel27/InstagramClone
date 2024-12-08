@@ -50,11 +50,12 @@ router.post('/signup', (req, res) => {
 
 //username exist
 router.post('/usernameexist', (req, res) => {
-    const { name } = req.body
-    if (!name) {
+    const { userName } = req.body
+    console.log(userName)
+    if (!userName) {
         return res.status(422).json({ error: "Please add all the fields" })
     }
-    User.findOne({ name: name })
+    User.findOne({ userName: userName })
         .then((savedUser) => {
             if (savedUser) {
                 return res.json({ message: "User already exists with that name" })

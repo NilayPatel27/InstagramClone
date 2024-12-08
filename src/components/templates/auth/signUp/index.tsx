@@ -18,7 +18,7 @@ const SignUpTemplate = () => {
   const { userNameExist, userNameExistLoading } = useUserNameExist();
 
   const handleNextPress = async () => {
-    await userNameExist({ name: username });
+    await userNameExist({ userName: username });
   }
 
   const addValidationSchema = yup.object().shape({

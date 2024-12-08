@@ -49,7 +49,7 @@ const useUserNameExist = () => {
     }, [userNameExistLoading, AppState?.Auth?.userNameExistSuccess, AppState?.Auth?.userNameExistResponse, AppState?.Auth?.error]);
 
     const userNameExist = async (params: any) => {
-        setUserName(params.name);
+        setUserName(params.userName);
         setUserNameExistLoading(true);
         await userNameExistRequest(params);
     }
