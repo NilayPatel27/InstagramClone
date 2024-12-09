@@ -1,0 +1,10 @@
+@server_HostAddress = https://localhost:7224
+
+GET {{server_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
+
+GET {{server_HostAddress}}/weatherforecast
+
+###
