@@ -29,7 +29,19 @@ namespace server.Controllers
         [Route("{id:guid}")]
         public IActionResult GetUserById(Guid id)
         {
-            var user = dbContext.Users.Find(id);
+            var user = dbContext.Users.
+                Where(user => user.Id == id)
+                .Select(user => new
+                {
+                    user.Name,
+                    user.Email,
+                    user.UserName,
+                    user.ProfileImage,
+                    user.Bio,
+                    user.Followers,
+                    user.Following
+                });
+
             if (user is null) {
                 return NotFound();
             }

@@ -22,21 +22,8 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 2,
+          "SelectedChildIndex": 1,
           "Children": [
-            {
-              "$type": "Document",
-              "DocumentIndex": 2,
-              "Title": "UpdateUserDto.cs",
-              "DocumentMoniker": "C:\\Users\\nilay\\OneDrive\\instagramClone\\server-2\\Models\\UpdateUserDto.cs",
-              "RelativeDocumentMoniker": "Models\\UpdateUserDto.cs",
-              "ToolTip": "C:\\Users\\nilay\\OneDrive\\instagramClone\\server-2\\Models\\UpdateUserDto.cs",
-              "RelativeToolTip": "Models\\UpdateUserDto.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAsAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-12-10T03:49:33.401Z",
-              "EditorCaption": ""
-            },
             {
               "$type": "Document",
               "DocumentIndex": 1,
@@ -47,8 +34,7 @@
               "RelativeToolTip": "Models\\AddUserDto.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAA4AAAA1AAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-12-10T03:19:02.509Z",
-              "EditorCaption": ""
+              "WhenOpened": "2024-12-10T03:19:02.509Z"
             },
             {
               "$type": "Document",
@@ -58,10 +44,22 @@
               "RelativeDocumentMoniker": "Controllers\\UsersController.cs",
               "ToolTip": "C:\\Users\\nilay\\OneDrive\\instagramClone\\server-2\\Controllers\\UsersController.cs",
               "RelativeToolTip": "Controllers\\UsersController.cs",
-              "ViewState": "AgIAAEQAAAAAAAAAAAAkwFYAAAAJAAAAAAAAAA==",
+              "ViewState": "AgIAAAkAAAAAAAAAAAAcwAwAAAAFAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2024-12-10T03:05:53.678Z",
               "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "UpdateUserDto.cs",
+              "DocumentMoniker": "C:\\Users\\nilay\\OneDrive\\instagramClone\\server-2\\Models\\UpdateUserDto.cs",
+              "RelativeDocumentMoniker": "Models\\UpdateUserDto.cs",
+              "ToolTip": "C:\\Users\\nilay\\OneDrive\\instagramClone\\server-2\\Models\\UpdateUserDto.cs",
+              "RelativeToolTip": "Models\\UpdateUserDto.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAsAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-12-10T03:49:33.401Z"
             }
           ]
         }
