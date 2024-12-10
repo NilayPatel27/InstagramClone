@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "fao4ifLuI3M=",
+  "dgSpecHash": "pF0AlhcEV0E=",
   "success": true,
-  "projectFilePath": "C:\\Users\\nilay\\OneDrive\\Desktop\\Developement\\instagramClone\\server\\server.csproj",
+  "projectFilePath": "C:\\Users\\nilay\\OneDrive\\instagramClone\\server-2\\server.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\nilay\\.nuget\\packages\\azure.core\\1.38.0\\azure.core.1.38.0.nupkg.sha512",
     "C:\\Users\\nilay\\.nuget\\packages\\azure.identity\\1.11.4\\azure.identity.1.11.4.nupkg.sha512",

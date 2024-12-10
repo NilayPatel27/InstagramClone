@@ -5175,11 +5175,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\nilay\\OneDrive\\Desktop\\Developement\\instagramClone\\server\\server.csproj",
+      "projectUniqueName": "C:\\Users\\nilay\\OneDrive\\instagramClone\\server-2\\server.csproj",
       "projectName": "server",
-      "projectPath": "C:\\Users\\nilay\\OneDrive\\Desktop\\Developement\\instagramClone\\server\\server.csproj",
+      "projectPath": "C:\\Users\\nilay\\OneDrive\\instagramClone\\server-2\\server.csproj",
       "packagesPath": "C:\\Users\\nilay\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\nilay\\OneDrive\\Desktop\\Developement\\instagramClone\\server\\obj\\",
+      "outputPath": "C:\\Users\\nilay\\OneDrive\\instagramClone\\server-2\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
