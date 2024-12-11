@@ -181,6 +181,7 @@ C:\Users\nilay\OneDrive\instagramClone\server-2\bin\Debug\net8.0\server.dll
 C:\Users\nilay\OneDrive\instagramClone\server-2\bin\Debug\net8.0\server.pdb
 C:\Users\nilay\OneDrive\instagramClone\server-2\bin\Debug\net8.0\Azure.Core.dll
 C:\Users\nilay\OneDrive\instagramClone\server-2\bin\Debug\net8.0\Azure.Identity.dll
+C:\Users\nilay\OneDrive\instagramClone\server-2\bin\Debug\net8.0\BCrypt.Net-Next.dll
 C:\Users\nilay\OneDrive\instagramClone\server-2\bin\Debug\net8.0\Humanizer.dll
 C:\Users\nilay\OneDrive\instagramClone\server-2\bin\Debug\net8.0\Microsoft.Bcl.AsyncInterfaces.dll
 C:\Users\nilay\OneDrive\instagramClone\server-2\bin\Debug\net8.0\Microsoft.Build.Locator.dll
@@ -337,11 +338,10 @@ C:\Users\nilay\OneDrive\instagramClone\server-2\obj\Debug\net8.0\staticwebassets
 C:\Users\nilay\OneDrive\instagramClone\server-2\obj\Debug\net8.0\staticwebassets\msbuild.buildMultiTargeting.server.props
 C:\Users\nilay\OneDrive\instagramClone\server-2\obj\Debug\net8.0\staticwebassets\msbuild.buildTransitive.server.props
 C:\Users\nilay\OneDrive\instagramClone\server-2\obj\Debug\net8.0\staticwebassets.pack.json
-C:\Users\nilay\OneDrive\instagramClone\server-2\obj\Debug\net8.0\staticwebassets.upToDateCheck.txt
 C:\Users\nilay\OneDrive\instagramClone\server-2\obj\Debug\net8.0\server.csproj.Up2Date
 C:\Users\nilay\OneDrive\instagramClone\server-2\obj\Debug\net8.0\server.dll
 C:\Users\nilay\OneDrive\instagramClone\server-2\obj\Debug\net8.0\refint\server.dll
 C:\Users\nilay\OneDrive\instagramClone\server-2\obj\Debug\net8.0\server.pdb
 C:\Users\nilay\OneDrive\instagramClone\server-2\obj\Debug\net8.0\server.genruntimeconfig.cache
 C:\Users\nilay\OneDrive\instagramClone\server-2\obj\Debug\net8.0\ref\server.dll
-C:\Users\nilay\OneDrive\instagramClone\server-2\bin\Debug\net8.0\BCrypt.Net-Next.dll
+C:\Users\nilay\OneDrive\instagramClone\server-2\obj\Debug\net8.0\staticwebassets.upToDateCheck.txt
