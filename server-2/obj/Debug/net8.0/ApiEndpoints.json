@@ -65,6 +65,16 @@
   },
   {
     "ContainingType": "server.Controllers.PostsController",
+    "Method": "GetAllPosts",
+    "RelativePath": "api/Posts",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "server.Controllers.PostsController",
     "Method": "AddPost",
     "RelativePath": "api/Posts/addposts",
     "HttpMethod": "POST",

@@ -3,12 +3,24 @@
   "WorkspaceRootPath": "C:\\Users\\nilay\\OneDrive\\instagramClone\\server-2\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{69DFB129-9DC9-4474-B824-42EF0BFC363F}|server.csproj|c:\\users\\nilay\\onedrive\\instagramclone\\server-2\\migrations\\20241211031033_initial migration.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{69DFB129-9DC9-4474-B824-42EF0BFC363F}|server.csproj|solutionrelative:migrations\\20241211031033_initial migration.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{69DFB129-9DC9-4474-B824-42EF0BFC363F}|server.csproj|c:\\users\\nilay\\onedrive\\instagramclone\\server-2\\controllers\\postscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{69DFB129-9DC9-4474-B824-42EF0BFC363F}|server.csproj|solutionrelative:controllers\\postscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{69DFB129-9DC9-4474-B824-42EF0BFC363F}|server.csproj|c:\\users\\nilay\\onedrive\\instagramclone\\server-2\\data\\applicationdbcontext.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{69DFB129-9DC9-4474-B824-42EF0BFC363F}|server.csproj|solutionrelative:data\\applicationdbcontext.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{69DFB129-9DC9-4474-B824-42EF0BFC363F}|server.csproj|c:\\users\\nilay\\onedrive\\instagramclone\\server-2\\models\\entities\\post.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{69DFB129-9DC9-4474-B824-42EF0BFC363F}|server.csproj|solutionrelative:models\\entities\\post.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{69DFB129-9DC9-4474-B824-42EF0BFC363F}|server.csproj|c:\\users\\nilay\\onedrive\\instagramclone\\server-2\\controllers\\userscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{69DFB129-9DC9-4474-B824-42EF0BFC363F}|server.csproj|solutionrelative:controllers\\userscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{69DFB129-9DC9-4474-B824-42EF0BFC363F}|server.csproj|c:\\users\\nilay\\onedrive\\instagramclone\\server-2\\migrations\\20241211031033_initial migration.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{69DFB129-9DC9-4474-B824-42EF0BFC363F}|server.csproj|solutionrelative:migrations\\20241211031033_initial migration.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\nilay\\OneDrive\\instagramClone\\server-2\\Migrations\\20241211030950_Added Posts Table.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
@@ -23,24 +35,12 @@
       "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:Migrations\\20241211030435_Initial -IgnoreChange.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{69DFB129-9DC9-4474-B824-42EF0BFC363F}|server.csproj|c:\\users\\nilay\\onedrive\\instagramclone\\server-2\\data\\applicationdbcontext.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{69DFB129-9DC9-4474-B824-42EF0BFC363F}|server.csproj|solutionrelative:data\\applicationdbcontext.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
       "AbsoluteMoniker": "D:0:0:{69DFB129-9DC9-4474-B824-42EF0BFC363F}|server.csproj|c:\\users\\nilay\\onedrive\\instagramclone\\server-2\\appsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}",
       "RelativeMoniker": "D:0:0:{69DFB129-9DC9-4474-B824-42EF0BFC363F}|server.csproj|solutionrelative:appsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{69DFB129-9DC9-4474-B824-42EF0BFC363F}|server.csproj|c:\\users\\nilay\\onedrive\\instagramclone\\server-2\\controllers\\postscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{69DFB129-9DC9-4474-B824-42EF0BFC363F}|server.csproj|solutionrelative:controllers\\postscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
       "AbsoluteMoniker": "D:0:0:{69DFB129-9DC9-4474-B824-42EF0BFC363F}|server.csproj|c:\\users\\nilay\\onedrive\\instagramclone\\server-2\\controllers\\authcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{69DFB129-9DC9-4474-B824-42EF0BFC363F}|server.csproj|solutionrelative:controllers\\authcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{69DFB129-9DC9-4474-B824-42EF0BFC363F}|server.csproj|c:\\users\\nilay\\onedrive\\instagramclone\\server-2\\controllers\\userscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{69DFB129-9DC9-4474-B824-42EF0BFC363F}|server.csproj|solutionrelative:controllers\\userscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{69DFB129-9DC9-4474-B824-42EF0BFC363F}|server.csproj|c:\\users\\nilay\\onedrive\\instagramclone\\server-2\\models\\addpostdto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
@@ -74,11 +74,11 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 0,
+          "SelectedChildIndex": 4,
           "Children": [
             {
               "$type": "Document",
-              "DocumentIndex": 0,
+              "DocumentIndex": 4,
               "Title": "20241211031033_Initial Migration.cs",
               "DocumentMoniker": "C:\\Users\\nilay\\OneDrive\\instagramClone\\server-2\\Migrations\\20241211031033_Initial Migration.cs",
               "RelativeDocumentMoniker": "Migrations\\20241211031033_Initial Migration.cs",
@@ -91,33 +91,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 2,
-              "Title": "20241211030950_Added Posts Table.cs",
-              "DocumentMoniker": "C:\\Users\\nilay\\OneDrive\\instagramClone\\server-2\\Migrations\\20241211030950_Added Posts Table.cs",
-              "RelativeDocumentMoniker": "Migrations\\20241211030950_Added Posts Table.cs",
-              "ToolTip": "C:\\Users\\nilay\\OneDrive\\instagramClone\\server-2\\Migrations\\20241211030950_Added Posts Table.cs",
-              "RelativeToolTip": "Migrations\\20241211030950_Added Posts Table.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-12-11T03:09:50.319Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 3,
-              "Title": "20241211030742_Initial -IgnoreChange.cs",
-              "DocumentMoniker": "C:\\Users\\nilay\\OneDrive\\instagramClone\\server-2\\Migrations\\20241211030742_Initial -IgnoreChange.cs",
-              "RelativeDocumentMoniker": "Migrations\\20241211030742_Initial -IgnoreChange.cs",
-              "ToolTip": "C:\\Users\\nilay\\OneDrive\\instagramClone\\server-2\\Migrations\\20241211030742_Initial -IgnoreChange.cs",
-              "RelativeToolTip": "Migrations\\20241211030742_Initial -IgnoreChange.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-12-11T03:07:42.469Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 4,
+              "DocumentIndex": 7,
               "Title": "20241211030435_Initial -IgnoreChange.cs",
               "DocumentMoniker": "C:\\Users\\nilay\\OneDrive\\instagramClone\\server-2\\Migrations\\20241211030435_Initial -IgnoreChange.cs",
               "RelativeDocumentMoniker": "Migrations\\20241211030435_Initial -IgnoreChange.cs",
@@ -125,12 +99,11 @@
               "RelativeToolTip": "Migrations\\20241211030435_Initial -IgnoreChange.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-12-11T03:04:35.533Z",
-              "EditorCaption": ""
+              "WhenOpened": "2024-12-11T03:04:35.533Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 6,
+              "DocumentIndex": 8,
               "Title": "appsettings.json",
               "DocumentMoniker": "C:\\Users\\nilay\\OneDrive\\instagramClone\\server-2\\appsettings.json",
               "RelativeDocumentMoniker": "appsettings.json",
@@ -138,34 +111,83 @@
               "RelativeToolTip": "appsettings.json",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAkAAAA+AAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001642|",
-              "WhenOpened": "2024-12-11T02:49:09.92Z",
-              "EditorCaption": ""
+              "WhenOpened": "2024-12-11T02:49:09.92Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 1,
+              "DocumentIndex": 2,
               "Title": "Post.cs",
               "DocumentMoniker": "C:\\Users\\nilay\\OneDrive\\instagramClone\\server-2\\Models\\Entities\\Post.cs",
               "RelativeDocumentMoniker": "Models\\Entities\\Post.cs",
               "ToolTip": "C:\\Users\\nilay\\OneDrive\\instagramClone\\server-2\\Models\\Entities\\Post.cs",
               "RelativeToolTip": "Models\\Entities\\Post.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAoAAAABAAAAAAAAAA==",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAuwAcAAABCAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2024-12-11T02:15:03.645Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 5,
+              "DocumentIndex": 0,
+              "Title": "PostsController.cs",
+              "DocumentMoniker": "C:\\Users\\nilay\\OneDrive\\instagramClone\\server-2\\Controllers\\PostsController.cs",
+              "RelativeDocumentMoniker": "Controllers\\PostsController.cs",
+              "ToolTip": "C:\\Users\\nilay\\OneDrive\\instagramClone\\server-2\\Controllers\\PostsController.cs",
+              "RelativeToolTip": "Controllers\\PostsController.cs",
+              "ViewState": "AgIAACUAAAAAAAAAAAAUwDgAAAAUAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-12-11T02:12:48.263Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "UsersController.cs",
+              "DocumentMoniker": "C:\\Users\\nilay\\OneDrive\\instagramClone\\server-2\\Controllers\\UsersController.cs",
+              "RelativeDocumentMoniker": "Controllers\\UsersController.cs",
+              "ToolTip": "C:\\Users\\nilay\\OneDrive\\instagramClone\\server-2\\Controllers\\UsersController.cs",
+              "RelativeToolTip": "Controllers\\UsersController.cs",
+              "ViewState": "AgIAAAkAAAAAAAAAAAAAABcAAAA0AAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-12-10T03:05:53.678Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
               "Title": "ApplicationDbContext.cs",
               "DocumentMoniker": "C:\\Users\\nilay\\OneDrive\\instagramClone\\server-2\\Data\\ApplicationDbContext.cs",
               "RelativeDocumentMoniker": "Data\\ApplicationDbContext.cs",
               "ToolTip": "C:\\Users\\nilay\\OneDrive\\instagramClone\\server-2\\Data\\ApplicationDbContext.cs",
               "RelativeToolTip": "Data\\ApplicationDbContext.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAABEAAAAAAAAAAAAAAA==",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAA4AAAAZAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2024-12-11T02:29:28.347Z",
               "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 6,
+              "Title": "20241211030742_Initial -IgnoreChange.cs",
+              "DocumentMoniker": "C:\\Users\\nilay\\OneDrive\\instagramClone\\server-2\\Migrations\\20241211030742_Initial -IgnoreChange.cs",
+              "RelativeDocumentMoniker": "Migrations\\20241211030742_Initial -IgnoreChange.cs",
+              "ToolTip": "C:\\Users\\nilay\\OneDrive\\instagramClone\\server-2\\Migrations\\20241211030742_Initial -IgnoreChange.cs",
+              "RelativeToolTip": "Migrations\\20241211030742_Initial -IgnoreChange.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-12-11T03:07:42.469Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 5,
+              "Title": "20241211030950_Added Posts Table.cs",
+              "DocumentMoniker": "C:\\Users\\nilay\\OneDrive\\instagramClone\\server-2\\Migrations\\20241211030950_Added Posts Table.cs",
+              "RelativeDocumentMoniker": "Migrations\\20241211030950_Added Posts Table.cs",
+              "ToolTip": "C:\\Users\\nilay\\OneDrive\\instagramClone\\server-2\\Migrations\\20241211030950_Added Posts Table.cs",
+              "RelativeToolTip": "Migrations\\20241211030950_Added Posts Table.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-12-11T03:09:50.319Z"
             },
             {
               "$type": "Document",
@@ -177,21 +199,7 @@
               "RelativeToolTip": "Models\\AddPostDto.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAgAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-12-11T02:13:22.556Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 7,
-              "Title": "PostsController.cs",
-              "DocumentMoniker": "C:\\Users\\nilay\\OneDrive\\instagramClone\\server-2\\Controllers\\PostsController.cs",
-              "RelativeDocumentMoniker": "Controllers\\PostsController.cs",
-              "ToolTip": "C:\\Users\\nilay\\OneDrive\\instagramClone\\server-2\\Controllers\\PostsController.cs",
-              "RelativeToolTip": "Controllers\\PostsController.cs",
-              "ViewState": "AgIAABMAAAAAAAAAAAAQwBoAAAArAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-12-11T02:12:48.263Z",
-              "EditorCaption": ""
+              "WhenOpened": "2024-12-11T02:13:22.556Z"
             },
             {
               "$type": "Document",
@@ -203,8 +211,7 @@
               "RelativeToolTip": "Models\\UsernameExistDto.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAQAAAA1AAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-12-11T00:57:37.698Z",
-              "EditorCaption": ""
+              "WhenOpened": "2024-12-11T00:57:37.698Z"
             },
             {
               "$type": "Document",
@@ -232,7 +239,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 8,
+              "DocumentIndex": 9,
               "Title": "AuthController.cs",
               "DocumentMoniker": "C:\\Users\\nilay\\OneDrive\\instagramClone\\server-2\\Controllers\\AuthController.cs",
               "RelativeDocumentMoniker": "Controllers\\AuthController.cs",
@@ -240,21 +247,7 @@
               "RelativeToolTip": "Controllers\\AuthController.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAFoAAAAfAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-12-10T23:52:47.832Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 9,
-              "Title": "UsersController.cs",
-              "DocumentMoniker": "C:\\Users\\nilay\\OneDrive\\instagramClone\\server-2\\Controllers\\UsersController.cs",
-              "RelativeDocumentMoniker": "Controllers\\UsersController.cs",
-              "ToolTip": "C:\\Users\\nilay\\OneDrive\\instagramClone\\server-2\\Controllers\\UsersController.cs",
-              "RelativeToolTip": "Controllers\\UsersController.cs",
-              "ViewState": "AgIAAAkAAAAAAAAAAAAAAA0AAAAHAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-12-10T03:05:53.678Z",
-              "EditorCaption": ""
+              "WhenOpened": "2024-12-10T23:52:47.832Z"
             },
             {
               "$type": "Document",

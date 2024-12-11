@@ -45,5 +45,27 @@ namespace server.Controllers
                 return StatusCode(500, new { error = "Internal server error" });
             }
         }
+
+        [HttpGet]
+        public IActionResult GetAllPosts()
+        {
+            var allPosts = dbContext.Posts.ToList();
+
+            var newPosts = allPosts
+                .Select(async post =>
+                {
+                    var user = await dbContext.Users.FindAsync(post.UserId);
+                    return new
+                    {
+                        post.Id,
+                        post.UserId,
+                        post.Feeds,
+                        post.CreatedAt,
+                        UserName = user?.UserName,
+                        ProfileImage = user?.ProfileImage
+                    };
+                }).ToList();
+            return Ok(allPosts);
+        }
     }
 }
