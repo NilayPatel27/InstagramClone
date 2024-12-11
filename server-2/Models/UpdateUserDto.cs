@@ -1,6 +1,4 @@
-﻿using server.Models.Entities;
-
-namespace server.Models
+﻿namespace server.Models
 {
     public class UpdateUserDto
     {

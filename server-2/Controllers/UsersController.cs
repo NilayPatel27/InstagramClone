@@ -48,26 +48,6 @@ namespace server.Controllers
             return Ok(user);
         }
 
-        [HttpPost]
-        public IActionResult AddUser(AddUserDto addUserDto)
-        {
-            var uesrEntity = new User()
-            {
-                Name = addUserDto.Name,
-                Email = addUserDto.Email,
-                Password = addUserDto.Password,
-                ProfileImage = addUserDto.ProfileImage,
-                UserName = addUserDto.UserName,
-                Bio = addUserDto.Bio,
-                Followers = addUserDto.Followers,
-                Following = addUserDto.Following
-            };
-
-            dbContext.Users.Add(uesrEntity);
-            dbContext.SaveChanges();
-            return Ok(uesrEntity);
-        }
-
         [HttpPut]
         [Route("{id:guid}")]
         public IActionResult UpdateUser(Guid id, UpdateUserDto updateUserDto)

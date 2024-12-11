@@ -344,3 +344,4 @@ C:\Users\nilay\OneDrive\instagramClone\server-2\obj\Debug\net8.0\refint\server.d
 C:\Users\nilay\OneDrive\instagramClone\server-2\obj\Debug\net8.0\server.pdb
 C:\Users\nilay\OneDrive\instagramClone\server-2\obj\Debug\net8.0\server.genruntimeconfig.cache
 C:\Users\nilay\OneDrive\instagramClone\server-2\obj\Debug\net8.0\ref\server.dll
+C:\Users\nilay\OneDrive\instagramClone\server-2\bin\Debug\net8.0\BCrypt.Net-Next.dll
