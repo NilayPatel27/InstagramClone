@@ -19,8 +19,7 @@ namespace server.Models.Entities
 
         public string? Bio { get; set; }
 
-        public ICollection<User> Followers { get; set; } = new List<User>();
-
-        public ICollection<User> Following { get; set; } = new List<User>();
+        public ICollection<Guid> Followers { get; set; } = new List<Guid>();
+        public ICollection<Guid> Following { get; set; } = new List<Guid>();
     }
 }

@@ -1,8 +1,10 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using server.Data;
 using server.Models;
 using server.Models.Entities;
+using System.Linq;
 
 namespace server.Controllers
 {
@@ -76,6 +78,86 @@ namespace server.Controllers
             dbContext.Users.Remove(user);
             dbContext.SaveChanges();
             return Ok();
+        }
+
+        [HttpPut("follow")]
+        public async Task<IActionResult> FollowUser([FromBody] FollowerDto followerDto)
+        {
+            if (followerDto == null || followerDto.UserId == Guid.Empty || followerDto.FollowId == Guid.Empty)
+            {
+                return BadRequest(new { error = "Invalid request" });
+            }
+
+            var followUser = await dbContext.Users.FirstOrDefaultAsync(u => u.Id == followerDto.FollowId);
+            if (followUser == null)
+            {
+                return NotFound(new { error = "User to follow not found" });
+            }
+
+            var currentUser = await dbContext.Users.FirstOrDefaultAsync(u => u.Id == followerDto.UserId);
+            if (currentUser == null)
+            {
+                return NotFound(new { error = "Current user not found" });
+            }
+
+            if (!followUser.Followers.Contains(currentUser.Id))
+            {
+                followUser.Followers.Add(currentUser.Id);
+                dbContext.Entry(followUser).Property(u => u.Followers).IsModified = true;
+            }
+
+            if (!currentUser.Following.Contains(followUser.Id))
+            {
+                currentUser.Following.Add(followUser.Id);
+                dbContext.Entry(currentUser).Property(u => u.Following).IsModified = true;
+            }
+
+            await dbContext.SaveChangesAsync();
+
+            return Ok(new
+            {
+                message = "Followed successfully"
+            });
+        }
+
+        [HttpPut("unfollow")]
+        public async Task<IActionResult> UnfollowUser([FromBody] FollowerDto followerDto)
+        {
+            if (followerDto == null || followerDto.UserId == Guid.Empty || followerDto.FollowId == Guid.Empty)
+            {
+                return BadRequest(new { error = "Invalid request" });
+            }
+
+            var followUser = await dbContext.Users.FirstOrDefaultAsync(u => u.Id == followerDto.FollowId);
+            if (followUser == null)
+            {
+                return NotFound(new { error = "User to follow not found" });
+            }
+
+            var currentUser = await dbContext.Users.FirstOrDefaultAsync(u => u.Id == followerDto.UserId);
+            if (currentUser == null)
+            {
+                return NotFound(new { error = "Current user not found" });
+            }
+
+            if (followUser.Followers.Contains(currentUser.Id))
+            {
+                followUser.Followers.Remove(currentUser.Id);
+                dbContext.Entry(followUser).Property(u => u.Followers).IsModified = true;
+            }
+
+            if (currentUser.Following.Contains(followUser.Id))
+            {
+                currentUser.Following.Remove(followUser.Id);
+                dbContext.Entry(currentUser).Property(u => u.Following).IsModified = true;
+            }
+
+            await dbContext.SaveChangesAsync();
+
+            return Ok(new
+            {
+                message = "Unfollowed successfully"
+            });
         }
     }
 }

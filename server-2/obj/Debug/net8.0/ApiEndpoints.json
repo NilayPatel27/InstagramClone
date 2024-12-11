@@ -156,5 +156,37 @@
       }
     ],
     "ReturnTypes": []
+  },
+  {
+    "ContainingType": "server.Controllers.UsersController",
+    "Method": "FollowUser",
+    "RelativePath": "api/Users/follow",
+    "HttpMethod": "PUT",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "followerDto",
+        "Type": "server.Models.FollowerDto",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "server.Controllers.UsersController",
+    "Method": "UnfollowUser",
+    "RelativePath": "api/Users/unfollow",
+    "HttpMethod": "PUT",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "followerDto",
+        "Type": "server.Models.FollowerDto",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
   }
 ]
