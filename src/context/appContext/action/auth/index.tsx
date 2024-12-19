@@ -1,12 +1,11 @@
 import TYPES from "@instagram/context/appContext/types";
 import { setAccess } from "@instagram/customHooks/useAccess/index.tsx";
 import { GET, POST, FORMDATA_POST, DELETE, FORMDATA_PUT, PUT } from "@instagram/context/appContext/apiManagement/index.tsx";
-
-const LOGINURL = 'http://localhost:5000/login';
+import { LOGIN, SIGNUP, USERNAMEEXIST, USEREMAILEXIST, FEEDUPLOAD, FEEDLIST, DELETEACCOUNT, DELETEPOST, ALLUSERSLIST, USERDETAILS, UPDATEPROFILE, FOLLOWUSER, UNFOLLOWUSER } from '@env';
 
 export const loginRequest = (dispatch: any) => async (params: any) => {
     try {
-        const loginResponse: any = await POST('http://192.168.2.52:5000/login', params, {});
+        const loginResponse: any = await POST(LOGIN, params, {});
         if (loginResponse && loginResponse?.status === 200) {
             await setAccess("userToken", JSON.stringify(loginResponse?.data?.token));
             await setAccess("user", JSON.stringify(loginResponse?.data));
@@ -21,8 +20,6 @@ export const loginRequest = (dispatch: any) => async (params: any) => {
 
 export const logOutRequest = (dispatch: any) => async () => {
     try {
-        const response = await GET(LOGINURL, {});
-        __DEV__ && console.log("LogOut", response);
         await setAccess("userToken", "");
         await setAccess("user", "");
         dispatch({ type: TYPES.LOGOUT_SUCCESS, payload: {} });
@@ -33,7 +30,7 @@ export const logOutRequest = (dispatch: any) => async () => {
 
 export const userNameExistRequest = (dispatch: any) => async (params: any) => {
     try {
-        const response = await POST('http://192.168.2.52:5000/usernameexist', params, {});
+        const response = await POST(USERNAMEEXIST, params, {});
         dispatch({ type: TYPES.USERNAMEEXIST_SUCCESS, payload: response });
         return response;
     } catch (error) {
@@ -43,7 +40,7 @@ export const userNameExistRequest = (dispatch: any) => async (params: any) => {
 
 export const userEmailExistRequest = (dispatch: any) => async (params: any) => {
     try {
-        const response = await POST('http://192.168.2.52:5000/useremailexist', params, {});
+        const response = await POST(USEREMAILEXIST, params, {});
         dispatch({ type: TYPES.USEREMAILEXIST_SUCCESS, payload: response });
         return response;
     } catch (error) {
@@ -53,7 +50,7 @@ export const userEmailExistRequest = (dispatch: any) => async (params: any) => {
 
 export const signUpRequest = (dispatch: any) => async (params: any) => {
     try {
-        const signupResponse = await POST('http://192.168.2.52:5000/signup', params, {});
+        const signupResponse = await POST(SIGNUP, params, {});
         await setAccess("userToken", JSON.stringify(signupResponse?.data?.token));
         await setAccess("user", JSON.stringify(signupResponse?.data));
         dispatch({ type: TYPES.SIGNUP_SUCCESS, payload: signupResponse });
@@ -66,7 +63,7 @@ export const signUpRequest = (dispatch: any) => async (params: any) => {
 //#region ImageUpload
 export const feedUploadRequest = (dispatch: any) => async (params: any) => {
     try {
-        const response = await FORMDATA_POST('http://192.168.2.52:5000/addposts', params, {});
+        const response = await FORMDATA_POST(FEEDUPLOAD, params, {});
         dispatch({ type: TYPES.DOCUMENT_UPLOAD_SUCCESS, payload: response });
         return response;
     }
@@ -79,7 +76,7 @@ export const feedUploadRequest = (dispatch: any) => async (params: any) => {
 //#region feedList
 export const feedListRequest = (dispatch: any) => async () => {
     try {
-        const response = await GET('http://192.168.2.52:5000/allposts', {});
+        const response = await GET(FEEDLIST, {});
         dispatch({ type: TYPES.FEEDLIST_SUCCESS, payload: response });
         return response;
     } catch (error) {
@@ -91,7 +88,7 @@ export const feedListRequest = (dispatch: any) => async () => {
 //#region deleteUserAccount
 export const deleteUserAccountRequest = (dispatch: any) => async (params: any) => {
     try {
-        const response = await DELETE(`http://192.168.2.52:5000/deleteaccount/${params}`);
+        const response = await DELETE(`${DELETEACCOUNT}/${params}`, {});
         dispatch({ type: TYPES.DELETEUSERACCOUNT_SUCCESS, payload: response });
         return response;
     } catch (error) {
@@ -103,7 +100,7 @@ export const deleteUserAccountRequest = (dispatch: any) => async (params: any) =
 //#region deleteUserFeed
 export const deleteUserFeedRequest = (dispatch: any) => async ({ feedId, userId }: any) => {
     try {
-        const response = await DELETE(`http://192.168.2.52:5000/deletepost/${feedId}`, { userId: userId });
+        const response = await DELETE(`${DELETEPOST}/${feedId}`, { userId: userId });
         dispatch({ type: TYPES.DELETEUSERFEED_SUCCESS, payload: response });
         return response;
     } catch (error) {
@@ -115,7 +112,7 @@ export const deleteUserFeedRequest = (dispatch: any) => async ({ feedId, userId 
 //#region allUsers
 export const allUsersRequest = (dispatch: any) => async () => {
     try {
-        const response = await GET('http://192.168.2.52:5000/alluserslist', {});
+        const response = await GET(ALLUSERSLIST, {});
         dispatch({ type: TYPES.ALLUSERS_SUCCESS, payload: response });
         return response;
     } catch (error) {
@@ -127,7 +124,7 @@ export const allUsersRequest = (dispatch: any) => async () => {
 //#region getUserDetails
 export const getUserDetails = (dispatch: any) => async (params: any) => {
     try {
-        const response = await GET(`http://192.168.2.52:5000/user/${params.userId}`, {});
+        const response = await GET(`${USERDETAILS}/${params.userId}`, {});
         dispatch({ type: TYPES.GETUSERDETAILS_SUCCESS, payload: response });
         return response;
     } catch (error) {
@@ -139,7 +136,7 @@ export const getUserDetails = (dispatch: any) => async (params: any) => {
 //#region updateUserDetails
 export const updateUserDetails = (dispatch: any) => async (params: any) => {
     try {
-        const response = await FORMDATA_PUT('http://192.168.2.52:5000/updateprofile', params, {});
+        const response = await FORMDATA_PUT(UPDATEPROFILE, params, {});
         dispatch({ type: TYPES.UPDATEUSERDETAILS_SUCCESS, payload: response });
         return response;
     } catch (error) {
@@ -151,7 +148,7 @@ export const updateUserDetails = (dispatch: any) => async (params: any) => {
 //#region followUser
 export const followUser = (dispatch: any) => async (params: any) => {
     try {
-        const response = await PUT('http://192.168.2.52:5000/follow', params, {});
+        const response = await PUT(FOLLOWUSER, params, {});
         dispatch({ type: TYPES.FOLLOWUSER_SUCCESS, payload: response });
         return response;
     } catch (error) {
@@ -163,7 +160,7 @@ export const followUser = (dispatch: any) => async (params: any) => {
 //#region unFollowUser
 export const unFollowUser = (dispatch: any) => async (params: any) => {
     try {
-        const response = await PUT('http://192.168.2.52:5000/unfollow', params, {});
+        const response = await PUT(UNFOLLOWUSER, params, {});
         dispatch({ type: TYPES.UNFOLLOWUSER_SUCCESS, payload: response });
         return response;
     } catch (error) {

@@ -8,7 +8,6 @@ using System.Linq;
 
 namespace server.Controllers
 {
-    //localhost:5000/api/users
     [Route("api/[controller]")]
     [ApiController]
     public class UsersController : ControllerBase
