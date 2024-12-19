@@ -4,7 +4,8 @@
     "jsx": "react-native",
     "baseUrl": "./",
     "paths": {
-      "@instagram/*": ["src/*"]
+      "@instagram/*": ["src/*"],
+      "@env": ["env.d.ts"]
     }
   }
 }
