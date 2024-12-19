@@ -8,7 +8,7 @@ const Post = require('../models/Post');
 const multer = require('multer');
 const upload = multer();
 
-router.post('/signup', (req, res) => {
+router.post('/api/Auth/signup', (req, res) => {
     const { name, email, password, profileImage, userName } = req.body
     if (!email || !password || !userName) {
         return res.status(422).json({ error: "Please add all the fields" })
@@ -49,7 +49,7 @@ router.post('/signup', (req, res) => {
 })
 
 //username exist
-router.post('/usernameexist', (req, res) => {
+router.post('/api/Auth/usernameexist', (req, res) => {
     const { userName } = req.body
     console.log(userName)
     if (!userName) {
@@ -68,7 +68,7 @@ router.post('/usernameexist', (req, res) => {
 })
 
 //email exist
-router.post('/useremailexist', (req, res) => {
+router.post('/api/Auth/useremailexist', (req, res) => {
     const { email } = req.body
     if (!email) {
         return res.status(422).json({ error: "Please add all the fields" })
@@ -85,7 +85,7 @@ router.post('/useremailexist', (req, res) => {
         })
 })
 
-router.post('/login', (req, res) => {
+router.post('/api/Auth/login', (req, res) => {
     const { emailOrUserName, password } = req.body
     if (!emailOrUserName || !password) {
         return res.status(422).json({ error: "Please add email or password" })
