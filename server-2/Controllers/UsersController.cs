@@ -8,7 +8,7 @@ using System.Linq;
 
 namespace server.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("/[controller]")]
     [ApiController]
     public class UsersController : ControllerBase
     {

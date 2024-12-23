@@ -8,7 +8,7 @@ using server.Models.Entities;
 
 namespace server.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("/[controller]")]
     [ApiController]
     public class PostsController : ControllerBase
     {

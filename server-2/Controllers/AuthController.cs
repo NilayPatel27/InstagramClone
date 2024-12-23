@@ -6,7 +6,7 @@ using server.Models.Entities;
 
 namespace server.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("/[controller]")]
     [ApiController]
     public class AuthController : ControllerBase
     {

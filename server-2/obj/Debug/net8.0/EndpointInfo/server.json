@@ -5,7 +5,7 @@
     "version": "1.0"
   },
   "paths": {
-    "/api/Auth/login": {
+    "/Auth/login": {
       "post": {
         "tags": [
           "Auth"
@@ -36,7 +36,7 @@
         }
       }
     },
-    "/api/Auth/signup": {
+    "/Auth/signup": {
       "post": {
         "tags": [
           "Auth"
@@ -67,7 +67,7 @@
         }
       }
     },
-    "/api/Auth/usernameexist": {
+    "/Auth/usernameexist": {
       "post": {
         "tags": [
           "Auth"
@@ -98,7 +98,7 @@
         }
       }
     },
-    "/api/Auth/useremailexist": {
+    "/Auth/useremailexist": {
       "post": {
         "tags": [
           "Auth"
@@ -129,7 +129,7 @@
         }
       }
     },
-    "/api/Posts/addposts": {
+    "/Posts/addposts": {
       "post": {
         "tags": [
           "Posts"
@@ -173,7 +173,7 @@
         }
       }
     },
-    "/api/Posts": {
+    "/Posts": {
       "get": {
         "tags": [
           "Posts"
@@ -185,7 +185,7 @@
         }
       }
     },
-    "/api/Users": {
+    "/Users": {
       "get": {
         "tags": [
           "Users"
@@ -197,7 +197,7 @@
         }
       }
     },
-    "/api/Users/{id}": {
+    "/Users/{id}": {
       "get": {
         "tags": [
           "Users"
@@ -281,7 +281,7 @@
         }
       }
     },
-    "/api/Users/follow": {
+    "/Users/follow": {
       "put": {
         "tags": [
           "Users"
@@ -312,7 +312,7 @@
         }
       }
     },
-    "/api/Users/unfollow": {
+    "/Users/unfollow": {
       "put": {
         "tags": [
           "Users"
