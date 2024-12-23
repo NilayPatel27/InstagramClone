@@ -117,7 +117,7 @@ router.post('/api/Auth/login', (req, res) => {
     })
 });
 
-router.post('/addposts', upload.none(), async (req, res) => {
+router.post('/api/Posts/addposts', upload.none(), async (req, res) => {
     try {
         const { userId, feeds } = req.body;
 
@@ -147,7 +147,7 @@ router.post('/addposts', upload.none(), async (req, res) => {
 });
 
 //get all posts
-router.get('/allposts', async (req, res) => {
+router.get('/api/Posts', async (req, res) => {
     try {
         const posts = await Post.find();
 
@@ -165,7 +165,7 @@ router.get('/allposts', async (req, res) => {
 });
 
 //delete account by id
-router.delete('/deleteaccount/:userId', async (req, res) => {
+router.delete('/api/Users/:userId', async (req, res) => {
     try {
         const { userId } = req.params;
         const user = await User.findById(userId);
@@ -180,7 +180,7 @@ router.delete('/deleteaccount/:userId', async (req, res) => {
     }
 });
 
-router.delete('/deletepost/:postId', async (req, res) => {
+router.delete('/api/Posts/:postId', async (req, res) => {
     try {
         const { postId } = req.params;
         const { userId } = req.body;
@@ -203,7 +203,7 @@ router.delete('/deletepost/:postId', async (req, res) => {
     }
 });
 
-router.get('/alluserslist', upload.none(), async (req, res) => {
+router.get('/api/Users', upload.none(), async (req, res) => {
     try {
         const users = await User.find();
 
@@ -219,7 +219,7 @@ router.get('/alluserslist', upload.none(), async (req, res) => {
 });
 
 //getUserDetails 
-router.get('/user/:userId', async (req, res) => {
+router.get('/api/Users/:userId', async (req, res) => {
     try {
         const { userId } = req.params;
         const user = await User.findById(userId);
@@ -234,7 +234,7 @@ router.get('/user/:userId', async (req, res) => {
 });
 
 //update user Name and Bio and profile image
-router.put('/updateprofile', upload.none(), async (req, res) => {
+router.put('/api/Users', upload.none(), async (req, res) => {
     try {
         const { userId, name, bio, profileImage } = req.body;
         const user = await User.findById(userId);
@@ -251,7 +251,7 @@ router.put('/updateprofile', upload.none(), async (req, res) => {
         res.status(500).json({ error: 'Failed to update profile.' });
     }
 });
-router.put('/follow', async (req, res) => {
+router.put('/api/Users/follow', async (req, res) => {
     const followUser = await User.findByIdAndUpdate(req.body.followId, {
         $addToSet: { followers: req.body.user._id }
     }, { new: true })
@@ -271,7 +271,7 @@ router.put('/follow', async (req, res) => {
 
     res.status(200).json({ message: 'Followed successfully', followers: currentUser.followers, following: currentUser.following });
 });
-router.put('/unfollow', async (req, res) => {
+router.put('/api/Users/unfollow', async (req, res) => {
     const unfollowUser = await User.findByIdAndUpdate(req.body.unfollowId, {
         $pull: { followers: req.body.user._id }
     }, { new: true })
