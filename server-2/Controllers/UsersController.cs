@@ -22,7 +22,20 @@ namespace server.Controllers
         [HttpGet]
         public IActionResult GetAllUsers()
         {
-            var allUsers = dbContext.Users.ToList();
+            var allUsers = dbContext.Users
+            .Select(user => new
+            {
+                _id = user.Id, // Map Id to _id
+                user.Name,
+                user.Email,
+                user.ProfileImage,
+                user.UserName,
+                user.Bio,
+                user.Followers,
+                user.Following
+            })
+            .ToList();
+
             return Ok(allUsers);
         }
 

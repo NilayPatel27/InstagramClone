@@ -7,7 +7,6 @@ export const loginRequest = (dispatch: any) => async (params: any) => {
     try {
         const loginResponse: any = await POST(LOGIN, params, {});
         if (loginResponse && loginResponse?.status === 200) {
-            await setAccess("userToken", JSON.stringify(loginResponse?.data?.token));
             await setAccess("user", JSON.stringify(loginResponse?.data));
             dispatch({ type: TYPES.LOGIN_SUCCESS, payload: loginResponse });
         } else {

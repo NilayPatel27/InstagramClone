@@ -42,7 +42,7 @@ const SearchTemplate = () => {
             getAllUsersList();
             setSearchedUserList([]);
         } else {
-            const filteredList = allUsersList.filter((item: any) => item.userName.toLowerCase().includes(searchText.toLowerCase()));
+            const filteredList = allUsersList?.filter((item: any) => item.userName.toLowerCase().includes(searchText.toLowerCase()));
             setSearchedUserList(filteredList ? filteredList : []);
         }
     }, [searchText]);
