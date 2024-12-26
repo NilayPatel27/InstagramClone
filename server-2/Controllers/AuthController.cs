@@ -47,7 +47,7 @@ namespace server.Controllers
             {
                 user = new
                 {
-                    user.Id,
+                    _id = user.Id,
                     user.Name,
                     user.Email,
                     user.ProfileImage,

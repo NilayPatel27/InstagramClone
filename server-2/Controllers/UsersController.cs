@@ -41,12 +41,18 @@ namespace server.Controllers
                     user.Bio,
                     user.Followers,
                     user.Following
-                });
+                }).FirstOrDefault();
 
             if (user is null) {
                 return NotFound();
             }
-            return Ok(user);
+
+            var response = new
+            {
+                user
+            };
+
+            return Ok(response);
         }
 
         [HttpPut]
