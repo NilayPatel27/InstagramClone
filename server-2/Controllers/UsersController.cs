@@ -25,7 +25,7 @@ namespace server.Controllers
             var allUsers = dbContext.Users
             .Select(user => new
             {
-                _id = user.Id, // Map Id to _id
+                _id = user.Id,
                 user.Name,
                 user.Email,
                 user.ProfileImage,
@@ -47,6 +47,7 @@ namespace server.Controllers
                 Where(user => user.Id == id)
                 .Select(user => new
                 {
+                    _id = user.Id,
                     user.Name,
                     user.Email,
                     user.UserName,
@@ -69,10 +70,9 @@ namespace server.Controllers
         }
 
         [HttpPut]
-        [Route("{id:guid}")]
-        public IActionResult UpdateUser(Guid id, UpdateUserDto updateUserDto)
+        public IActionResult UpdateUser([FromForm] UpdateUserDto updateUserDto)
         {
-            var user = dbContext.Users.Find(id);
+            var user = dbContext.Users.Find(updateUserDto.UserId);
             if (user is null)
             {
                 return NotFound();
