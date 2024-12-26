@@ -47,25 +47,32 @@ namespace server.Controllers
         }
 
         [HttpGet]
-        public IActionResult GetAllPosts()
+        public async Task<IActionResult> GetAllPosts()
         {
-            var allPosts = dbContext.Posts.ToList();
-
-            var newPosts = allPosts
-                .Select(async post =>
+            var postsWithUsers = await dbContext.Posts
+                .Select(post => new
                 {
-                    var user = await dbContext.Users.FindAsync(post.UserId);
-                    return new
-                    {
-                        post.Id,
-                        post.UserId,
-                        post.Feeds,
-                        post.CreatedAt,
-                        UserName = user?.UserName,
-                        ProfileImage = user?.ProfileImage
-                    };
-                }).ToList();
-            return Ok(allPosts);
+                    _id = post.Id, // Renamed Id to _id
+                    post.UserId,
+                    post.Feeds,
+                    post.CreatedAt,
+                    UserName = dbContext.Users
+                        .Where(user => user.Id == post.UserId)
+                        .Select(user => user.UserName)
+                        .FirstOrDefault(), // Fetch username directly
+                    ProfileImage = dbContext.Users
+                        .Where(user => user.Id == post.UserId)
+                        .Select(user => user.ProfileImage)
+                        .FirstOrDefault() // Fetch profile image directly
+                })
+                .ToListAsync();
+
+            var result = new
+            {
+                posts = postsWithUsers
+            };
+
+            return Ok(result);
         }
     }
 }
