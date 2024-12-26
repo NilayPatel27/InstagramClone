@@ -193,7 +193,7 @@ const ProfileTemplate = () => {
                 backgroundColor: 'white',
             }}>
                 <FlatList
-                    data={userFeedList.length > 0 ? userFeedList : []}
+                    data={userFeedList?.length > 0 ? userFeedList : []}
                     keyExtractor={(_, index) => index.toString()}
                     renderItem={({ item, index }) => renderItem(item, index)}
                     numColumns={3}

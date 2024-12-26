@@ -21,7 +21,7 @@ const useAllUsersList = () => {
             if (previousAppState?.Auth !== AppState?.Auth) {
                 setAllUsersListLoading(false);
                 if (AppState?.Auth?.allUsersResponse?.status === "Success" || AppState?.Auth?.allUsersResponse?.status === 200) {
-                    const allUsers = AppState?.Auth?.allUsersResponse?.data?.usersList.filter((user: any) => user._id !== userData.user._id);
+                    const allUsers = AppState?.Auth?.allUsersResponse?.data?.usersList?.filter((user: any) => user._id !== userData.user._id);
                     setAllUsersList(allUsers);
                 } else {
                     Alert.alert(
