@@ -8,7 +8,7 @@ const Post = require('../models/Post');
 const multer = require('multer');
 const upload = multer();
 
-router.post('/api/Auth/signup', (req, res) => {
+router.post('/Auth/signup', (req, res) => {
     const { name, email, password, profileImage, userName } = req.body
     if (!email || !password || !userName) {
         return res.status(422).json({ error: "Please add all the fields" })
@@ -49,7 +49,7 @@ router.post('/api/Auth/signup', (req, res) => {
 })
 
 //username exist
-router.post('/api/Auth/usernameexist', (req, res) => {
+router.post('/Auth/usernameexist', (req, res) => {
     const { userName } = req.body
     console.log(userName)
     if (!userName) {
@@ -68,7 +68,7 @@ router.post('/api/Auth/usernameexist', (req, res) => {
 })
 
 //email exist
-router.post('/api/Auth/useremailexist', (req, res) => {
+router.post('/Auth/useremailexist', (req, res) => {
     const { email } = req.body
     if (!email) {
         return res.status(422).json({ error: "Please add all the fields" })
@@ -85,7 +85,7 @@ router.post('/api/Auth/useremailexist', (req, res) => {
         })
 })
 
-router.post('/api/Auth/login', (req, res) => {
+router.post('/Auth/login', (req, res) => {
     const { emailOrUserName, password } = req.body
     if (!emailOrUserName || !password) {
         return res.status(422).json({ error: "Please add email or password" })
@@ -117,7 +117,7 @@ router.post('/api/Auth/login', (req, res) => {
     })
 });
 
-router.post('/api/Posts/addposts', upload.none(), async (req, res) => {
+router.post('/Posts/addposts', upload.none(), async (req, res) => {
     try {
         const { userId, feeds } = req.body;
 
@@ -147,7 +147,7 @@ router.post('/api/Posts/addposts', upload.none(), async (req, res) => {
 });
 
 //get all posts
-router.get('/api/Posts', async (req, res) => {
+router.get('/Posts', async (req, res) => {
     try {
         const posts = await Post.find();
 
@@ -165,7 +165,7 @@ router.get('/api/Posts', async (req, res) => {
 });
 
 //delete account by id
-router.delete('/api/Users/:userId', async (req, res) => {
+router.delete('/Users/:userId', async (req, res) => {
     try {
         const { userId } = req.params;
         const user = await User.findById(userId);
@@ -180,7 +180,7 @@ router.delete('/api/Users/:userId', async (req, res) => {
     }
 });
 
-router.delete('/api/Posts/:postId', async (req, res) => {
+router.delete('/Posts/:postId', async (req, res) => {
     try {
         const { postId } = req.params;
         const { userId } = req.body;
@@ -203,7 +203,7 @@ router.delete('/api/Posts/:postId', async (req, res) => {
     }
 });
 
-router.get('/api/Users', upload.none(), async (req, res) => {
+router.get('/Users', upload.none(), async (req, res) => {
     try {
         const users = await User.find();
 
@@ -219,7 +219,7 @@ router.get('/api/Users', upload.none(), async (req, res) => {
 });
 
 //getUserDetails 
-router.get('/api/Users/:userId', async (req, res) => {
+router.get('/Users/:userId', async (req, res) => {
     try {
         const { userId } = req.params;
         const user = await User.findById(userId);
@@ -234,7 +234,7 @@ router.get('/api/Users/:userId', async (req, res) => {
 });
 
 //update user Name and Bio and profile image
-router.put('/api/Users', upload.none(), async (req, res) => {
+router.put('/Users', upload.none(), async (req, res) => {
     try {
         const { userId, name, bio, profileImage } = req.body;
         const user = await User.findById(userId);
@@ -251,7 +251,7 @@ router.put('/api/Users', upload.none(), async (req, res) => {
         res.status(500).json({ error: 'Failed to update profile.' });
     }
 });
-router.put('/api/Users/follow', async (req, res) => {
+router.put('/Users/follow', async (req, res) => {
     const followUser = await User.findByIdAndUpdate(req.body.followId, {
         $addToSet: { followers: req.body.user._id }
     }, { new: true })
@@ -271,7 +271,7 @@ router.put('/api/Users/follow', async (req, res) => {
 
     res.status(200).json({ message: 'Followed successfully', followers: currentUser.followers, following: currentUser.following });
 });
-router.put('/api/Users/unfollow', async (req, res) => {
+router.put('/Users/unfollow', async (req, res) => {
     const unfollowUser = await User.findByIdAndUpdate(req.body.unfollowId, {
         $pull: { followers: req.body.user._id }
     }, { new: true })
