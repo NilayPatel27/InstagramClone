@@ -73,3 +73,10 @@ yarn-error.log
 !.yarn/releases
 !.yarn/sdks
 !.yarn/versions
+
+# Exclude Visual Studio files
+.vs/
+
+# Exclude build output folders
+bin/
+obj/
